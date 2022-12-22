@@ -12,6 +12,7 @@
 \usepackage[magyar]{babel}
 
 \usepackage{times}
+\usepackage{tcolorbox}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -24,6 +25,7 @@
 
 \usepackage{setspace}
 
+\graphicspath{ {./images/} }
 
 %Margok:
 \hoffset -1in
@@ -161,7 +163,6 @@ A szakdolgozat célja egy ilyen program elkészítése egy tetszőlegesen válas
 
 \chapter{Bevezetés}
 \addcontentsline{toc}{section}{Bevezetés}
-
 A témaválaszatásomat az informatikai rendszerek elképesztő gyorsaságú fejlődésének gondolata alapozta meg. Egy olyan világban élünk, ahol az okos eszközök elkezdték kiváltani a manuális munkavégzési folyamatokat, vagy azokat egyszerűbbé tették. Minden nap a zsebünkben hordunk egy olyan kompakt eszközt, amely rendelkezik kamerával. Az okostelefonok kamerája, és egy erre fejlesztett applikáció együtt képes kiváltani egy hagyományos szkenner hardvert.
 
 Ezen túlmenve, egyes felsőbb kategóriás telefonok már képesek fényképről felismerni szöveget, és opciót biztosítanak a szöveg kinyerésére is. Amennyiben előttünk van egy névjegykártya, és szeretnénk róla egy nevet vagy telefonszámot gyorsan kimásolni anélkül, hogy nekünk kelljen manuálisan begépelni, egyszerűen készítenünk kell róla egy fényképet, és amennyiben a telefon szöveget talál a képen, azt kimásolhatóvá és vágólapra illeszthetővé teszi a felhasználó számára, ezzel értékes időt spórova, továbbá a hibázás lehetőségét is csökkentve.
@@ -170,10 +171,9 @@ Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelá
 
 Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és kettő másodperc alatt minden adatom, ami a személyi igazolványomon volt, az a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgráság, és így tovább.
 
-
 Szakdolgozatom célja, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat és egy ilyen folyamatot be tudjak mutatni egy tetszőlegesen kiválasztott domainnel.
-
-Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első részében a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek a jelenleg hasonlóan működő redszerek. A második részben rávilágítok a jelenleg bárki számára elérhető szövegfelismerő rendszerek hiányosságaira, a harmadik részben pedig bemutatom és összehasonlítom azokat a technológiákat, keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben. Negyedik lépésben a projektem megvalósításának részleteit, komponenseit, felépítését fogom bemutatni, továbbá megindoklom a domain választásom. Ötödik lépésben egy konkrét esetre fogom bemutatni a program működtetését lépésről lépésre, valamint a program futásának elvárt eredményét.
+\newline
+Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első részében a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg használnak. A második részben rávilágítok a jelenleg bárki számára elérhető szövegfelismerő rendszerek hiányosságaira, továbbá bemutatom és összehasonlítom azokat a technológiákat, keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben. Harmadik lépésben a projektem megvalósításának részleteit, komponenseit, felépítését fogom bemutatni, valamint megindoklom a domain választásom. Végül lépésről lépésre bemutatom a program működését egy konkrét esetre, valamint a program futásának elvárt eredményét.
 
 
 % \begin{figure}[h]
@@ -182,15 +182,40 @@ Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első r
     % \caption{A Cisco labor izolált topológiája}
 % \end{figure}
 
+\chapter{Jelenlegi rendszerek}
+\section{Jelenlegi rendszerek bemutatása}
+\addcontentsline{toc}{section}{Jelenlegi rendszerek bemutatása}
 
-\chapter{A jelenlegi rendszer problémai}
-\addcontentsline{toc}{section}{A jelenlegi rendszer problémai}
 
+Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt.
 
-A jelenleg kialakított rendszer egy korábbi szakdolgozat produktuma, ami a mai technológiák szempontjából elavultnak tekinthető. Továbbá, mivel web-be ágyazott, egyszerre több felhasználó is írhat az eszközök konzoljára, és a felhasználók számára nincs visszajelzés arról, hogy jelenleg hányan használjak szimultán a rendszert. A korszerűsítés keretein belül ez megoldásra kerül, egy idősáv foglaló és bejelentkező felület segítségével.
+\newline
 
-A felhasználó a használat során teljesen magára van utalva, az elvégzett feladatokat maga kell ellenőrizze és értékelje, ami nem biztos hogy minden esetben hiánytalan. 
-Illetve, a rendszer biztonsági és ellenőrizhetőségi szempontból erősen limitált: minden felhasználó egy felhasználónév és jelszó párral tudja használni a rendszert, ami nincs rendszeresen cserélve, és a kiadott parancsok sincsenek naplózva.
+\begin{figure}[h]
+  \centerline{\includegraphics[scale=.25]{mintaigazolvany.eps}}
+  \caption{minta igazolvány}
+\end{figure}
+
+\pagebreak
+
+A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyből szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. Az általam feltöltött képről kinyert szöveg:
+\newline
+\begin{tcolorbox}
+MINTA IGAZOLVÁNY Családi és utónév: MAROSI MÁRK DÁNIEL Neme: FÉRFI Születési idő: Érvényességi idő: Okmányazonosító: CAN: 123456 Állampolgárság: HUN 21 09 1999 04 11 2023 123456AB
+\end{tcolorbox}
+\newline
+Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, nem minden adatról azonosítható be, hogy pontosan mit jelent.
+
+\section{Jelenlegi rendszerek hiányosságai}
+\addcontentsline{toc}{section}{Jelenlegi rendszerek hiányosságai}
+
+Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több tíz személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Ez első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében fogok elkészíteni.
+
+Amennyiben az első, klasszikus módszert választjuk, kézzel kell beírnunk minden egyes adatot, betűről betűre, számról számra. A három módszer közül ez a leghosszabb és legtöbb emberi hibalehetőséget rejtő módszer. Hibázhatunk az adatok olvasásánál, hibázhatunk az adatok begépelése során, valamint ott is hibázhatunk, hogy nem jó cellába visszük fel az értékeket, elcsúszunk valahol.
+\newpage
+A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy egyes weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére, ezzel is gyorsítva a folyamatot. A technológia rendkívül pontos, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A második, begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
+
+A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni, például a dátumot, amely 30 06 1979 alakot vesz fel a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná hozni, tovább csökkentve a manuális teendőket.
 
 
 \chapter{A szakdolgozat életútja}

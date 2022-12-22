@@ -1,0 +1,798 @@
+%Oldaltorest is alkalmazhatunk
+% \pagebreak
+%laptores:
+% \newpage
+
+
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+%\usepackage[latin2]{inputenc}% ekezetes szavak bevitelehez
+\usepackage[T1]{fontenc}
+\def\magyarOptions{defaults=hu-min}
+\usepackage[magyar]{babel}
+
+\usepackage{times}
+\usepackage{tcolorbox}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{fancyhdr}
+
+\usepackage{graphicx}
+\usepackage{psfrag}
+
+\usepackage{setspace}
+
+\graphicspath{ {./images/} }
+
+%Margok:
+\hoffset -1in
+\voffset -1in
+\oddsidemargin 35mm
+\textwidth 150mm
+\topmargin 15mm
+\headheight 10mm
+\headsep 5mm
+\textheight 237mm
+
+\onehalfspacing
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\Large\bf Szegedi Tudományegyetem}
+
+\vspace{0.5cm}
+
+{\Large\bf Informatikai Intézet}
+
+\vspace*{8.5cm}
+
+
+{\Huge\bf SZAKDOLGOZAT}
+
+
+\vspace*{7cm}
+
+{\LARGE\bf Marosi Márk Dániel}
+
+\vspace*{0.6cm}
+
+{\Large\bf 2022}
+
+\end{center}
+
+\newpage
+
+
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Domain specifikus szöveg feldolgozása kép alapú dokumentumokon}
+\fancyfoot[R]{\thepage}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+\vspace*{1cm}
+{\Large\bf Szegedi Tudományegyetem}
+
+\vspace{0.5cm}
+
+{\Large\bf Informatikai Intézet}
+
+\vspace*{3.8cm}
+
+
+{\LARGE\bf Domain specifikus szöveg feldolgozása kép alapú dokumentumokon}
+
+
+\vspace*{3.5cm}
+
+{\Large Diplomamunka}
+
+\vspace*{4cm}
+
+{\large
+\begin{tabular}{c@{\hspace{4cm}}c}
+\emph{Készítette:}     &\emph{Témavezető:}\\
+\textbf{Marosi Márk Dániel}  &\textbf{Janurik Viktor Bálint}\\
+Gazdaságinformatika szakos     &Tanszéki mérnök\\
+hallgató&
+\end{tabular}
+}
+
+\vspace*{2cm}
+
+{\Large
+Szeged
+\\
+\vspace{2mm}
+2022
+}
+\end{center}
+
+\renewcommand{\contentsname}{Tartalomjegyzék}
+
+\chapter*{Feladatkiírás}
+\addcontentsline{toc}{section}{Feladatkiírás}
+
+A digitalizáció és az automatizáció terjedésével egyre nagyobb az igény olyan programokra, melyek kép alapú dokumentumokról beolvasott szöveget képesek domain függően feldolgozni és osztályozni predikciók, szövegkörnyezet és a dokumentumon elfoglalt pozíció alapján.\\
+A szakdolgozat célja egy ilyen program elkészítése egy tetszőlegesen választott domainnel.
+
+
+\chapter*{Tartalmi összefoglaló}
+\addcontentsline{toc}{section}{Tartalmi összefoglaló}
+
+% \begin{itemize}
+
+    % \item Téma megnevezése:
+    % Domain specifikus szöveg feldolgozása kép alapú dokumentumokon
+
+    % \item Feladat megfogalmazása:
+    % A szakdolgozat témája és célja az Informatikai Intézet Cisco laborjának távoli elérés rendszerének korszerűsítési keretében történő további két modul fejlesztése.
+
+    % \item A teljes projekt modulokra bontása, munkamegosztás:
+    % Egy ilyen projekt túl nagy feladat lett volna egyetlen hallgató számára, éppen ezért a három modult -- web-es frontend, konzolos backend, es az ellenőrző/naplózó köztes modul -- három szakdolgozó fejleszti.
+
+    % \item Alkalmazott módszerek:
+    % \begin{itemize}
+        % \item Python: A teljes projekt Python nyelven készült, kiegészítve több library-vel: MySQL connector, Pika, Netmiko stb.
+        % \item MySQL: a rendszer backend-jéül egy mysql 8.0 szerver szolgál
+        % \item RabbitMQ: a komponensek közötti kommunikáció a Rabbit Message Queue segítségével lett megvalósítva
+    % \end{itemize}
+
+    % \item Eredmények:
+    % A fejlesztés produktuma egy, már alapjaiban működő rendszer, ami további tesztelések, és az ott előjövő problémák javításai után készen áll arra, hogy átvegye a jelenlegi rendszer feladatát.
+
+% \end{itemize}
+
+\tableofcontents
+
+\chapter{Bevezetés}
+\addcontentsline{toc}{section}{Bevezetés}
+A témaválaszatásomat az informatikai rendszerek elképesztő gyorsaságú fejlődésének gondolata alapozta meg. Egy olyan világban élünk, ahol az okos eszközök elkezdték kiváltani a manuális munkavégzési folyamatokat, vagy azokat egyszerűbbé tették. Minden nap a zsebünkben hordunk egy olyan kompakt eszközt, amely rendelkezik kamerával. Az okostelefonok kamerája, és egy erre fejlesztett applikáció együtt képes kiváltani egy hagyományos szkenner hardvert.
+
+Ezen túlmenve, egyes felsőbb kategóriás telefonok már képesek fényképről felismerni szöveget, és opciót biztosítanak a szöveg kinyerésére is. Amennyiben előttünk van egy névjegykártya, és szeretnénk róla egy nevet vagy telefonszámot gyorsan kimásolni anélkül, hogy nekünk kelljen manuálisan begépelni, egyszerűen készítenünk kell róla egy fényképet, és amennyiben a telefon szöveget talál a képen, azt kimásolhatóvá és vágólapra illeszthetővé teszi a felhasználó számára, ezzel értékes időt spórova, továbbá a hibázás lehetőségét is csökkentve.
+
+Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelátni ebbe a témába, viszont egy nemrég történt tapasztalat csak felerősítette szakmai érdeklődésem a szövegfelismerés és feldolgozás kapcsán. 
+
+Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és kettő másodperc alatt minden adatom, ami a személyi igazolványomon volt, az a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgráság, és így tovább.
+
+Szakdolgozatom célja, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat és egy ilyen folyamatot be tudjak mutatni egy tetszőlegesen kiválasztott domainnel.
+\newline
+Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első részében a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg használnak. A második részben rávilágítok a jelenleg bárki számára elérhető szövegfelismerő rendszerek hiányosságaira, továbbá bemutatom és összehasonlítom azokat a technológiákat, keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben. Harmadik lépésben a projektem megvalósításának részleteit, komponenseit, felépítését fogom bemutatni, valamint megindoklom a domain választásom. Végül lépésről lépésre bemutatom a program működését egy konkrét esetre, valamint a program futásának elvárt eredményét.
+
+
+% \begin{figure}[h]
+    % \centering
+    % \includegraphics[scale=0.3]{topology.eps}
+    % \caption{A Cisco labor izolált topológiája}
+% \end{figure}
+
+\chapter{Jelenlegi rendszerek}
+\section{Jelenlegi rendszerek bemutatása}
+\addcontentsline{toc}{section}{Jelenlegi rendszerek bemutatása}
+
+
+Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt.
+
+\newline
+
+\begin{figure}[h]
+  \centerline{\includegraphics[scale=.25]{mintaigazolvany.eps}}
+  \caption{minta igazolvány}
+\end{figure}
+
+\pagebreak
+
+A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyből szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. Az általam feltöltött képről kinyert szöveg:
+\newline
+\begin{tcolorbox}
+MINTA IGAZOLVÁNY Családi és utónév: MAROSI MÁRK DÁNIEL Neme: FÉRFI Születési idő: Érvényességi idő: Okmányazonosító: CAN: 123456 Állampolgárság: HUN 21 09 1999 04 11 2023 123456AB
+\end{tcolorbox}
+\newline
+Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, nem minden adatról azonosítható be, hogy pontosan mit jelent.
+
+\section{Jelenlegi rendszerek hiányosságai}
+\addcontentsline{toc}{section}{Jelenlegi rendszerek hiányosságai}
+
+Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több tíz személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Ez első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében fogok elkészíteni.
+
+Amennyiben az első, klasszikus módszert választjuk, kézzel kell beírnunk minden egyes adatot, betűről betűre, számról számra. A három módszer közül ez a leghosszabb és legtöbb emberi hibalehetőséget rejtő módszer. Hibázhatunk az adatok olvasásánál, hibázhatunk az adatok begépelése során, valamint ott is hibázhatunk, hogy nem jó cellába visszük fel az értékeket, elcsúszunk valahol.
+\newpage
+A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy egyes weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére, ezzel is gyorsítva a folyamatot. A technológia rendkívül pontos, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A második, begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
+
+A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni, például a dátumot, amely 30 06 1979 alakot vesz fel a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná hozni, tovább csökkentve a manuális teendőket.
+
+
+\chapter{A szakdolgozat életútja}
+\addcontentsline{toc}{section}{A szakdolgozat életútja}
+
+
+A projekt eredetileg két szakdolgozó munkájaként indult, és a későbbiekben csatlakozva a munkához, hárman folytattuk tovább a fejlesztést. A fejlesztés menete horizontális módon valósult meg, scrum rendszerben, változó időpontban tartott heti megbeszélésekkel, emiatt a sprintek hossza váltakozó volt. Nem sokkal a csatlakozásom után változott meg a rendszer működése. Az eredetileg tisztán adatbázison keresztüli kommunikáció, performancia tesztelések után, lecserélésre került - az IoT-ben is kedvelt – alkalmazásrétegbeli MQTT protokollon alapuló RabbitMQ javára.
+\par
+A fejlesztés nyelve azért lett a Python, mert interpretált, magas szintű, könnyen olvasható nyelv, és a nyelv tanulási görbéje igen lapos az idő/tapasztalat gráfon.
+Interpretáltsága biztosítja, hogy a kód bármely olyan operációs rendszeren futtatható, amelyre létezik Python interpreter, ezért a production környezetben való operációs rendszer váltás nem okoz gondot. Illetve, mivel a fejlesztés Windows operációs rendszeren történt, a munkafolyamat során nem volt szükség tesztkörnyezetben és külön production környezetben fordításra, így időt és hibalehetőséget tudtunk spórolni. Az architektúra absztrakciót az interpreter oldotta meg számunkra.
+
+Sokan a Pythont pseudo nyelvnek nevezik, mivel a szintaxisa igen egyszerű, azonban lehetővé teszi a bonyolult problémák megoldását kevés kódsorból. A továbbfejleszthetőséget is egyszerűbbé tettük a választással, hiszen a Python a harmadik legtöbbet használt nyelv a JetBrains kutatása szerint.\footnote{https:\/\/www.jetbrains.com\/lp\/devecosystem-2021/\#Main\_what-are-your-primary-programming-languages-choose-no-more-than-3-languages}
+
+
+
+
+\chapter{Környezet és technológiák}
+%\addcontentsline{toc}{section}{Fejlesztői állomás}
+%\addcontentsline{toc}{section}{A production infrastruktúra részletei}
+
+\section{Fejlesztői állomás}
+
+\begin{itemize}
+    \item Fejlesztői állomás
+    \begin{itemize}
+	   \item OS:  Microsoft Windows 10 Pro
+	   \item CPU: Intel i7-9750H @ 2.6GHz 6 mag 12 szál
+	   \item RAM: 16GB DDR4
+    \end{itemize}
+	
+    \item A fejlesztői környezetben felhasznált programok és technológiák:
+    \begin{itemize}
+        \item IDE: PyCharm 2020.1.3
+        \item Interpreter: Python 3.9
+        \item Felhasznált beépülő modulok:
+        \begin{itemize}
+            \item mysql-connector-python v8.0.23
+            \item pika v1.2.0
+        \end{itemize}
+		\item MySQL Workbench 8.0 CE
+		\item Docker desktop:
+            \begin{itemize}
+                \item rabbitmq:3-management
+                \item mysql:8.0
+            \end{itemize}
+		\item Gitlab verziókezelés
+    \end{itemize}
+\end{itemize}
+
+\newpage
+\section{Production infrastruktúra}
+
+\begin{itemize}
+    \item A production infrastruktúra részletei
+    \begin{itemize}
+        \item 6x
+        \begin{itemize}
+            \item FUJITSU Mini Tower Computer
+            \item 2 x Intel Core 2 6300 @ 1.86GHz
+            \item RAM 8 GB DDR3
+        \end{itemize}
+        \item Gigabyte Technology Co., Ltd. EX58-UD3R
+        \item Intel Core i7 920 @ 2.67GHz
+        \item RAM 16 GB DDR3
+    \end{itemize}
+    \item A production környezetben felhasznált programok és technológiák:
+    \begin{itemize}
+        \item gitlab-runner v11.2.0
+        \item Docker version 20.10.7, build 20.10.7-0ubuntu5-20.04.2
+        \item Hyper-V v10.0.20348.1
+    \end{itemize}
+\end{itemize}
+
+
+\chapter{Feladat ellenőrző, kiértékelő és naplózó modul}
+\section{Egy szálon futó proceduriális megoldás}
+% \addcontentsline{toc}{section}{Egy szalon futo procedurialis megoldas}
+
+
+A fejlesztés első lépése az alapos kutatómunka volt, azonban ez minden fázisában jelen volt. Kezdetben a komponensek közötti kommunikáció adatbázison keresztül történt, a kód procedurálisan futott és kezelte az adatbázis lekérdezéseket. A validáló kód egy kezdetleges részlete:
+
+\begin{verbatim}
+def validate_commands(db):
+    db = db_connect()
+    command = get_history(db)
+    correct_commands = get_answers(db)
+
+    if str(command).find(str(correct_commands)) != -1:
+        print("the correct command ran")
+    else:
+        print("the commands are not correct")
+\end{verbatim}
+
+Ekkor még adatbázis alapú kommunikációra akartuk építeni a projektet, és a kezdetleges kód bővült a feladatokhoz tartozó kiadandó parancsokkal, illetve a felhasználó által kiadott parancsok listájának lekérdezését végző metódussal, ami az aktuális munkamenet kezdetétől lekéri a teljes parancselőzményt:
+
+\begin{verbatim}
+def get_history(db):
+    current_user = get_user_data()[0]
+    start_time = get_user_data()[1]
+    current_time = datetime.datetime.utcnow().\
+                   strftime('%Y-%m-%d %H:%M:%S')
+
+    get_history_cursor = db.cursor()
+    get_history_cursor.execute(
+        "SELECT parancs FROM query " +
+        "WHERE time_stamp >= \"" + str(start_time) 
+        + "\" " +
+        "AND time_stamp <= \"" + str(current_time)
+        + "\" " +
+        "AND user_id=" + str(current_user) + ";"
+    )
+
+    result = get_history_cursor.fetchall()
+
+    tuples_joined_in_array = [''.\
+            join(tups) for tups in result]
+    history_string = r"{}".format(
+        str(tuples_joined_in_array).replace("'", "").\
+    replace(", ", "").\
+    replace("[", "").\
+    replace("]", "")
+
+    return history_string
+\end{verbatim}
+
+Funkcionalitás szempontjából ez tekinthető az első működő béta verziónak, amely képes volt a felhasználó által kiadott parancsok kiértékelésére.
+Miután az előzőek megvalósításra kerültek, a sok adatbázis lekérdezés és a folyamatos insert-ek miatt egy performancia teszt során kiderült, hogy egy diszkrét idő után, a karakterekénti beillesztések miatt az adatbázis rekordszámai nagy iramban fognak nőni, és az adatbázis kezelhetetlenné, a kiadott parancsok pedig olvashatatlanná fognak válni.
+
+Ennek hatására kezdtünk el másik megoldás után kutatni, szóba került, hogy Message Queue-t alkalmazzuk az eszközök közötti kommunikációra. Ennek nagy előnye, hogy a kommunikáció az MQTT protokoll szabványa szerint (ISO/IEC 20922:2016)\footnote{a protokoll olyan TCP/IP vagy más hálózati protokollon fut, amely képes rendezett, veszteségmentes, kétirányú kapcsolatot biztositani.} gyorsabb, mint adatbázison keresztül.
+Szavazat után a fejlesztőcsapat a Rabbit Message Queue alkalmazása mellett döntött, ez azt eredményezte a továbbiakban, hogy az eddigi kódbázis nagy része funkcionalitását vesztette, és alapjaiban kellett újjáépíteni a teljes modult.
+
+
+\section{Több szálon futó objektumorientált megoldás}
+% \addcontentsline{toc}{section}{Tobb szalon futo objektum orientalt megoldas}
+
+
+A modulok közötti kommunikáció módjának megváltoztatása után hamar kiderült, hogy az ellenőrző modul bonyolultabb lesz, mint amit egy procedurális megvalósítás engedne. Éppen ezért a kezdetekben két osztály került bevezetésre, a Validator, ami később User-re lett átnevezve, és a MetaCommunication osztályok, melyek feladata nevükből is felismerhetően, rendre a feladatok ellenőrzése és a weboldallal való kommunikáció volt.
+
+\begin{verbatim}
+class Validator (threading.Thread):
+    def __init__(self, threadID, name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+
+    def run(self):
+        print("Starting " + self.name)
+        init(self.threadID)
+
+
+class MetaCommunication(threading.Thread):
+    current_user = None
+    selected_task = None
+    correct_command_list = r''
+    com_ports_in_use = []
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.threadID = "web-python"
+        self.name = "web-python"
+
+    def set_correct_command_list(self):
+        db = db_connect()
+        get_correct_commands_cursor = db.cursor()
+        get_correct_commands_cursor.execute(
+            "SELECT command FROM correct_commands " +
+            "WHERE lesson_id=\"" + str(lesson_id) + "\";"
+        )
+        self.correct_command_list = r"{}".format(
+            get_correct_commands_cursor.fetchone()[0])
+        db_close(db)
+
+    def run(self):
+        print("Starting " + self.name)
+        web_python_communication_listener(self)
+\end{verbatim}
+
+A MessageQueue használata koncepcionálisan egyszerű, a kommunikációban két típusú ágenst különböztetünk meg, egy úgynevezett "publisher" vagy "content creator" és egy "subscriber" vagy "consumer" résztvevőt. A felosztás magától értetődő volt, a web-es frontend a publisher, a konzolos backend, a validator és a logoló modulok mind consumerek. A MetaCommunication osztály a message queue-ba csatlakozó metódusa:
+
+\begin{verbatim}
+    def init(queue):
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='test')
+
+    def callback(ch, method, properties, body):
+        print(" [x] Received %r" % body)
+
+    channel.basic_consume(queue=queue, 
+                          on_message_callback=callback, 
+                          auto_ack=True)
+
+    print(' [*] Waiting for messages.
+           To exit press CTRL+C')
+    channel.start_consuming()
+
+\end{verbatim}
+
+Azonban komplikációk léptek fel az MQ implementálása során. Habár a csatorna figyelésére aszinkron kapcsolatot használ, a programszálat a start\_consuming() metódus aktívan fogja, így az első csatornára való kapcsolatnyitás teljesen megállítja a programot.
+Ennek kiküszöbölésére az MQ-kat több szálon kezdtem kezelni, a különböző COM portokon való kommunikációt egy-egy külön szálon figyeltem, amihez egy újabb osztály bevezetésére volt szükség a QueueListener osztályra.
+
+További problémák akadtak a szálak megszüntetésekor is.
+A jelenleg belépett felhasználó adatai jelen vannak a példányosított objektumokban, ezért a kijelentkezés után ezeket meg kell szüntetni, hogy helyükre újakat lehessen létrehozni a megfelelő felhasználói adatokkal.
+Ezek az objektumok a Thread osztály leszármazottjai, belépési pontjukban pedig a RabbitMQ csatornái felé nyitott start\_consuming() metódussal figyelnek, ami nem szakítható meg a Thread osztály join() metódusával. Ennek következtében először a stop\_consuming() metódussal le kell zárni a kapcsolatot, majd ez után lehet a szálat is zárni.
+
+
+\begin{verbatim}
+    class QueueListener(threading.Thread):
+    #is_waiting_for_join = 0
+    def __init__(self, com_port, parentObject):
+        super().__init__()
+        self.name = "queue_listener_thread_on" +
+                     str(com_port)
+        self.com_port = com_port
+        self.parentObject = parentObject
+
+    def run(self):
+        web_device_communication_listener(
+            self.parentObject,
+            self.com_port)
+\end{verbatim}
+
+Ezt az osztályt a Validator osztály példányosítja annyi példányban, ahány COM port csatlakoztatva van a rendszerhez. (Ez jelenleg hardcode-oltan 6 COM portot jelent 1-6 között)
+Továbbra is akadály volt az, hogy ezek a threadek -- a BlockingConnection miatt -- nem reagáltak a Thread osztály join() metódusára. A probléma orvosolására egy, a problémát megkerülő megoldásra volt szükség. Végül egy igen egyszerű és az infrastruktúrára kis kihatással lévő megoldás született, a Validator osztály (majd később a QueueListener osztály) egy új adattagot kapott is\_waiting\_for\_join névvel, amelynek érteke kezdetben 0, a felhasználó kilepésekor érteke 1-re módosul. A szál konkrét lezárását a következő logika végzi.
+
+\begin{verbatim}
+    if user_object.is_waiting_for_join == 1:
+    channel.close()
+\end{verbatim}
+
+Amely a QueueListener, a Message Queue-ra figyelő metódusának, callback függvényében helyezkedik el. Ez azonban még nem teljes értékű megoldás, hiszen, ha a felhasználó kilépett a rendszerből, a következő üzenetet már a következő felhasználó fogja küldeni. Ez azt eredményezi, hogy amíg a rendszer üres járatban van, a program 6 felesleges szálat futtat folyamatosan, továbbá a régi felhasználó szálainak lezárása és az új felhasználóhoz tartozó szálak indítása JIT módon történne. Így a felhasználó kilépését feldolgozó kódrészlet kiegészült egy blokkal, amely behirdet egy szóköz karaktert a Message Queue-kra:
+
+\begin{verbatim}
+if str(body.decode('UTF-8').split(',')[0]) == "logout":
+    joining_thread = thread_list.get("Thread-" + str(
+                     body.decode('UTF-8').split(',')[1]))
+    print("DEBUG thread object: " + str(joining_thread))
+    joining_thread.is_waiting_for_join = 1
+
+    for com_port in joining_thread.com_ports_in_use:
+        closing_connection = pika.BlockingConnection(
+            pika.ConnectionParameters('localhost'))
+        closing_channel = connection.channel()
+        closing_channel.queue_declare(queue=com_port)
+        closing_channel.basic_publish(exchange='',
+                                      routing_key=com_port,
+                                      body=b" ")
+        closing_connection.close()
+\end{verbatim}
+
+\section{Az ellenőrzés és kiértékelés folyamata}
+
+
+A kiértékelési folyamat egy felhasználó bejelentkezésekor indul. A bejelentkezési eseményt a frontend úgy jelzi a modul számára, hogy a következő sémára alapuló "login" üzenetet küld:
+
+\begin{verbatim}
+login,user\_id,lesson\_id
+\end{verbatim}
+
+A user\_id a felhasználó egyedi azonosítója, a lesson\_id pedig a megfelelő Cisco tananyaghoz tartozó labor feladat. A feladat neve a Cisco modul nevéből -- azaz Introduction to Networks (ITN), Connecting Networks (CN), Scaling Networks (SCAN) és Routing and Switching Essentials (RASE) -- és a modulon belüli fejezet sorszámából áll, ezáltal a feladathoz tarozó tananyagrész és vice versa könnyen megtalálható.
+Amennyiben a felhasználó nem kíván meglévő feladatot elvégezni, az utolsó paraméter nem kerül elküldésre, ekkor a kiértékelő modul nem indul el.
+
+A feladat neve alapján még a példányosítás során, a konstruktor becsatlakozik az adatbázisba, ahonnan kiolvassa a feladathoz tartozó parancsokat, amiket a felhasználónak ki kell adnia, hogy az általa választott feladatot teljes egészében elvégezze.
+A lesson\_id elsődleges kulcsa a helyes parancssorozatot tartalmazó correct\_commands táblának. A tábla többi oszlopa a COM portokat reprezentálják, ezek értéke a kiadandó parancsok.
+Miután a lekérdezés megtörtént, a kiválasztott feladathoz tartozó sort a program eltárolja egy szótárban, amelynek kulcsai a COM portok, az értékei a parancsok. Ez a szótár a User osztály adattagja.
+Ezzel egyidőben inicializál két változót, amik a jelenlegi megoldottságot, és egy százalékos inkremenst tárolnak, amit egy helyes parancs kiadásakor kell hozzáadni a teljes százalékösszeghez.
+
+
+Az osztálypéldány készen áll, hogy Thread-ként elinduljon. Ha a felhasználó a rendelkezésre álló feladatok közül választott, akkor a QueueListener és Logger osztály konstruktora is meghívásra kerül, ha önálló feladatot old meg, csak a Logger osztály kerül meghívásra.
+A parancsokat kiértékelő metódus a QueueListener osztálypéldányok belépési pontjában kerül meghívásra, tehát akár a COM portok szempontjából szimultán feladatkiértékelésre is képes lenne.
+Fontos kérdés volt, hogy a karakterenkénti üzeneteket hogyan lesz képes a kiértékelő modul kezelni. A megoldást nyujtó feltételvizsgálat két tényen alapul, a sorvége karakter két vezérlőkarakterből áll ("\textbackslash n" és "\textbackslash r") és az üres sort -- tehát enter ütést -- nem akarjuk kiértékelni.
+
+\begin{verbatim}
+listener.lines_of_code += (body.decode('UTF-8'))
+  if len(listener.lines_of_code) > 2:
+    if listener.lines_of_code[
+       len(listener.lines_of_code) - 2:] == "\n\r":
+      validate_commands(listener, user_object, com_port)
+\end{verbatim}
+
+A felhasználó által beírt parancsot a lines\_of\_code változó tárolja, és erre meghívja a parancsot kiérékeló metódust.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{run.eps}
+    \caption{Néhány kiértékelés kimenete konzolon}
+\end{figure}
+
+\newpage
+
+A függvény először megvizsgálja, hogy a kiadott parancs tartalmaz-e rövidítést, amit egy JSON fájlból olvas be egy globális szótárba még a program indulásakor. A szótár kulcsai a rövidített parancsok lesznek, értékei a rövidítések teljes alakos változata. Ha talál rövidítést a parancsban, azt kicseréli a kulcs-érték pár alapján, majd tovább halad az ellenőrzéssel.
+
+\begin{verbatim}
+if listener.lines_of_code == "conf t":
+  listener.lines_of_code = "configure terminal"
+else:
+  # Split the command, to get the first
+  split_command = listener.lines_of_code.split(sep=" ")
+  print("split command: {}".format(split_command))
+  # If the command given is a shorthand known to us
+  if split_command[0] in abbreviations:
+    print("its an abbreviation")
+    # Change the shorthand command to the full command
+    replace_command = abbreviations['{}'.\
+                      format(split_command)]
+    print("replace_command: {}".format(replace_command))
+    listener.lines_of_code.replace(split_command[0],
+                                   replace_command, 1)
+    print("final: {}".format(listener.lines_of_code))
+\end{verbatim}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.75]{replace.eps}
+    \caption{Egy rövidített parancs cseréje}
+\end{figure}
+
+Végigjárja az adatbázisból kiolvasott parancsokat és ellenőrzi, hogy megtalálható-e benne a megfelelő alakra hozott parancs.\\
+Ha megtalálható, ezt jelzi a felhasználó számára, és a User osztályban létrehozott százalékmérőt növeli a megfelelő inkremenssel.\\
+Ha nem található meg, üzenetet küld a felhasználó számára a frontendre. Ez azonban nem egy hibaüzenetet, hiszen lehetséges, hogy állapotlekérdező parancsot futtatott, hogy egy beállítást ellenőrizzen az eszközön.\\
+A lines\_of\_code változó értékét üríti, és egy végső feltételvizsgálatot végez. Ellenőrzi, hogy az a parancs, amivel meghívták, 100\%-osan megoldottra növelte-e a feladatot. Ha igen, üzen a felhasználónak a feladat elvégzéséről. Az is\_waiting\_for\_join változót 1-re állítja, a message queue-khoz nyitott csatornára ezáltal meghívódik a close() pika névtérbeli metódust. Az objektumpéldány belépési metódusában folyamatosan futó metódus erre a változóra írt feltételvizsgálat miatt kilép és az azt futtató programszál is.
+
+
+\section{Logoló modul}
+
+
+A rendszer fontos része a logoló modul, aminek segítségével a felhasználók által a különböző COM portokra kiadott parancsok naplózásra kerülnek. Az üzeneteket a modul külön message queue-n kapja meg, ami fontos abból a szempontból, hogy ha egy queue-t két consumer olvas, akkor az egyikőjüktől érkező acknowledge hatására a másik consumer az adott üzenetet nem kapja meg. Ebben az esetben előfordulhat, hogy a hálózati eszközök hamarabb olvassák az üzenetet, és ez nem jut el a logoló modulhoz, ergó nem kerül naplózásra a kiadott parancs, avagy vice versa, a parancs naplózásra kerül, de az eszközön nem kerül futtatásra.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{log.eps}
+    \caption{Logolás az adatbázisban}
+\end{figure}
+
+A naplózás mechanikájában egy puffer került bevezetésre, ami biztosítja, hogy abban az esetben, ha gyorsabban érkeznek az üzenetek, mint ahogy az adatbázisba való insert lefutna, azok nem vesznek el. A pufferből csak akkor kerül törlésre az üzenet, ha az sikeresen az adatbázisba lett írva:
+
+\begin{verbatim}
+[...]
+for item in command_buffer:
+    if log_to_db(item, db, user_id, com_port):
+        command_buffer.pop(command_buffer.index(item))
+[...]
+
+def log_to_db(command, db, user_id, com_port):
+    insert_cursor = db.cursor()
+
+    sql = "INSERT INTO command_history(user_id, command, com) 
+           VALUES (%s, %s, %s)"
+    val = (user_id, command, com_port)
+
+    print('DEBUG_LOOGER command: ' + command)
+    insert_cursor.execute(sql, val)
+
+    try:
+        db.commit()
+    except mysql.connector.Error as err:
+        print(err)
+        return False
+    return True
+\end{verbatim}
+
+\newpage
+
+\section{Összefoglalás}
+
+A szakdolgozatban leírt projekt lényege, hogy segítséget tudjunk nyújtani a hallgatóknak akár a Cisco hálózatépítő kurzusban, vagy akár a Cisco ipari vizsgára való készülésben. A fejlesztés a szakdolgozaton túl is folytatódik, célunk, hogy egy olyan rendszer álljon a hallgatók rendelkezésére, amivel produktívan lehet tanulni, kísérletezni.
+
+
+A fejlesztés során lehetőségem nyílt nem csak csapatban, de új technológiákkal is dolgoznom. Köztük a RabbitMQ, aminek használata számomra újdonság és kihívás volt és a Python objektumorientált használata, amire ezelőtt még nem volt szükségem, lehetőségem. Illetve, eddigi tudásomat is lehetőségem nyílt kamatoztatni, a git verziókezelés, a gitlab-runner és a hozzá tarozó CI/CD leírók használata, a docker és docker-compose, és a hyper-v virtualizáció terén.
+
+\chapter{Adatbázis sémák}
+%\addcontentsline{toc}{section}{Adatbázis schemák}
+\section{Adatbázis sémák}
+
+
+A program a következő adatbázisokkal dolgozik:
+
+\singlespacing
+\begin{itemize}
+    \item lab\_tasks
+    \item correct\_commands
+    \item running\_configs
+    \item startup\_configs
+\end{itemize}
+
+\onehalfspacing
+
+A lab\_tasks tábla tartalmazza az elérhető feladatok címét, a Cisco tananyag fejezet azonosítóját, amivel a hozzá tartozó tananyag könnyen megtalálható, és COM[1-6] oszlopokat, amelyeknek az értéke a feladat szerinti eszköz hostneve.
+
+A correct\_commands tábla azokat a parancsokat tartalmazza, amelyeket a különböző COM portokon ki kell adni, a feladat helyes elvégzéséhez.
+
+A running\_configs tábla azokat a "show running config" parancs kimeneteket tartalmazza, amelyeket a helyesen konfigurált eszközöknek produkálnia kell.
+
+%\newpage
+
+A startup\_configs tábla pedig a hibaelhárítási feladatokhoz tartozó helytelen beallításokat előállító parancsokat tartalmazza, amelyeket a feladatmegoldás előtt a program futtat az eszközön.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1, angle=90]{table_schema.eps}
+    \caption{Séma relációs ábrázolása}
+\end{figure}
+
+\chapter{Az alkalmazás működése}
+\section{Az alkalmazás működése}
+
+
+A program belépési pontja a main.py, ami indulásakor példányosítja a MetaCommunication osztályt.
+Ez a példány becsatlakozik a RabbitMQ-ba, ahol egy message queue-n figyel, és vár egy felhasználó csatlakozására. A csatlakozást követően készen áll a használatra.
+
+Egy felhasználó csatlakozásakor a MetaCommunication osztály user\_connection() metódusa meghívódik, ezzel példányosítva a User osztályt. A User osztály konstruktora a szükséges adattagokat beállítja (felhaszáló azonosítója, kiválasztott feladat (ha van), helyes parancsok listája, százalékos inkremens).
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.3]{queues.eps}
+    \caption{A program indulása előtti és utáni message queue-k}
+\end{figure}
+
+
+
+A példányosítás után a vezérlés visszatér a MetaCommunication osztály user\_connection() metódusához, ami a Thread típusú User példányt elindítja. Ezzel a User objektum run metódusa meghívásra kerül, ami a programszálat elindítja. Annyi felhasználóhoz tartozó Logger osztálypéldányt készít, ahány COM porton keresztül kommunikál az eszközökkel, továbbá ugyanennyi  QueueListener osztálypéldány is létrejön, ha a felhasználó választott feladatot. Azaz, a jelenlegi felállás szerint egy felhsználóhoz -- a hat COM porthoz -- kétszer hat programszál tartozik, így a MetaCommunication és fő szállal együtt tizennégy vagy nyolc szálon fut a program.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.3]{threads.eps}
+    \caption{A programszálak vizualizálva\\(Készült a PyCharm Concurrent Activities Diagram segítségével)}
+\end{figure}
+
+A QueueListener példányok a hozzájuk tartozó message queue-kat figyelik, és az azon keresztül érkező parancsokat fogadják. Feldolgozásra meghívják rájuk a validate\_commands() metódust, ami kiértékeli azt.
+
+%\newpage
+
+Amikor a felhasználó elvégezte a feladatot, a szintjelző 100\%-ra vált, és üzenetet küld a felhasználónak erről.
+Ekkor a message queue-kat figyelő szálak feleslegessé válnak, ezért ezeket egyesítjük az őt példányosító szálakkal. 
+Ez úgy érhető el, hogy a QueueListener példány is\_waiting\_for\_join tulajdonságát 1-re állítjuk, ami megállítja a futtatását.
+
+
+A szemétgyűjtést a Python beépített automatikus szemétgyűjtője végzi, ami referenciaszám alapján azokat az objektumokat, amikre már nem hivatkozik semmi, törli a memóriából.
+A dokumentációban leírtak alapján a szemétgyűjtés explicit meghívásra kerül, ha az újonnan létrehozott objektumok száma meghaladja a már jelenleg memóriában lévők 25\%-át.
+Képletesen felírva:
+\begin{equation}
+    current\_objects \times 0.25 < new\_objects \Rightarrow garbage\_collection
+\end{equation}
+Ez a százalékos határ a program esetében ideális. A program indulásakor létrejön a MetaCommunication egy példánya.
+Egy felhasználó bejelentkezésekor kétszer hat objektum jön létre (hat QueueListener és hat Logger a hat COM porthoz).
+Amikor a felhasználó kijelentkezik, a következő felhasználó bejelentkezéséig két eset állhat fenn.
+
+1. Az automatikus szemétgyűjtés nem fut le, tehát a következő felhasználó bejelentkezésekor az előző felhasználóhoz létrehozott objektumok még a memóriában vanank.
+
+2. Az automatikus szemétgyűjtés lefutott és az előző felhasználó objektumai a következő bejelentkezésekor már nincsenek a memóriában.
+
+Az első eset az, ami vizsgálatot igényel:
+Egy felhasználó aktív kapcsolata során 1 + 2 x 6 = 13 objektum van a memóriában, ezek pedig nem törlődtek.
+A következő felhasználó bejelentkezésekor 2 x 6 objektum keletkezik. A képletet alkalmazva:
+\begin{align*}
+    13 \times 0.25 < 12 \\
+    3.25 < 12
+\end{align*}
+Az egyenlőtlenség igaz, tehát a szemétgyűjtés legkésőbb a következő felhasználó bejelentkezésekor meghívódik.
+
+
+\chapter{Továbbfejlesztési lehetőségek}
+%\addcontentsline{toc}{section}{Továbbfejlesztési lehetőségek}
+\section{Továbbfejlesztési lehetőségek}
+
+A szakdolgozat keretein belül implementálásra nem került funkcionalitások:
+\begin{itemize}
+    \item A jelenlegi kód a hálózati erőforrásokhoz (MySQL adatbázis szerver, RabbitMQ) hardcode-oltan csatlakozik, ezért a kód átírása nélkül más fizikiai infrastruktúrára nem lehet telepíteni.
+    \item Az adatbázisba leképezett CCNA kurzushoz kapcsolódó laborfeladatok száma igen alacsony, mivel a Word dokumentumokból és PDF fájlokból a konfigurációs lépések kiemelése nem szkriptelhető, ehhez nagy időbefektetés szükséges.
+    \item Parancsok kiadása az eszközökön a modul által:
+    \begin{itemize}
+        \item A felhasználó kijelentkezése után, az eszközök konfigurációjának törlése és az eszközök újraindítása az "indulási konfiguráció" (startup configuration) betöltésével.
+        \item A felhasználó által meghívható teljes rendszer visszaállítás arra az esetre, ha valamelyik felhasználó által kiadott parancs elérhetetlenné teszi a rendszert (pl.: jelszó beállításakor félreütött karakter miatti kizárás az eszközről).
+    \end{itemize}
+    \item A projektben megírt osztályok és metódusaik, mind egy forrásfájlban találhatóak, amely nehezíti a kód olvasását. Ennek több forráskódra bontása, osztályok mentén, ezek csomagokba rendezése és névterek használata, nagyban javítaná a projekt átláthatóságát.
+    \newpage
+    \item Az idő előrehaladtával a Cisco tananyag verziózásának követése (a jelenlegi rendszer a 6-os verzión alapul). Ez megvalósulhat akár több tábla használatával, vagy akár több adatbázis séma létrehozásával. Ennek megvalósítása biztosítaná, hogy a modul a jövőben ne váljon elavulttá.
+\end{itemize}
+
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{Irodalomjegyzék}
+
+\bibitem{netacad}
+Cisco Networking Academy,
+
+v6 \emph{Connecting Networks, Introduction to Networks, Routing and Switching Essentials \& Scaling Networks} Instruktori forrásfájlok
+
+
+\bibitem{pystruct}
+Python projekt struktúrálás és PEP
+
+\emph{https://docs.python-guide.org/writing/structure/}
+
+
+\bibitem{mysqldoc}
+MySQL 8.0 Reference, SQL parancs szintaxisok,
+
+\emph{https://dev.mysql.com/doc/refman/8.0/en/}
+
+
+\bibitem{mysqlcur}
+MySQL Cursor Objects,
+
+\emph{execute és fetch metódusok használata és paramétereik}
+\emph{https://mysqlclient.readthedocs.io/user\_guide.html}
+
+
+\bibitem{docker}
+Docker Dokumentáció, parancsok szintaxisa és paramétereik,
+
+\emph{https://docs.docker.com/}
+
+
+\bibitem{pythread}
+Python 3 threading -- Thread-based parallelism,
+
+\emph{https://docs.python.org/3/library/threading.html}
+
+
+\bibitem{pyobject}
+Python 3 Classes,
+
+\emph{https://docs.python.org/3.9/tutorial/classes.html}
+
+
+\bibitem{mqtt}
+MQTT protokoll
+
+\emph{https://mqtt.org/}
+
+
+\bibitem{rabbitmq}
+RabbitMQ Tutorials,
+
+\emph{Work Queues, Publish/Subscribe}
+\emph{https://www.rabbitmq.com/getstarted.html}
+
+
+\bibitem{pika}
+Pika AMPQ protokoll implementációs dokumentáció
+
+\emph{https://pika.readthedocs.io/en/stable/}
+
+\end{thebibliography}
+
+
+\chapter*{Nyilatkozat}
+\addtocontents{toc}{\ }
+\addcontentsline{toc}{section}{Nyilatkozat}
+
+\noindent
+Alulírott Kersmájer István szakos hallgató, kijelentem, hogy a dolgozatomat a Szegedi Tudományegyetem, Informatikai Intézet Szoftverfejlesztési Tanszékén készítettem, gazdaságinformatika diploma megszerzése érdekében.
+
+Kijelentem, hogy a dolgozatot más szakon korábban nem védtem meg, saját munkám eredménye, és csak a hivatkozott forrásokat (szakirodalom, eszközök, stb.) használtam fel.
+
+Tudomásul veszem, hogy szakdolgozatomat / diplomamunkámat a Szegedi Tudományegyetem Informatikai Intézet könyvtárában, a helyben olvasható könyvek között helyezik el.
+
+
+\vspace*{2cm}
+
+
+\begin{tabular}{lc}
+Szeged, \today\
+\hspace{2cm} & \makebox[6cm]{\dotfill} \\
+& aláíras \\
+\end{tabular}
+
+
+\chapter*{Köszönetnyilvánítás}
+\addcontentsline{toc}{section}{Köszönetnyilvánítás}
+
+Ezúton szeretnék köszönetet mondani Janurik Viktor témavezetőmnek, aki a fejlesztés minden lépésében hasznos tanácsokkal látott el. A segítségéért a tesztkörnyezet összeállításában, a sok konzultációért és szakmai tanácsaiért, amelyek nélkül ez a projekt nem jutott volna tovább az "initial commit"-on.
+
+Köszönöm továbbá két fejlesztőtársamnak, Orbán Veronikának és Csóti Zoltánnak, akikkel a fejlesztés produktívan tudott haladni, és kódváltozásaimhoz igazították saját munkájukat. A hallgatóknak, akik használni fogják az új rendszert, visszajelzéseikért az esetleges problémákról, és további fejlesztési ötleteikért.
+
+\end{document}

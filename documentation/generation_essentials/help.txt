@@ -1,0 +1,12 @@
+cd ~
+open folder: explorer.exe .
+latex szakdolgozat.tex
+dvips szakdolgozat.dvi
+ps2pdf szakdolgozat.ps
+
+A szakdoga flow-ja pedig valami olyannak lenne jo, mint valami regeny,
+elindul valami bevezetessel, hogy mi is a tema, illetve egy kis kitekinto kutatas, hogy milyen ilyen rendszerek vannak, es azokban mi a jo / rossz.
+Innen jonne a bonyodalom, hogy pl erre es erre ezek a tool-ok nem kepesek, ezert van realitasa egy ujat kifejleszteni.
+Utana jonne ennek a specifikalasa, technologia kivalasztasok, azokrol leirasok, hogy mit erdemes haszanlani, programozasi nyelvek, framework-ok, stb., ezek milyen korszeruek, jok, hatekonyak, stb., esetleg tobb technologia lehetoseg osszehasonlitasa is lehet roviden.
+Ezutan jonne a megvalositas, itt erdemes lehet valami architektura abra, ami szemlelteti a rendszert, a rendszer komponenseinek bemutatasa, illetve par komolyabb megvalositasi kihivasba melyebben bele lehet menni, hogy mik voltak a kulcs pontok a fejlesztesben. Erdemes kihegyezni a dolgot az egyedi fejlesztesre, hogy mi az, amit konkretan te irtal, nem a framework-ok bemutatasra, ezekre szeretnek rakerdezdeni a vedesnel is.
+A vegen erdemes lehet valami user manual-t is beleirni, hogy hogyan kell hasznalni a szoftvert ami elkeszult, hogy mukodik, kis demo, ez majd kesobb jo lesz a vedes prezentaciohoz is.
