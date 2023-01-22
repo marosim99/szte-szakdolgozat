@@ -1,3 +1,7 @@
 https://kolozsvar.mfa.gov.hu/page/e-szemelyi-igazolvany
 
 https://docsumo.com/blog/ocr-accuracy
+
+https://stackoverflow.com/questions/50951955/pytesseract-tesseractnotfound-error-tesseract-is-not-installed-or-its-not-i
+
+https://www.projectpro.io/article/how-to-train-tesseract-ocr-python/561
