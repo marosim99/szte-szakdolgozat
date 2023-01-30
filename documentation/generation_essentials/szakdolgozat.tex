@@ -291,6 +291,51 @@ A WER mérésére ugyan azt a képletet használjuk, mint a CER érték mérés�
 
 Fontos megjegyezni, hogy az előbbiekben bemutatott metrikák nem adnak minden esetben valós képet a különböző OCR modellek működéséről, hiszen a beolvasott dokumentumok minősége, valamint a tény, hogy kézírást vagy nyomtatott szöveget adunk bemenetként mind erősen befolyásoló tényezők az OCR kimenetének helyességében.
 
+\section{Az OCR pontosságának javítása bemeneti oldalon}
+
+Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR egy képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, így a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Nézzük, mik azok a leggyakrabban előforduló körülmények, amik rontják az OCR pontosságát.
+
+\begin{itemize}
+    \item Az eredeti, szkennelésre váró dokumentum minőségére vonatkozóan:
+    \begin{itemize}
+        \item Gyűrött, szakadt papír, vagy elmosódott szöveg a papíron
+        \item Sérült, lekopott kártya
+        \item Fakulás, elszíneződés
+        \item Fényes felület
+        \item Színes tintával nyomtatott vagy festett szöveg
+        \item Nem szokványos betűtípus használata
+        \item Emberi kézírás
+    \end{itemize}
+    \item A beszkennelt vagy kamerával elkészített kép minőségére vonatkozóan:
+    \begin{itemize}
+        \item Homályos, életlen kép
+        \item Elmosódott, torz szélek
+        \item Alacsony képfelbontás
+        \item Zajosság, szemcsésség
+    \end{itemize}
+\end{itemize}
+
+Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók.
+
+\begin{itemize}
+    \item A kép méretének és felbontásának helyes megválasztása:
+    \begin{itemize}
+	   \item A karakterfelismerés pontossága nagyban függ a bemeneti kép pontsűrűségétől (DPI). Általában egy 200-300 közötti DPI-vel rendelkező kép a legmegfelelőbb, ennél kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre, nagyobb értékeknél pedig szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
+    \end{itemize}
+    \item Kontraszt növelése és színek eltüntetése:
+    \begin{itemize}
+	   \item Mivel az OCR egyik lépésre – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről. Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és csak fekete-fehér színeket tartalmaz. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával fekete-fehérré tudjuk alakítani a színes képeket.
+    \end{itemize}
+    \item Ferdeségkorrekció:
+    \begin{itemize}
+	   \item Amennyiben ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni, és ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel. A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
+    \end{itemize}
+    \item Zajeltávolítás:
+    \begin{itemize}
+	   \item Törekedni kell arra, hogy a képet megfelelő fényviszonyok mellett készítsük, hogy az minél kevésbé legyen zajos. Bizonyos eljárásokkal csökkenthető az elkészített kép zajossága is simítási, zajmentesítési folyamatokkal, melyek szintén megtalálhatóak a leggyakoribb képszerkesztő programok funkciói között.
+    \end{itemize}
+\end{itemize}
+
 \chapter{Feladat ellenőrző, kiértékelő és naplózó modul}
 \section{Egy szálon futó proceduriális megoldás}
 
