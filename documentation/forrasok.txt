@@ -5,3 +5,13 @@ https://docsumo.com/blog/ocr-accuracy
 https://stackoverflow.com/questions/50951955/pytesseract-tesseractnotfound-error-tesseract-is-not-installed-or-its-not-i
 
 https://www.projectpro.io/article/how-to-train-tesseract-ocr-python/561
+
+https://www.ibm.com/cloud/blog/optical-character-recognition
+
+https://aws.amazon.com/what-is/ocr/
+
+https://en.wikipedia.org/wiki/Optical_character_recognition
+
+https://arxiv.org/pdf/1909.10120.pdf
+
+https://learn.microsoft.com/hu-hu/azure/cognitive-services/language-service/custom-named-entity-recognition/concepts/evaluation-metrics

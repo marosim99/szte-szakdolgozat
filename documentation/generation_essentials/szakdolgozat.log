@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=latex 2022.11.12)  18 DEC 2022 00:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=latex 2022.11.12)  30 JAN 2023 00:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -533,14 +533,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.192 \newline
+l.190 \newline
               
 ? 
-File: ./images/mintaigazolvany.eps Graphic file (type eps)
-<./images/mintaigazolvany.eps> [9
+File: ./images/example_id_card.eps Graphic file (type eps)
+<./images/example_id_card.eps> [9
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 201--205
+Underfull \hbox (badness 10000) in paragraph at lines 199--203
 
  []
 
@@ -551,39 +551,92 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.206 \newline
+l.204 \newline
               
 ? 
 [10] [11]
 3. fejezet.
 
-Underfull \hbox (badness 10000) in paragraph at lines 230--230
- [][]\T1/ptm/m/n/10 https:www.jetbrains.comlpdevecosystem-2021/#Main_what-are-y
-our-primary-programming-
- []
+! LaTeX Error: There's no line here to end.
 
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.222 \newline
+              
+? 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.225 \newline
+              
+? 
 [12
 
 ]
-4. fejezet.
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
-44.
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [13
 
-] [14]
-5. fejezet.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 30
-0.
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.237 \newline
+              
+? 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.240 \newline
+              
+? 
+[13]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.253 \newline
+              
+? 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.271 \newline
+              
+? 
+[14]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
+80.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [15]
+4. fejezet.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 29
+9.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [15
+) [16
 
-] [16] [17]
-[18] [19] [20]
+] [17] [18]
+[19] [20] [21]
 
-LaTeX Warning: File `run.eps' not found on input line 505.
+LaTeX Warning: File `run.eps' not found on input line 504.
 
 
 ! LaTeX Error: File `run.eps' not found.
@@ -592,7 +645,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.505     \includegraphics[scale=0.45]{run.eps}
+l.504     \includegraphics[scale=0.45]{run.eps}
                                                
 ? 
 
@@ -602,13 +655,13 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.505     \includegraphics[scale=0.45]{run.eps}
+l.504     \includegraphics[scale=0.45]{run.eps}
                                                
 ? 
 File: run.eps Graphic file (type eps)
-<run.eps> [21]
+<run.eps> [22]
 
-LaTeX Warning: File `replace.eps' not found on input line 534.
+LaTeX Warning: File `replace.eps' not found on input line 533.
 
 
 ! LaTeX Error: File `replace.eps' not found.
@@ -617,7 +670,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.534 ...\includegraphics[scale=0.75]{replace.eps}
+l.533 ...\includegraphics[scale=0.75]{replace.eps}
                                                   
 ? 
 
@@ -628,13 +681,13 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.534 ...\includegraphics[scale=0.75]{replace.eps}
+l.533 ...\includegraphics[scale=0.75]{replace.eps}
                                                   
 ? 
 File: replace.eps Graphic file (type eps)
-<replace.eps> [22]
+<replace.eps> [23]
 
-LaTeX Warning: File `log.eps' not found on input line 551.
+LaTeX Warning: File `log.eps' not found on input line 550.
 
 
 ! LaTeX Error: File `log.eps' not found.
@@ -643,7 +696,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.551     \includegraphics[scale=1]{log.eps}
+l.550     \includegraphics[scale=1]{log.eps}
                                             
 ? 
 
@@ -653,20 +706,20 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.551     \includegraphics[scale=1]{log.eps}
+l.550     \includegraphics[scale=1]{log.eps}
                                             
 ? 
 File: log.eps Graphic file (type eps)
 <log.eps>
-Overfull \hbox (12.40848pt too wide) in paragraph at lines 567--567
+Overfull \hbox (12.40848pt too wide) in paragraph at lines 566--566
 []    \T1/pcr/m/n/12 sql = "INSERT INTO command_history(user_id, command, com)[
 ] 
  []
 
-[23] [24] [25]
-6. fejezet.
+[24] [25] [26]
+5. fejezet.
 
-LaTeX Warning: File `table_schema.eps' not found on input line 620.
+LaTeX Warning: File `table_schema.eps' not found on input line 619.
 
 
 ! LaTeX Error: File `table_schema.eps' not found.
@@ -675,7 +728,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.620 ...hics[scale=1, angle=90]{table_schema.eps}
+l.619 ...hics[scale=1, angle=90]{table_schema.eps}
                                                   
 ? 
 
@@ -686,16 +739,16 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.620 ...hics[scale=1, angle=90]{table_schema.eps}
+l.619 ...hics[scale=1, angle=90]{table_schema.eps}
                                                   
 ? 
 File: table_schema.eps Graphic file (type eps)
-<table_schema.eps> [26
+<table_schema.eps> [27
 
 ]
-7. fejezet.
+6. fejezet.
 
-LaTeX Warning: File `queues.eps' not found on input line 636.
+LaTeX Warning: File `queues.eps' not found on input line 635.
 
 
 ! LaTeX Error: File `queues.eps' not found.
@@ -704,7 +757,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.636     \includegraphics[scale=0.3]{queues.eps}
+l.635     \includegraphics[scale=0.3]{queues.eps}
                                                  
 ? 
 
@@ -715,18 +768,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.636     \includegraphics[scale=0.3]{queues.eps}
+l.635     \includegraphics[scale=0.3]{queues.eps}
                                                  
 ? 
 File: queues.eps Graphic file (type eps)
 <queues.eps>
-Overfull \hbox (20.23613pt too wide) in paragraph at lines 642--643
+Overfull \hbox (20.23613pt too wide) in paragraph at lines 641--642
 []\T1/ptm/m/n/12 A pél-dá-nyo-sí-tás után a ve-zér-lés vissza-tér a Me-taCom-mu
 -ni-ca-ti-on osz-tály user_connection()
  []
 
 
-LaTeX Warning: File `threads.eps' not found on input line 646.
+LaTeX Warning: File `threads.eps' not found on input line 645.
 
 
 ! LaTeX Error: File `threads.eps' not found.
@@ -735,7 +788,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.646     \includegraphics[scale=0.3]{threads.eps}
+l.645     \includegraphics[scale=0.3]{threads.eps}
                                                   
 ? 
 
@@ -746,36 +799,36 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.646     \includegraphics[scale=0.3]{threads.eps}
+l.645     \includegraphics[scale=0.3]{threads.eps}
                                                   
 ? 
 File: threads.eps Graphic file (type eps)
-<threads.eps> [27
+<threads.eps> [28
 
-] [28]
-8. fejezet.
-[29
+] [29]
+7. fejezet.
+[30
 
-] [30]
-Underfull \hbox (badness 10000) in paragraph at lines 726--728
+] [31]
+Underfull \hbox (badness 10000) in paragraph at lines 725--727
 []\T1/ptm/m/it/12 execute és fetch me-tó-du-sok hasz-ná-la-ta és pa-ra-mé-te-re
 -ik
  []
 
-[31
-
-] [32
+[32
 
 ] [33
 
+] [34
+
 ] (./szakdolgozat.aux) ) 
 Here is how much of TeX's memory you used:
- 14069 strings out of 482601
- 268488 string characters out of 5949985
+ 14073 strings out of 482601
+ 268556 string characters out of 5949985
  521717 words of memory out of 5000000
- 28866 multiletter control sequences out of 15000+600000
+ 28870 multiletter control sequences out of 15000+600000
  568327 words of font info for 75 fonts, out of 8000000 for 9000
  350 hyphenation exceptions out of 8191
- 59i,12n,75p,1238b,514s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 59i,12n,75p,1678b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on szakdolgozat.dvi (33 pages, 78816 bytes).
+Output written on szakdolgozat.dvi (34 pages, 86416 bytes).

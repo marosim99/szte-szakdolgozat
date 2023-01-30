@@ -4,27 +4,26 @@
 \select@language {magyar} \contentsline {section}{Bevezetés}{7}%
 \select@language {magyar} \contentsline {chapter}{\numberline {2}Jelenlegi rendszerek}{9}%
 \select@language {magyar} \contentsline {section}{\numberline {2.1}Jelenlegi rendszerek bemutatása}{9}%
-\select@language {magyar} \contentsline {section}{Jelenlegi rendszerek bemutatása}{9}%
 \select@language {magyar} \contentsline {section}{\numberline {2.2}Jelenlegi rendszerek hiányosságai}{10}%
-\select@language {magyar} \contentsline {section}{Jelenlegi rendszerek hiányosságai}{10}%
-\select@language {magyar} \contentsline {chapter}{\numberline {3}A szakdolgozat életútja}{12}%
-\select@language {magyar} \contentsline {section}{A szakdolgozat életútja}{12}%
-\select@language {magyar} \contentsline {chapter}{\numberline {4}Környezet és technológiák}{13}%
-\select@language {magyar} \contentsline {section}{\numberline {4.1}Fejlesztői állomás}{13}%
-\select@language {magyar} \contentsline {section}{\numberline {4.2}Production infrastruktúra}{14}%
-\select@language {magyar} \contentsline {chapter}{\numberline {5}Feladat ellenőrző, kiértékelő és naplózó modul}{15}%
-\select@language {magyar} \contentsline {section}{\numberline {5.1}Egy szálon futó proceduriális megoldás}{15}%
-\select@language {magyar} \contentsline {section}{\numberline {5.2}Több szálon futó objektumorientált megoldás}{17}%
-\select@language {magyar} \contentsline {section}{\numberline {5.3}Az ellenőrzés és kiértékelés folyamata}{20}%
-\select@language {magyar} \contentsline {section}{\numberline {5.4}Logoló modul}{23}%
-\select@language {magyar} \contentsline {section}{\numberline {5.5}Összefoglalás}{25}%
-\select@language {magyar} \contentsline {chapter}{\numberline {6}Adatbázis sémák}{26}%
-\select@language {magyar} \contentsline {section}{\numberline {6.1}Adatbázis sémák}{26}%
-\select@language {magyar} \contentsline {chapter}{\numberline {7}Az alkalmazás működése}{27}%
-\select@language {magyar} \contentsline {section}{\numberline {7.1}Az alkalmazás működése}{27}%
-\select@language {magyar} \contentsline {chapter}{\numberline {8}Továbbfejlesztési lehetőségek}{29}%
-\select@language {magyar} \contentsline {section}{\numberline {8.1}Továbbfejlesztési lehetőségek}{29}%
-\select@language {magyar} \contentsline {section}{Irodalomjegyzék}{31}%
+\select@language {magyar} \contentsline {chapter}{\numberline {3}Az OCR technológia}{12}%
+\select@language {magyar} \contentsline {section}{\numberline {3.1}Az OCR működése}{12}%
+\select@language {magyar} \contentsline {section}{\numberline {3.2}Az OCR pontosságának mérése}{13}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.1}CER - Character Error Rate (Karakter hibaarány)}{14}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.2}WER – Word Error Rate (Szóhibaarány)}{14}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.3}További metrikák az OCR pontosságának megállapításához:}{15}%
+\select@language {magyar} \contentsline {chapter}{\numberline {4}Feladat ellenőrző, kiértékelő és naplózó modul}{16}%
+\select@language {magyar} \contentsline {section}{\numberline {4.1}Egy szálon futó proceduriális megoldás}{16}%
+\select@language {magyar} \contentsline {section}{\numberline {4.2}Több szálon futó objektumorientált megoldás}{18}%
+\select@language {magyar} \contentsline {section}{\numberline {4.3}Az ellenőrzés és kiértékelés folyamata}{21}%
+\select@language {magyar} \contentsline {section}{\numberline {4.4}Logoló modul}{24}%
+\select@language {magyar} \contentsline {section}{\numberline {4.5}Összefoglalás}{26}%
+\select@language {magyar} \contentsline {chapter}{\numberline {5}Adatbázis sémák}{27}%
+\select@language {magyar} \contentsline {section}{\numberline {5.1}Adatbázis sémák}{27}%
+\select@language {magyar} \contentsline {chapter}{\numberline {6}Az alkalmazás működése}{28}%
+\select@language {magyar} \contentsline {section}{\numberline {6.1}Az alkalmazás működése}{28}%
+\select@language {magyar} \contentsline {chapter}{\numberline {7}Továbbfejlesztési lehetőségek}{30}%
+\select@language {magyar} \contentsline {section}{\numberline {7.1}Továbbfejlesztési lehetőségek}{30}%
+\select@language {magyar} \contentsline {section}{Irodalomjegyzék}{32}%
 \select@language {magyar} \ 
-\select@language {magyar} \contentsline {section}{Nyilatkozat}{32}%
-\select@language {magyar} \contentsline {section}{Köszönetnyilvánítás}{33}%
+\select@language {magyar} \contentsline {section}{Nyilatkozat}{33}%
+\select@language {magyar} \contentsline {section}{Köszönetnyilvánítás}{34}%
