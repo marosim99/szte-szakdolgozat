@@ -1,12 +1,11 @@
 import cv2
-import re
 import pytesseract
 from pytesseract import Output
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 ID_CARD_PATH = "example_id_card.png"
-CONF_LEVEL = 80
+CONF_LEVEL = 70
 
 
 class CardLineItem:
@@ -31,7 +30,7 @@ def generate_image_with_bounding_boxes_on_letters(img_path):
         b = b.split(' ')
         img = cv2.rectangle(img, (int(b[1]), h - int(b[2])), (int(b[3]), h - int(b[4])), (0, 255, 0), 2)
 
-    # cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
     cv2.imshow("output", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -44,7 +43,7 @@ def generate_image_with_bounding_boxes_on_words(img_path):
     for i in range(len(img_dict['text'])):
         if float(img_dict['conf'][i]) >= CONF_LEVEL:
             (x, y, w, h) = (img_dict['left'][i], img_dict['top'][i], img_dict['width'][i], img_dict['height'][i])
-            img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 10)
 
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)
     cv2.imshow("output", img)
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     # generate_image_with_bounding_boxes_on_letters(id_card_path)
     generate_image_with_bounding_boxes_on_words(ID_CARD_PATH)
     # print(pytesseract.image_to_string("example_id_card.png", lang="eng"))
-    # print(pytesseract.image_to_data("example_id_card.png", lang="eng"))
+    print(pytesseract.image_to_data("example_id_card.png", lang="eng"))
     # print(pytesseract.image_to_boxes("example_id_card.png", lang="eng"))
 
     ocr_result = pytesseract.image_to_data("example_id_card.png", lang="eng", output_type=Output.DICT)
