@@ -1,49 +1,36 @@
 import cv2
-import pytesseract
-from pytesseract import Output
+import easyocr
+import pandas
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pandas.set_option('display.max_rows', 100)
+pandas.set_option('display.max_columns', 100)
+pandas.set_option('display.width', 1000)
 
 ID_CARD_PATH = "example_id_card.png"
-CONF_LEVEL = 70
+reader = easyocr.Reader(['en'], gpu=False)
 
 
 class CardLineItem:
-    def __init__(self, left, top, width, height, text):
-        self.left = left
-        self.top = top
-        self.width = width
-        self.height = height
+    def __init__(self, top_left, top_right, btm_left, btm_right, text, conf):
+        self.top_left = top_left
+        self.top_right = top_right
+        self.btm_left = btm_left
+        self.btm_right = btm_right
         self.text = text
+        self.conf = conf
 
     def __str__(self):
-        return f"Text: {self.text}\nLeft: {self.left}, Top: {self.top}\nWidth: {self.width}, Height: {self.height}"
+        return f"Text: {self.text}\ntop_left: {self.top_left}, top_right: {self.top_right}\n" \
+               f"btm_left: {self.btm_left}, btm_right: {self.btm_right}, confidence: {self.conf}"
 
 
-def generate_image_with_bounding_boxes_on_letters(img_path):
-    img = cv2.imread(img_path)
-    h, w, c = img.shape
+def generate_image_with_bounding_boxes_on_words(ocr_result):
+    img = cv2.imread(ID_CARD_PATH)
 
-    boxes = pytesseract.image_to_boxes(img_path, lang="eng")
-
-    for b in boxes.splitlines():
-        b = b.split(' ')
-        img = cv2.rectangle(img, (int(b[1]), h - int(b[2])), (int(b[3]), h - int(b[4])), (0, 255, 0), 2)
-
-    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
-    cv2.imshow("output", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-
-def generate_image_with_bounding_boxes_on_words(img_path):
-    img = cv2.imread(img_path)
-    img_dict = pytesseract.image_to_data(img_path, lang="eng", output_type=Output.DICT)
-
-    for i in range(len(img_dict['text'])):
-        if float(img_dict['conf'][i]) >= CONF_LEVEL:
-            (x, y, w, h) = (img_dict['left'][i], img_dict['top'][i], img_dict['width'][i], img_dict['height'][i])
-            img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 10)
+    for text in ocr_result:
+        top_left = tuple(text[0][0])  # top left
+        bottom_right = tuple(text[0][2])  # bottom right
+        img = cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 10)
 
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)
     cv2.imshow("output", img)
@@ -52,43 +39,24 @@ def generate_image_with_bounding_boxes_on_words(img_path):
 
 
 if __name__ == '__main__':
-    # generate_image_with_bounding_boxes_on_letters(id_card_path)
-    generate_image_with_bounding_boxes_on_words(ID_CARD_PATH)
-    # print(pytesseract.image_to_string("example_id_card.png", lang="eng"))
-    print(pytesseract.image_to_data("example_id_card.png", lang="eng"))
-    # print(pytesseract.image_to_boxes("example_id_card.png", lang="eng"))
-
-    ocr_result = pytesseract.image_to_data("example_id_card.png", lang="eng", output_type=Output.DICT)
-    required_fields = ['left', 'top', 'width', 'height', 'conf', 'text']
-    raw_card_data = {key: value for key, value in ocr_result.items() if key in required_fields}
+    data = reader.readtext(ID_CARD_PATH)
+    # print(data[0])
+    # data_frame = pandas.DataFrame(data, columns=['bbox', 'text', 'conf'])
+    # print(data_frame)
+    generate_image_with_bounding_boxes_on_words(data)
 
     card_line_items = list()
 
-    for i in range(len(raw_card_data.get('left'))):
-        item_left = None
-        item_top = None
-        item_width = None
-        item_height = None
-        item_text = None
-        item_conf = None
+    for i in range(len(data)):
+        item_bl = data[i][0][0]
+        item_br = data[i][0][1]
+        item_tr = data[i][0][2]
+        item_tl = data[i][0][3]
+        item_text = data[i][1]
+        item_conf = data[i][2]
 
-        for k, v in raw_card_data.items():
-            if k == "left":
-                item_left = v[i]
-            elif k == "top":
-                item_top = v[i]
-            elif k == "width":
-                item_width = v[i]
-            elif k == "height":
-                item_height = v[i]
-            elif k == "conf":
-                item_conf = v[i]
-            elif k == "text":
-                item_text = v[i]
-
-        if item_conf >= CONF_LEVEL:
-            line_item = CardLineItem(item_left, item_top, item_width, item_height, item_text)
-            card_line_items.append(line_item)
+        line_item = CardLineItem(item_tl, item_tr, item_bl, item_br, item_text, item_conf)
+        card_line_items.append(line_item)
 
     for cli in card_line_items:
         print(cli.__str__())

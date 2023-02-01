@@ -1,9 +1,11 @@
 import cv2
 import easyocr
 import pandas
+
 pandas.set_option('display.max_rows', 100)
 pandas.set_option('display.max_columns', 100)
 pandas.set_option('display.width', 1000)
+
 ID_CARD_PATH = "example_id_card.png"
 
 def generate_image_with_bounding_boxes_on_words(ocr_result):
