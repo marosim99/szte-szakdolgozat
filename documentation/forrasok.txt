@@ -15,3 +15,5 @@ https://en.wikipedia.org/wiki/Optical_character_recognition
 https://arxiv.org/pdf/1909.10120.pdf
 
 https://learn.microsoft.com/hu-hu/azure/cognitive-services/language-service/custom-named-entity-recognition/concepts/evaluation-metrics
+
+https://nanonets.com/blog/ocr-with-tesseract/

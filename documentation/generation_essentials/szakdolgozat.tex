@@ -37,7 +37,8 @@
 \headsep 5mm
 \textheight 237mm
 
-\onehalfspacing
+% \onehalfspacing
+\linespread{1.25}
 
 \begin{document}
 
@@ -199,7 +200,7 @@ Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg telefonos
 A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyből szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. Az általam feltöltött képről kinyert szöveg:
 \newline
 \begin{tcolorbox}
-    IDENTIFICATION CARD Family name and Given name: MAROSI MARK DANIEL Sex: MALE Nationality: Date of birth: Date of expiry: Document number: CAN: 123456 HUN 21 09 1999 04 11 2023 123456AB
+    IDENTIFICATION CARD Family name and Given name: MAROSI MARK DANIEL Sex: MALE Nationality: Date of birth: Date of expiry: Document number: CAN: 123456 HUN 21/09/1999 04/11/2023 123456AB
 \end{tcolorbox}
 \newline
 Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, nem minden adatról azonosítható be, hogy pontosan mit jelent.
@@ -320,15 +321,19 @@ Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az al
 \begin{itemize}
     \item A kép méretének és felbontásának helyes megválasztása:
     \begin{itemize}
-	   \item A karakterfelismerés pontossága nagyban függ a bemeneti kép pontsűrűségétől (DPI). Általában egy 200-300 közötti DPI-vel rendelkező kép a legmegfelelőbb, ennél kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre, nagyobb értékeknél pedig szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
+	   \item A karakterfelismerés pontossága nagyban függ a bemeneti kép pontsűrűségétől (DPI). 
+       \item Általában egy 200-300 közötti DPI-vel rendelkező kép a legmegfelelőbb, ennél kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre, nagyobb értékeknél pedig szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
     \end{itemize}
     \item Kontraszt növelése és színek eltüntetése:
     \begin{itemize}
-	   \item Mivel az OCR egyik lépésre – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről. Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és csak fekete-fehér színeket tartalmaz. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával fekete-fehérré tudjuk alakítani a színes képeket.
+	   \item Mivel az OCR egyik lépésre – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
+       \item Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és csak fekete-fehér színeket tartalmaz. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával fekete-fehérré tudjuk alakítani a színes képeket.
     \end{itemize}
+    \pagebreak
     \item Ferdeségkorrekció:
     \begin{itemize}
-	   \item Amennyiben ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni, és ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel. A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
+	   \item Amennyiben ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni, és ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
+       \item A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
     \end{itemize}
     \item Zajeltávolítás:
     \begin{itemize}
@@ -336,108 +341,143 @@ Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az al
     \end{itemize}
 \end{itemize}
 
-\chapter{Feladat ellenőrző, kiértékelő és naplózó modul}
-\section{Egy szálon futó proceduriális megoldás}
+\chapter{A program megvalósítása}
+\section{OCR könyvtárak összehasonlítása Pythonban}
 
-A fejlesztés első lépése az alapos kutatómunka volt, azonban ez minden fázisában jelen volt. Kezdetben a komponensek közötti kommunikáció adatbázison keresztül történt, a kód procedurálisan futott és kezelte az adatbázis lekérdezéseket. A validáló kód egy kezdetleges részlete:
+A megvalósítás megkezdése előtt mindenképpen szükséges feltérképezni a rendelkezésre álló OCR könyvtárakat. Ehhez szükséges azt is meghatározni, hogy milyen programozási nyelvben fog a program elkészülni. Hosszas mérlegelés után a Python mellett döntöttem. A Python egy olyan programozási nyelv, amely a népszerűségét többek között a rugalmasságának köszönheti, hiszen a legszélesebb körökben is használható, legyen az webfejlesztés, adatbányászat, gépi tanulás, automatizálás vagy számítógépes grafika. A nyelv továbbá könnyen olvasható egyszerű szintaxisa miatt és támogatja az objektum orientált programozás alapelveit. Népszerűségének alappillére továbbá a folyamatosan fejlődő és bővülő eszközkészlet és a számos ingyenes, nyílt forráskódú könyvtár, melyek a szakdolgozatban is fontos szerepet töltenek be.
+
+A következő alfejezetekben két általam választott ingyenes, nyílt forráskódú OCR könyvtár működését fogom bemutatni, rávilágítva a legfőbb különbségekre.
+
+\subsection{A Pytesseract könyvtár bemutatása}
+
+A Tesseract egy nyílt forráskódú OCR motor, mely számos programozási nyelvvel és keretrendszerrel kompatibilis.
+Ahhoz, hogy Pythonból használni tudjuk a Tesseract funkcióit, szükségünk van egy wrapperre, azaz egy olyan könyvtárra, amely python nyelvből teszi lehetővé a Tesseract használatát. A pytesseract nevű könyvtár ezt a célt szolgálja.
+
+\pagebreak
+
+Néhány példa a pytesseract importálása után rendelkezésünkre álló metódusok közül:
+
+Az \textit{image\_to\_string} metódus, ahogy a neve is körülírja, a képről kinyert szöveget egy összefüggő szövegként adja vissza. Ennek a metódushívásnak az eredménye hasonlít leginkább a jelenlegi rendszerek bemutatása fejezetben egy internetes alkalmazás használatával kapott eredményre.
+
+\begin{tcolorbox}
+    IDENTIFICATION CARD
+    \newline
+    Family name and Given name:
+
+    MAROSI MARK DANIEL
+    \newline
+    sex: MALE Nationality: HUN
+
+    Date of birth: 21/09/1999
+
+    Date of expiry: 21/09/2023
+
+    Document number: 123456AB
+    \newline
+    CAN: 123456
+\end{tcolorbox}
+
+Az \textit{image\_to\_boxes} metódus minden egyes felismert karaktert egyesével, az őt körülhatároló négyzet bal felső sarkának koordinátáival, valamint a négyzet szélességével és magasságával adja vissza listába rendezve.
+Egy részlet az eredményhalmazból:
+
+\begin{tcolorbox}
+M 3085 2161 3202 2282
+
+A 3213 2161 3334 2282
+
+R 3347 2161 3456 2282
+
+K 3470 2161 3579 2282
+\end{tcolorbox}
+
+Az \textit{image\_to\_data} függvény a számunkra leghasznosabb, ugyanis ez figyelembe veszi a karakterek közelségét egymáshoz, ezáltal képes meghatározni szavakat, szorosan összefüggő szövegrészleteket. A szavak mellett visszadja a szót körülhatároló téglalap bal felső sarkának koordinátáját, szélességét, magasságát, valamint azt is, hogy az adott szó vagy szövegrészlet milyen pontossággal került meghatározásra, százalékban kifejezve.
+Az, hogy a függvény milyen adatstruktúrában adja vissza a kinyert szavakat, az konfigurálható az output\_type paraméterrel. Választhatunk byte, string, dictionary illetve dataframe opciók közül.
+
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c c c c c }
+         top & left & width & height & confidence & text \\ 
+         956 & 2362 & 653 & 125 & 74 & MAROSI \\  
+         958 & 3085 & 494 & 121 & 95 & MARK \\  
+         958 & 3638 & 612 & 121 & 95 & DANIEL \\  
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
+
+\pagebreak
+Az \textit{image\_to\_data} függvény eredményének szemléltetése céljából írtam egy függvényt, amely a bemenetként adott igazolványképen a felismert szövegeket határoló téglalapokat kirajzoltattam az OpenCV nevű python könyvtárban definiált metódusok segítségével. Az OpenCV könyvárat a későbbiekben ismertetem. A függvény egy paraméterrel rendelkezik, amely az \textit{image\_to\_data} függvény eredményét várja dictionary struktúrában. A függvény kimenete egy új ablakban megnyíló kép, amelyen a bemeneti kép látható úgy, hogy a rajta található, egyben felismert szövegrészek körül vannak rajzolva a szöveget határoló téglalap élei mentén.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.4]{boxes_pytesseract.eps}}
+    \caption{A függvényhívás eredménye, a Pytesseract által kinyert adatok}
+\end{figure}
 
 \begin{verbatim}
-def validate_commands(db):
-    db = db_connect()
-    command = get_history(db)
-    correct_commands = get_answers(db)
+def generate_image_with_bounding_boxes_on_words(ocr_result):
+    img = cv2.imread(ID_CARD_PATH)
 
-    if str(command).find(str(correct_commands)) != -1:
-        print("the correct command ran")
-    else:
-        print("the commands are not correct")
+    for i in range(len(ocr_result['text'])):
+        if float(ocr_result['conf'][i]) >= CONF_LEVEL:
+            (x, y, w, h) = (ocr_result['left'][i],
+                            ocr_result['top'][i],
+                            ocr_result['width'][i],
+                            ocr_result['height'][i])
+            img = cv2.rectangle(img, (x, y), (x + w, y + h),
+                                (0, 255, 0), 10)
+
+    output_img_to_window(img)
 \end{verbatim}
-
-Ekkor még adatbázis alapú kommunikációra akartuk építeni a projektet, és a kezdetleges kód bővült a feladatokhoz tartozó kiadandó parancsokkal, illetve a felhasználó által kiadott parancsok listájának lekérdezését végző metódussal, ami az aktuális munkamenet kezdetétől lekéri a teljes parancselőzményt:
 
 \begin{verbatim}
-def get_history(db):
-    current_user = get_user_data()[0]
-    start_time = get_user_data()[1]
-    current_time = datetime.datetime.utcnow().\
-                   strftime('%Y-%m-%d %H:%M:%S')
-
-    get_history_cursor = db.cursor()
-    get_history_cursor.execute(
-        "SELECT parancs FROM query " +
-        "WHERE time_stamp >= \"" + str(start_time) 
-        + "\" " +
-        "AND time_stamp <= \"" + str(current_time)
-        + "\" " +
-        "AND user_id=" + str(current_user) + ";"
-    )
-
-    result = get_history_cursor.fetchall()
-
-    tuples_joined_in_array = [''.\
-            join(tups) for tups in result]
-    history_string = r"{}".format(
-        str(tuples_joined_in_array).replace("'", "").\
-    replace(", ", "").\
-    replace("[", "").\
-    replace("]", "")
-
-    return history_string
+def output_img_to_window(img):
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.imshow("output", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 \end{verbatim}
 
-Funkcionalitás szempontjából ez tekinthető az első működő béta verziónak, amely képes volt a felhasználó által kiadott parancsok kiértékelésére.
-Miután az előzőek megvalósításra kerültek, a sok adatbázis lekérdezés és a folyamatos insert-ek miatt egy performancia teszt során kiderült, hogy egy diszkrét idő után, a karakterekénti beillesztések miatt az adatbázis rekordszámai nagy iramban fognak nőni, és az adatbázis kezelhetetlenné, a kiadott parancsok pedig olvashatatlanná fognak válni.
+\subsection{Az EasyOCR könyvtár bemutatása}
 
-Ennek hatására kezdtünk el másik megoldás után kutatni, szóba került, hogy Message Queue-t alkalmazzuk az eszközök közötti kommunikációra. Ennek nagy előnye, hogy a kommunikáció az MQTT protokoll szabványa szerint (ISO/IEC 20922:2016)\footnote{a protokoll olyan TCP/IP vagy más hálózati protokollon fut, amely képes rendezett, veszteségmentes, kétirányú kapcsolatot biztositani.} gyorsabb, mint adatbázison keresztül.
-Szavazat után a fejlesztőcsapat a Rabbit Message Queue alkalmazása mellett döntött, ez azt eredményezte a továbbiakban, hogy az eddigi kódbázis nagy része funkcionalitását vesztette, és alapjaiban kellett újjáépíteni a teljes modult.
+Az EasyOCR könyvtár is egy nyílt forráskódú, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
 
+Az EasyOCR importálása után először példányosítani kell egy objektumot az easyocr.Reader konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \textit{readtext} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
 
-\section{Több szálon futó objektumorientált megoldás}
-% \addcontentsline{toc}{section}{Tobb szalon futo objektum orientalt megoldas}
+A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy szövegrészlet, melyet az OCR a karakterek egymáshoz viszonyított pozíciója alapján összefüggőnek ítélt. Minden egyes listaelem további elemeket tartalmaz. Első helyen egy listát, ami az adott szöveget körülvevő téglalap négy sarkának koordináta-párjait tárolja, második helyen magát a felismert szöveget, a harmadik pozíción a pedig tizedestört alakban kifejezve azt, hogy az OCR hány százalékban biztos abban, hogy a kinyert szöveg egyezik a képen látható szöveggel.
 
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c c }
+         bounding box coordinates & text & confidence \\ 
+         {[}{[}329, 78{]}, {[}3551, 78{]}, {[}3551, 350{]}, {[}329, 350{]}{]} & Nationality: & 0.97 \\
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
 
-A modulok közötti kommunikáció módjának megváltoztatása után hamar kiderült, hogy az ellenőrző modul bonyolultabb lesz, mint amit egy procedurális megvalósítás engedne. Éppen ezért a kezdetekben két osztály került bevezetésre, a Validator, ami később User-re lett átnevezve, és a MetaCommunication osztályok, melyek feladata nevükből is felismerhetően, rendre a feladatok ellenőrzése és a weboldallal való kommunikáció volt.
+Ahogyan azt a pytesseract könyvtár eredményén megtettem, itt is szemléltetésképpen írtam egy metódust, ami a bemenetként adott képen megjeleníti a felismert szavakat, összefüggőnek vélt karakterláncokat.
+
+\pagebreak
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.4]{boxes_easyocr.eps}}
+    \caption{A függvényhívás eredménye, az EasyOCR által kinyert adatok}
+\end{figure}
 
 \begin{verbatim}
-class Validator (threading.Thread):
-    def __init__(self, threadID, name):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
+def generate_image_with_bounding_boxes_on_words(ocr_result):
+    img = cv2.imread(ID_CARD_PATH)
 
-    def run(self):
-        print("Starting " + self.name)
-        init(self.threadID)
+    for text_row in ocr_result:
+        bottom_left = tuple(text_row[0][0])
+        top_right = tuple(text_row[0][2])
+        img = cv2.rectangle(img, bottom_left, top_right, (0, 255, 0), 10)
 
-
-class MetaCommunication(threading.Thread):
-    current_user = None
-    selected_task = None
-    correct_command_list = r''
-    com_ports_in_use = []
-
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.threadID = "web-python"
-        self.name = "web-python"
-
-    def set_correct_command_list(self):
-        db = db_connect()
-        get_correct_commands_cursor = db.cursor()
-        get_correct_commands_cursor.execute(
-            "SELECT command FROM correct_commands " +
-            "WHERE lesson_id=\"" + str(lesson_id) + "\";"
-        )
-        self.correct_command_list = r"{}".format(
-            get_correct_commands_cursor.fetchone()[0])
-        db_close(db)
-
-    def run(self):
-        print("Starting " + self.name)
-        web_python_communication_listener(self)
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.imshow("output", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 \end{verbatim}
 
-A MessageQueue használata koncepcionálisan egyszerű, a kommunikációban két típusú ágenst különböztetünk meg, egy úgynevezett "publisher" vagy "content creator" és egy "subscriber" vagy "consumer" résztvevőt. A felosztás magától értetődő volt, a web-es frontend a publisher, a konzolos backend, a validator és a logoló modulok mind consumerek. A MetaCommunication osztály a message queue-ba csatlakozó metódusa:
+Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract sokkal inkább karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
 
 \begin{verbatim}
     def init(queue):

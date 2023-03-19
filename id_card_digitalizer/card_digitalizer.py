@@ -1,6 +1,6 @@
 import cv2
-import easyocr
 import pandas
+import easyocr
 
 pandas.set_option('display.max_rows', 100)
 pandas.set_option('display.max_columns', 100)

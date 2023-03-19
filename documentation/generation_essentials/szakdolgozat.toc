@@ -11,19 +11,21 @@
 \select@language {magyar} \contentsline {subsection}{\numberline {3.2.1}CER - Character Error Rate (Karakter hibaarány)}{14}%
 \select@language {magyar} \contentsline {subsection}{\numberline {3.2.2}WER – Word Error Rate (Szóhibaarány)}{14}%
 \select@language {magyar} \contentsline {subsection}{\numberline {3.2.3}További metrikák az OCR pontosságának megállapításához:}{15}%
-\select@language {magyar} \contentsline {chapter}{\numberline {4}Feladat ellenőrző, kiértékelő és naplózó modul}{16}%
-\select@language {magyar} \contentsline {section}{\numberline {4.1}Egy szálon futó proceduriális megoldás}{16}%
-\select@language {magyar} \contentsline {section}{\numberline {4.2}Több szálon futó objektumorientált megoldás}{18}%
-\select@language {magyar} \contentsline {section}{\numberline {4.3}Az ellenőrzés és kiértékelés folyamata}{21}%
-\select@language {magyar} \contentsline {section}{\numberline {4.4}Logoló modul}{24}%
-\select@language {magyar} \contentsline {section}{\numberline {4.5}Összefoglalás}{26}%
-\select@language {magyar} \contentsline {chapter}{\numberline {5}Adatbázis sémák}{27}%
-\select@language {magyar} \contentsline {section}{\numberline {5.1}Adatbázis sémák}{27}%
-\select@language {magyar} \contentsline {chapter}{\numberline {6}Az alkalmazás működése}{28}%
-\select@language {magyar} \contentsline {section}{\numberline {6.1}Az alkalmazás működése}{28}%
-\select@language {magyar} \contentsline {chapter}{\numberline {7}Továbbfejlesztési lehetőségek}{30}%
-\select@language {magyar} \contentsline {section}{\numberline {7.1}Továbbfejlesztési lehetőségek}{30}%
-\select@language {magyar} \contentsline {section}{Irodalomjegyzék}{32}%
+\select@language {magyar} \contentsline {section}{\numberline {3.3}Az OCR pontosságának javítása bemeneti oldalon}{15}%
+\select@language {magyar} \contentsline {chapter}{\numberline {4}A program megvalósítása}{18}%
+\select@language {magyar} \contentsline {section}{\numberline {4.1}OCR könyvtárak összehasonlítása Pythonban}{18}%
+\select@language {magyar} \contentsline {subsection}{\numberline {4.1.1}A Pytesseract könyvtár bemutatása}{18}%
+\select@language {magyar} \contentsline {subsection}{\numberline {4.1.2}Az EasyOCR könyvtár bemutatása}{21}%
+\select@language {magyar} \contentsline {section}{\numberline {4.2}Az ellenőrzés és kiértékelés folyamata}{25}%
+\select@language {magyar} \contentsline {section}{\numberline {4.3}Logoló modul}{28}%
+\select@language {magyar} \contentsline {section}{\numberline {4.4}Összefoglalás}{30}%
+\select@language {magyar} \contentsline {chapter}{\numberline {5}Adatbázis sémák}{31}%
+\select@language {magyar} \contentsline {section}{\numberline {5.1}Adatbázis sémák}{31}%
+\select@language {magyar} \contentsline {chapter}{\numberline {6}Az alkalmazás működése}{32}%
+\select@language {magyar} \contentsline {section}{\numberline {6.1}Az alkalmazás működése}{32}%
+\select@language {magyar} \contentsline {chapter}{\numberline {7}Továbbfejlesztési lehetőségek}{34}%
+\select@language {magyar} \contentsline {section}{\numberline {7.1}Továbbfejlesztési lehetőségek}{34}%
+\select@language {magyar} \contentsline {section}{Irodalomjegyzék}{36}%
 \select@language {magyar} \ 
-\select@language {magyar} \contentsline {section}{Nyilatkozat}{33}%
-\select@language {magyar} \contentsline {section}{Köszönetnyilvánítás}{34}%
+\select@language {magyar} \contentsline {section}{Nyilatkozat}{37}%
+\select@language {magyar} \contentsline {section}{Köszönetnyilvánítás}{38}%
