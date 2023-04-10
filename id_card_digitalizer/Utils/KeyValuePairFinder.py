@@ -32,10 +32,6 @@ THRESHOLD = 40
 #     # print(max_x_item.__str__())
 #     return max_x_item.top_left[0]
 
-def print_card_text_items(card_text_items):
-    for cti in card_text_items:
-        print(cti.__str__())
-        print("/-------/\n")
 
 def find_next_key(items):
     next_key = next(item for item in items if item.is_examined == 0)
@@ -61,7 +57,6 @@ def find_next_key(items):
 
 
 def find_key_value_pairs(items):
-    i = 0
     while any(item.is_examined == 0 for item in items):
         next_key = find_next_key(items)
         find_value_for_key(next_key, items)
@@ -165,4 +160,3 @@ def get_closest_item_below(found_items, text_item):
             closest_item_below = item
 
     return closest_item_below
-

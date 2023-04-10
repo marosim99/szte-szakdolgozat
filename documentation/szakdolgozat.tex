@@ -37,7 +37,8 @@
 \headsep 5mm
 \textheight 237mm
 
-\onehalfspacing
+% \onehalfspacing
+\linespread{1.25}
 
 \begin{document}
 
@@ -184,15 +185,13 @@ Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első r
 
 \chapter{Jelenlegi rendszerek}
 \section{Jelenlegi rendszerek bemutatása}
-\addcontentsline{toc}{section}{Jelenlegi rendszerek bemutatása}
 
-
-Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt.
+Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg telefonos vagy web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt.
 
 \newline
 
 \begin{figure}[h]
-  \centerline{\includegraphics[scale=.25]{mintaigazolvany.eps}}
+  \centerline{\includegraphics[scale=.25]{example_id_card.eps}}
   \caption{minta igazolvány}
 \end{figure}
 
@@ -201,15 +200,14 @@ Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg web alap�
 A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyből szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. Az általam feltöltött képről kinyert szöveg:
 \newline
 \begin{tcolorbox}
-MINTA IGAZOLVÁNY Családi és utónév: MAROSI MÁRK DÁNIEL Neme: FÉRFI Születési idő: Érvényességi idő: Okmányazonosító: CAN: 123456 Állampolgárság: HUN 21 09 1999 04 11 2023 123456AB
+    IDENTIFICATION CARD Family name and Given name: MAROSI MARK DANIEL Sex: MALE Nationality: Date of birth: Date of expiry: Document number: CAN: 123456 HUN 21/09/1999 04/11/2023 123456AB
 \end{tcolorbox}
 \newline
 Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, nem minden adatról azonosítható be, hogy pontosan mit jelent.
 
 \section{Jelenlegi rendszerek hiányosságai}
-\addcontentsline{toc}{section}{Jelenlegi rendszerek hiányosságai}
 
-Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több tíz személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Ez első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében fogok elkészíteni.
+Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Az első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében fogok elkészíteni.
 
 Amennyiben az első, klasszikus módszert választjuk, kézzel kell beírnunk minden egyes adatot, betűről betűre, számról számra. A három módszer közül ez a leghosszabb és legtöbb emberi hibalehetőséget rejtő módszer. Hibázhatunk az adatok olvasásánál, hibázhatunk az adatok begépelése során, valamint ott is hibázhatunk, hogy nem jó cellába visszük fel az értékeket, elcsúszunk valahol.
 \newpage
@@ -217,369 +215,306 @@ A második módszer az első módszerben felvázolt három hibalehetőségből k
 
 A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni, például a dátumot, amely 30 06 1979 alakot vesz fel a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná hozni, tovább csökkentve a manuális teendőket.
 
+\chapter{Az OCR technológia}
+\section{Az OCR működése}
 
-\chapter{A szakdolgozat életútja}
-\addcontentsline{toc}{section}{A szakdolgozat életútja}
+Az OCR, azaz Optical Character Recognition (magyarul Optikai Karakterfelismerés) egy olyan technológia, amely képes bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
 
+\newline
+Képzeljünk el egy könyvet, amit egy hagyományos szkennelővel beszkennelünk. A folyamat eredménye digitális képek sorozata lesz, melyeket könnyedén tudunk digitális eszközeink között mozgatni, vagy akár nyomtatóval sokszorosítani tudjuk, de szerkesztni, szöveget keresni vagy kimásolni belőle nem tudnánk. Ha egy olyan szkennerünk lenne, amelyben OCR alapú szövegfelismerés is lenne, akkor a könyvet könnyedén digitalizálhatnánk és nem képeket kapnánk eredményül, hanem egy olyan szöveges dokumentumot, amely teljesen szerkeszthető és kereshető.
 
-A projekt eredetileg két szakdolgozó munkájaként indult, és a későbbiekben csatlakozva a munkához, hárman folytattuk tovább a fejlesztést. A fejlesztés menete horizontális módon valósult meg, scrum rendszerben, változó időpontban tartott heti megbeszélésekkel, emiatt a sprintek hossza váltakozó volt. Nem sokkal a csatlakozásom után változott meg a rendszer működése. Az eredetileg tisztán adatbázison keresztüli kommunikáció, performancia tesztelések után, lecserélésre került - az IoT-ben is kedvelt – alkalmazásrétegbeli MQTT protokollon alapuló RabbitMQ javára.
-\par
-A fejlesztés nyelve azért lett a Python, mert interpretált, magas szintű, könnyen olvasható nyelv, és a nyelv tanulási görbéje igen lapos az idő/tapasztalat gráfon.
-Interpretáltsága biztosítja, hogy a kód bármely olyan operációs rendszeren futtatható, amelyre létezik Python interpreter, ezért a production környezetben való operációs rendszer váltás nem okoz gondot. Illetve, mivel a fejlesztés Windows operációs rendszeren történt, a munkafolyamat során nem volt szükség tesztkörnyezetben és külön production környezetben fordításra, így időt és hibalehetőséget tudtunk spórolni. Az architektúra absztrakciót az interpreter oldotta meg számunkra.
+\newline
+Az Optikai Karakterfelismerés folyamata több lépésből tevődik össze.
+Az első lépésben egy osztályozási folyamat történik, ahol a kiválasztott képet vizsgálva a világos területeket háttérnek, a sötét területeket pedig szövegnek minősíti. Ebből kifolyólag az OCR pontosságát tovább javíthatjuk azzal, ha már a karakterfelismerés előtt az inputként választott képet fekete-fehérré alakítjuk.
 
-Sokan a Pythont pseudo nyelvnek nevezik, mivel a szintaxisa igen egyszerű, azonban lehetővé teszi a bonyolult problémák megoldását kevés kódsorból. A továbbfejleszthetőséget is egyszerűbbé tettük a választással, hiszen a Python a harmadik legtöbbet használt nyelv a JetBrains kutatása szerint.\footnote{https:\/\/www.jetbrains.com\/lp\/devecosystem-2021/\#Main\_what-are-your-primary-programming-languages-choose-no-more-than-3-languages}
+Második lépésben a szövegként minősített területeken egy olyan keresés indul, amelynek célja az alfabetikus karakterek (betűk) és numerikus karakterek (számok) azonosítása, ez történet karakterről karakterre, vagy szavanként (karakter láncokként) is. Az azonosítás egyik leggyakoribb módszere a mintaillesztésre alapul. Ennél a módszernél egy olyan adathalmazból dolgozik az algoritmus, amely sok különböző betűtípus- és szövegképmintát tárol egy adatbázisban úgy, mint egy sablont. Mikor a képen alakzatot próbál felismerni, összehasonlítást végez a tárolt sablonok alakzatával, és a legnagyobb egyezést mutató karakternek fogja minősíteni a képen látható alakzatot. Ez a módszer akkor igazán pontos, ha az input egy olyan kép, melyen ismert betűtípusokkal jelenik meg gépelt, nyomtatott szöveg, mivel a betűtípusok és kézírási stílusok száma végtelen, és lehetetlen minden típust az adatbázisban rögzíteni. Amennyiben kézzel írt szöveget adunk bemenetként, akkor a pontos eredmény eléréséhez egy olyan algoritmusra van szükség, amely figyelembe veszi a karakterek jellemzőit is. Ilyen jellemzők például a betű írására használt vonalak, azok irányai, elhelyezkedései, metszéspontjai, görbületei és hurkai. Ezen tulajdonságokat az algoritmus minden felismerhető karakterről tárolja, majd a keresett alakzatot is felbontja ugyan ezekre, és megkeresi a tárolt karakterek közül azt, amellyel a legtöbb jellemző megegyezik. Ezt a folyamatot Intelligent Character Recognition (ICR), magyarul Intelligens Karakterfelismerés névvel illetik.
 
+Utolsó lépésben a dokumentum teljes szerekezeti képének függvényében a felismert karakterek önmagukban, szavakba, mondatokba vagy szövegblokkokba rendezve kerülnek tárolásra.
 
+\section{Az OCR pontosságának mérése}
 
+Az előzőekben bemutattam, hogyan képes az OCR egy szöveget tartalmazó képet gépi szöveggé alakítani, de felmerülhet bennünk a kérdés, hogy mégis mennyire pontos az eredmény, amit kapunk egy ilyen konverzió során. A karakterfelismerés csupán képpontról képpontra vizsgálja a képet, és a betűk alakjából vonja le a végső következtetést, arra viszont nem képes, hogy a dokumentum teljes kontextusát felismerve megállapítsa, hogy a szöveg, amit kinyert, az pontosan mit is jelent, és helyesnek bizonyul-e az adott környezetben. Emiatt az OCR gyakran hibázhat, és ezek a hibák pont a szövegfelismerés által adott előnyöket csökkentik.
 
-\chapter{Környezet és technológiák}
-%\addcontentsline{toc}{section}{Fejlesztői állomás}
-%\addcontentsline{toc}{section}{A production infrastruktúra részletei}
+\newline
+Legegyszerűbben úgy határozható meg a pontosság, hogy az OCR kimeneti eredményét összehasonlítjuk a képen szereplő szöveggel. Tegyük fel, hogy a képen szereplő szöveg 100 karakterből áll. Amennyiben az OCR által adott eredményben mind a 100 karakter egyezik az eredeti szövegben szereplővel, akkor azt mondhatjuk, hogy az OCR pontossága 100\%. Amennyiben 99 karaktert sikerült eltalálnia az szövegfelismerőnek, úgy a pontosság 99\%. Tehát egyszerű arányosítással is kiszámolható egyfajta pontosság.
 
-\section{Fejlesztői állomás}
+\newline
+Most bemutatom a két leggyakrabban használt metrikát, melyek erre a logikára épülnek.
+
+\pagebreak
+\subsection{CER - Character Error Rate (Karakter hibaarány)}
+
+A CER mutató azon karakterszintű műveletek minimális számát mutatja meg, amelyek szükségesek a bemeneti szöveg hibátlan kimenetté való konvertálásához.
+A CER számításához használt képlet:
+\begin{tcolorbox}
+    \[CER = \frac{T}{T+C} * 100\]
+\end{tcolorbox}
+Ahol T az OCR eredményéből érkező karakterek a bemenettel azonos karakterekre való transzformációk számát jelöli (tehát ezek olyan karakterek, melyek helytelenül lettek felismerve), C pedig a helyesen felismert karakterek száma.
+
+\newline
+Példa:
+\begin{tcolorbox}
+    Felismerendő szöveg: abcdefg-123
+    \newline
+    OCR kimenet: abcdef9-1Z3
+    \newline
+    Mivel a g betűt 9-es számkarakternek állapította meg, továbbá a 2-es számot Z betűnek, így 2 transzformációra lesz szükségünk, tehát T=2.
+    \newline
+    A helyesen felismert karakterek száma 9 (a,b,c,d,e,f,-,1,3), ezért C=9.
+    \[CER = \frac{2}{2+9} * 100 = 18.18\]
+\end{tcolorbox}
+Ebben a példában 18\%-os értéket vesz fel a CER mutató, természetesen ez a szám minél kisebb, annál jobb.
+
+\subsection{WER – Word Error Rate (Szóhibaarány)}
+
+Hasonlóan a CER-hez, ennél a metrikánál azt vesszük figyelembe, hogy hány szó szintű műveletre van szükség ahhoz, hogy az OCR folyamat eredménye teljesen megegyezzen a bemeneti szöveggel. Bár a WER érték a szavak metrikáját méri, nem a betűkét, de ha belátjuk, hogy ugyan azon betűk sorozatából kapjuk a szavakat, akkor jogosan feltételezhetjük, hogy a WER és a CER metrikák jól korrelálnak egymással.
+
+\newline
+A WER mérésére ugyan azt a képletet használjuk, mint a CER érték méréséhez, de a T paraméter a helyes szóra történő transzformációk számát, a C paraméter pedig nem a helyes karakereket, hanem a teljes terjedelmében helyesen felismert szavak számát jelöli.
+
+\pagebreak
+\subsection{További metrikák az OCR pontosságának megállapításához:}
 
 \begin{itemize}
-    \item Fejlesztői állomás
+    \item SER - Symbol Error Rate (Szimbólum hibaarány):
     \begin{itemize}
-	   \item OS:  Microsoft Windows 10 Pro
-	   \item CPU: Intel i7-9750H @ 2.6GHz 6 mag 12 szál
-	   \item RAM: 16GB DDR4
+	   \item Ez a metrika kifejezetten azt vizsgálja, hogy a szövegben szereplő szimbólumok, különböző írásjelek milyen arányban kerültek helyesen felismerésre.
     \end{itemize}
-	
-    \item A fejlesztői környezetben felhasznált programok és technológiák:
+    \item Text-Based F1 Score (Szövegalapú F1-pontszám):
     \begin{itemize}
-        \item IDE: PyCharm 2020.1.3
-        \item Interpreter: Python 3.9
-        \item Felhasznált beépülő modulok:
-        \begin{itemize}
-            \item mysql-connector-python v8.0.23
-            \item pika v1.2.0
-        \end{itemize}
-		\item MySQL Workbench 8.0 CE
-		\item Docker desktop:
-            \begin{itemize}
-                \item rabbitmq:3-management
-                \item mysql:8.0
-            \end{itemize}
-		\item Gitlab verziókezelés
+	   \item Ez a mérőszám a felismert szöveg helyes részarányának, illetve a helyesen felismert bemeneti szöveg részarányának a harmonikus átlagát számolja.
+    \end{itemize}
+    \item Keystroke Saving (Billentyűleütés megtakarítás):
+    \begin{itemize}
+	   \item Azt méri, hogy ha egy kézi bevitelen alapuló folyamatot egy OCR alapú rendszerrel váltunk ki, akkor hány billentyűleütést spórolunk meg.
     \end{itemize}
 \end{itemize}
 
-\newpage
-\section{Production infrastruktúra}
+Fontos megjegyezni, hogy az előbbiekben bemutatott metrikák nem adnak minden esetben valós képet a különböző OCR modellek működéséről, hiszen a beolvasott dokumentumok minősége, valamint a tény, hogy kézírást vagy nyomtatott szöveget adunk bemenetként mind erősen befolyásoló tényezők az OCR kimenetének helyességében.
+
+\section{Az OCR pontosságának javítása bemeneti oldalon}
+
+Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR egy képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, így a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Nézzük, mik azok a leggyakrabban előforduló körülmények, amik rontják az OCR pontosságát.
 
 \begin{itemize}
-    \item A production infrastruktúra részletei
+    \item Az eredeti, szkennelésre váró dokumentum minőségére vonatkozóan:
     \begin{itemize}
-        \item 6x
-        \begin{itemize}
-            \item FUJITSU Mini Tower Computer
-            \item 2 x Intel Core 2 6300 @ 1.86GHz
-            \item RAM 8 GB DDR3
-        \end{itemize}
-        \item Gigabyte Technology Co., Ltd. EX58-UD3R
-        \item Intel Core i7 920 @ 2.67GHz
-        \item RAM 16 GB DDR3
+        \item Gyűrött, szakadt papír, vagy elmosódott szöveg a papíron
+        \item Sérült, lekopott kártya
+        \item Fakulás, elszíneződés
+        \item Fényes felület
+        \item Színes tintával nyomtatott vagy festett szöveg
+        \item Nem szokványos betűtípus használata
+        \item Emberi kézírás
     \end{itemize}
-    \item A production környezetben felhasznált programok és technológiák:
+    \item A beszkennelt vagy kamerával elkészített kép minőségére vonatkozóan:
     \begin{itemize}
-        \item gitlab-runner v11.2.0
-        \item Docker version 20.10.7, build 20.10.7-0ubuntu5-20.04.2
-        \item Hyper-V v10.0.20348.1
+        \item Homályos, életlen kép
+        \item Elmosódott, torz szélek
+        \item Alacsony képfelbontás
+        \item Zajosság, szemcsésség
     \end{itemize}
 \end{itemize}
 
+Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók.
 
-\chapter{Feladat ellenőrző, kiértékelő és naplózó modul}
-\section{Egy szálon futó proceduriális megoldás}
-% \addcontentsline{toc}{section}{Egy szalon futo procedurialis megoldas}
+\begin{itemize}
+    \item A kép méretének és felbontásának helyes megválasztása:
+    \begin{itemize}
+	   \item A karakterfelismerés pontossága nagyban függ a bemeneti kép pontsűrűségétől (DPI). 
+       \item Általában egy 200-300 közötti DPI-vel rendelkező kép a legmegfelelőbb, ennél kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre, nagyobb értékeknél pedig szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
+    \end{itemize}
+    \item Kontraszt növelése és színek eltüntetése:
+    \begin{itemize}
+	   \item Mivel az OCR egyik lépésre – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
+       \item Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és csak fekete-fehér színeket tartalmaz. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával fekete-fehérré tudjuk alakítani a színes képeket.
+    \end{itemize}
+    \pagebreak
+    \item Ferdeségkorrekció:
+    \begin{itemize}
+	   \item Amennyiben ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni, és ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
+       \item A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
+    \end{itemize}
+    \item Zajeltávolítás:
+    \begin{itemize}
+	   \item Törekedni kell arra, hogy a képet megfelelő fényviszonyok mellett készítsük, hogy az minél kevésbé legyen zajos. Bizonyos eljárásokkal csökkenthető az elkészített kép zajossága is simítási, zajmentesítési folyamatokkal, melyek szintén megtalálhatóak a leggyakoribb képszerkesztő programok funkciói között.
+    \end{itemize}
+\end{itemize}
 
+\chapter{A program megvalósítása}
+\section{OCR könyvtárak összehasonlítása Pythonban}
 
-A fejlesztés első lépése az alapos kutatómunka volt, azonban ez minden fázisában jelen volt. Kezdetben a komponensek közötti kommunikáció adatbázison keresztül történt, a kód procedurálisan futott és kezelte az adatbázis lekérdezéseket. A validáló kód egy kezdetleges részlete:
+A megvalósítás megkezdése előtt mindenképpen szükséges feltérképezni a rendelkezésre álló OCR könyvtárakat. Ehhez szükséges azt is meghatározni, hogy milyen programozási nyelvben fog a program elkészülni. Hosszas mérlegelés után a Python mellett döntöttem. A Python egy olyan programozási nyelv, amely a népszerűségét többek között a rugalmasságának köszönheti, hiszen a legszélesebb körökben is használható, legyen az webfejlesztés, adatbányászat, gépi tanulás, automatizálás vagy számítógépes grafika. A nyelv továbbá könnyen olvasható egyszerű szintaxisa miatt és támogatja az objektum orientált programozás alapelveit. Népszerűségének alappillére továbbá a folyamatosan fejlődő és bővülő eszközkészlet és a számos ingyenes, nyílt forráskódú könyvtár, melyek a szakdolgozatban is fontos szerepet töltenek be.
 
-\begin{verbatim}
-def validate_commands(db):
-    db = db_connect()
-    command = get_history(db)
-    correct_commands = get_answers(db)
+A következő alfejezetekben két általam választott ingyenes, nyílt forráskódú OCR könyvtár működését fogom bemutatni, rávilágítva a legfőbb különbségekre.
 
-    if str(command).find(str(correct_commands)) != -1:
-        print("the correct command ran")
-    else:
-        print("the commands are not correct")
-\end{verbatim}
+\subsection{A Pytesseract könyvtár bemutatása}
 
-Ekkor még adatbázis alapú kommunikációra akartuk építeni a projektet, és a kezdetleges kód bővült a feladatokhoz tartozó kiadandó parancsokkal, illetve a felhasználó által kiadott parancsok listájának lekérdezését végző metódussal, ami az aktuális munkamenet kezdetétől lekéri a teljes parancselőzményt:
+A Tesseract egy nyílt forráskódú OCR motor, mely számos programozási nyelvvel és keretrendszerrel kompatibilis.
+Ahhoz, hogy Pythonból használni tudjuk a Tesseract funkcióit, szükségünk van egy wrapperre, azaz egy olyan könyvtárra, amely python nyelvből teszi lehetővé a Tesseract használatát. A pytesseract nevű könyvtár ezt a célt szolgálja.
 
-\begin{verbatim}
-def get_history(db):
-    current_user = get_user_data()[0]
-    start_time = get_user_data()[1]
-    current_time = datetime.datetime.utcnow().\
-                   strftime('%Y-%m-%d %H:%M:%S')
+\pagebreak
 
-    get_history_cursor = db.cursor()
-    get_history_cursor.execute(
-        "SELECT parancs FROM query " +
-        "WHERE time_stamp >= \"" + str(start_time) 
-        + "\" " +
-        "AND time_stamp <= \"" + str(current_time)
-        + "\" " +
-        "AND user_id=" + str(current_user) + ";"
-    )
+Néhány példa a pytesseract importálása után rendelkezésünkre álló metódusok közül:
 
-    result = get_history_cursor.fetchall()
+Az \textit{image\_to\_string} metódus, ahogy a neve is körülírja, a képről kinyert szöveget egy összefüggő szövegként adja vissza. Ennek a metódushívásnak az eredménye hasonlít leginkább a jelenlegi rendszerek bemutatása fejezetben egy internetes alkalmazás használatával kapott eredményre.
 
-    tuples_joined_in_array = [''.\
-            join(tups) for tups in result]
-    history_string = r"{}".format(
-        str(tuples_joined_in_array).replace("'", "").\
-    replace(", ", "").\
-    replace("[", "").\
-    replace("]", "")
+\begin{tcolorbox}
+    IDENTIFICATION CARD
+    \newline
+    Family name and Given name:
 
-    return history_string
-\end{verbatim}
+    MAROSI MARK DANIEL
+    \newline
+    sex: MALE Nationality: HUN
 
-Funkcionalitás szempontjából ez tekinthető az első működő béta verziónak, amely képes volt a felhasználó által kiadott parancsok kiértékelésére.
-Miután az előzőek megvalósításra kerültek, a sok adatbázis lekérdezés és a folyamatos insert-ek miatt egy performancia teszt során kiderült, hogy egy diszkrét idő után, a karakterekénti beillesztések miatt az adatbázis rekordszámai nagy iramban fognak nőni, és az adatbázis kezelhetetlenné, a kiadott parancsok pedig olvashatatlanná fognak válni.
+    Date of birth: 21/09/1999
 
-Ennek hatására kezdtünk el másik megoldás után kutatni, szóba került, hogy Message Queue-t alkalmazzuk az eszközök közötti kommunikációra. Ennek nagy előnye, hogy a kommunikáció az MQTT protokoll szabványa szerint (ISO/IEC 20922:2016)\footnote{a protokoll olyan TCP/IP vagy más hálózati protokollon fut, amely képes rendezett, veszteségmentes, kétirányú kapcsolatot biztositani.} gyorsabb, mint adatbázison keresztül.
-Szavazat után a fejlesztőcsapat a Rabbit Message Queue alkalmazása mellett döntött, ez azt eredményezte a továbbiakban, hogy az eddigi kódbázis nagy része funkcionalitását vesztette, és alapjaiban kellett újjáépíteni a teljes modult.
+    Date of expiry: 21/09/2023
 
+    Document number: 123456AB
+    \newline
+    CAN: 123456
+\end{tcolorbox}
 
-\section{Több szálon futó objektumorientált megoldás}
-% \addcontentsline{toc}{section}{Tobb szalon futo objektum orientalt megoldas}
+Az \textit{image\_to\_boxes} metódus minden egyes felismert karaktert egyesével, az őt körülhatároló négyzet bal felső sarkának koordinátáival, valamint a négyzet szélességével és magasságával adja vissza listába rendezve.
+Egy részlet az eredményhalmazból:
 
+\begin{tcolorbox}
+M 3085 2161 3202 2282
 
-A modulok közötti kommunikáció módjának megváltoztatása után hamar kiderült, hogy az ellenőrző modul bonyolultabb lesz, mint amit egy procedurális megvalósítás engedne. Éppen ezért a kezdetekben két osztály került bevezetésre, a Validator, ami később User-re lett átnevezve, és a MetaCommunication osztályok, melyek feladata nevükből is felismerhetően, rendre a feladatok ellenőrzése és a weboldallal való kommunikáció volt.
+A 3213 2161 3334 2282
 
-\begin{verbatim}
-class Validator (threading.Thread):
-    def __init__(self, threadID, name):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
+R 3347 2161 3456 2282
 
-    def run(self):
-        print("Starting " + self.name)
-        init(self.threadID)
+K 3470 2161 3579 2282
+\end{tcolorbox}
 
+Az \textit{image\_to\_data} függvény a számunkra leghasznosabb, ugyanis ez figyelembe veszi a karakterek közelségét egymáshoz, ezáltal képes meghatározni szavakat, szorosan összefüggő szövegrészleteket. A szavak mellett visszadja a szót körülhatároló téglalap bal felső sarkának koordinátáját, szélességét, magasságát, valamint azt is, hogy az adott szó vagy szövegrészlet milyen pontossággal került meghatározásra, százalékban kifejezve.
+Az, hogy a függvény milyen adatstruktúrában adja vissza a kinyert szavakat, az konfigurálható az output\_type paraméterrel. Választhatunk byte, string, dictionary illetve dataframe opciók közül.
 
-class MetaCommunication(threading.Thread):
-    current_user = None
-    selected_task = None
-    correct_command_list = r''
-    com_ports_in_use = []
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c c c c c }
+         top & left & width & height & confidence & text \\ 
+         956 & 2362 & 653 & 125 & 74 & MAROSI \\  
+         958 & 3085 & 494 & 121 & 95 & MARK \\  
+         958 & 3638 & 612 & 121 & 95 & DANIEL \\  
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
 
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.threadID = "web-python"
-        self.name = "web-python"
-
-    def set_correct_command_list(self):
-        db = db_connect()
-        get_correct_commands_cursor = db.cursor()
-        get_correct_commands_cursor.execute(
-            "SELECT command FROM correct_commands " +
-            "WHERE lesson_id=\"" + str(lesson_id) + "\";"
-        )
-        self.correct_command_list = r"{}".format(
-            get_correct_commands_cursor.fetchone()[0])
-        db_close(db)
-
-    def run(self):
-        print("Starting " + self.name)
-        web_python_communication_listener(self)
-\end{verbatim}
-
-A MessageQueue használata koncepcionálisan egyszerű, a kommunikációban két típusú ágenst különböztetünk meg, egy úgynevezett "publisher" vagy "content creator" és egy "subscriber" vagy "consumer" résztvevőt. A felosztás magától értetődő volt, a web-es frontend a publisher, a konzolos backend, a validator és a logoló modulok mind consumerek. A MetaCommunication osztály a message queue-ba csatlakozó metódusa:
-
-\begin{verbatim}
-    def init(queue):
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-
-    channel.queue_declare(queue='test')
-
-    def callback(ch, method, properties, body):
-        print(" [x] Received %r" % body)
-
-    channel.basic_consume(queue=queue, 
-                          on_message_callback=callback, 
-                          auto_ack=True)
-
-    print(' [*] Waiting for messages.
-           To exit press CTRL+C')
-    channel.start_consuming()
-
-\end{verbatim}
-
-Azonban komplikációk léptek fel az MQ implementálása során. Habár a csatorna figyelésére aszinkron kapcsolatot használ, a programszálat a start\_consuming() metódus aktívan fogja, így az első csatornára való kapcsolatnyitás teljesen megállítja a programot.
-Ennek kiküszöbölésére az MQ-kat több szálon kezdtem kezelni, a különböző COM portokon való kommunikációt egy-egy külön szálon figyeltem, amihez egy újabb osztály bevezetésére volt szükség a QueueListener osztályra.
-
-További problémák akadtak a szálak megszüntetésekor is.
-A jelenleg belépett felhasználó adatai jelen vannak a példányosított objektumokban, ezért a kijelentkezés után ezeket meg kell szüntetni, hogy helyükre újakat lehessen létrehozni a megfelelő felhasználói adatokkal.
-Ezek az objektumok a Thread osztály leszármazottjai, belépési pontjukban pedig a RabbitMQ csatornái felé nyitott start\_consuming() metódussal figyelnek, ami nem szakítható meg a Thread osztály join() metódusával. Ennek következtében először a stop\_consuming() metódussal le kell zárni a kapcsolatot, majd ez után lehet a szálat is zárni.
-
-
-\begin{verbatim}
-    class QueueListener(threading.Thread):
-    #is_waiting_for_join = 0
-    def __init__(self, com_port, parentObject):
-        super().__init__()
-        self.name = "queue_listener_thread_on" +
-                     str(com_port)
-        self.com_port = com_port
-        self.parentObject = parentObject
-
-    def run(self):
-        web_device_communication_listener(
-            self.parentObject,
-            self.com_port)
-\end{verbatim}
-
-Ezt az osztályt a Validator osztály példányosítja annyi példányban, ahány COM port csatlakoztatva van a rendszerhez. (Ez jelenleg hardcode-oltan 6 COM portot jelent 1-6 között)
-Továbbra is akadály volt az, hogy ezek a threadek -- a BlockingConnection miatt -- nem reagáltak a Thread osztály join() metódusára. A probléma orvosolására egy, a problémát megkerülő megoldásra volt szükség. Végül egy igen egyszerű és az infrastruktúrára kis kihatással lévő megoldás született, a Validator osztály (majd később a QueueListener osztály) egy új adattagot kapott is\_waiting\_for\_join névvel, amelynek érteke kezdetben 0, a felhasználó kilepésekor érteke 1-re módosul. A szál konkrét lezárását a következő logika végzi.
-
-\begin{verbatim}
-    if user_object.is_waiting_for_join == 1:
-    channel.close()
-\end{verbatim}
-
-Amely a QueueListener, a Message Queue-ra figyelő metódusának, callback függvényében helyezkedik el. Ez azonban még nem teljes értékű megoldás, hiszen, ha a felhasználó kilépett a rendszerből, a következő üzenetet már a következő felhasználó fogja küldeni. Ez azt eredményezi, hogy amíg a rendszer üres járatban van, a program 6 felesleges szálat futtat folyamatosan, továbbá a régi felhasználó szálainak lezárása és az új felhasználóhoz tartozó szálak indítása JIT módon történne. Így a felhasználó kilépését feldolgozó kódrészlet kiegészült egy blokkal, amely behirdet egy szóköz karaktert a Message Queue-kra:
-
-\begin{verbatim}
-if str(body.decode('UTF-8').split(',')[0]) == "logout":
-    joining_thread = thread_list.get("Thread-" + str(
-                     body.decode('UTF-8').split(',')[1]))
-    print("DEBUG thread object: " + str(joining_thread))
-    joining_thread.is_waiting_for_join = 1
-
-    for com_port in joining_thread.com_ports_in_use:
-        closing_connection = pika.BlockingConnection(
-            pika.ConnectionParameters('localhost'))
-        closing_channel = connection.channel()
-        closing_channel.queue_declare(queue=com_port)
-        closing_channel.basic_publish(exchange='',
-                                      routing_key=com_port,
-                                      body=b" ")
-        closing_connection.close()
-\end{verbatim}
-
-\section{Az ellenőrzés és kiértékelés folyamata}
-
-
-A kiértékelési folyamat egy felhasználó bejelentkezésekor indul. A bejelentkezési eseményt a frontend úgy jelzi a modul számára, hogy a következő sémára alapuló "login" üzenetet küld:
-
-\begin{verbatim}
-login,user\_id,lesson\_id
-\end{verbatim}
-
-A user\_id a felhasználó egyedi azonosítója, a lesson\_id pedig a megfelelő Cisco tananyaghoz tartozó labor feladat. A feladat neve a Cisco modul nevéből -- azaz Introduction to Networks (ITN), Connecting Networks (CN), Scaling Networks (SCAN) és Routing and Switching Essentials (RASE) -- és a modulon belüli fejezet sorszámából áll, ezáltal a feladathoz tarozó tananyagrész és vice versa könnyen megtalálható.
-Amennyiben a felhasználó nem kíván meglévő feladatot elvégezni, az utolsó paraméter nem kerül elküldésre, ekkor a kiértékelő modul nem indul el.
-
-A feladat neve alapján még a példányosítás során, a konstruktor becsatlakozik az adatbázisba, ahonnan kiolvassa a feladathoz tartozó parancsokat, amiket a felhasználónak ki kell adnia, hogy az általa választott feladatot teljes egészében elvégezze.
-A lesson\_id elsődleges kulcsa a helyes parancssorozatot tartalmazó correct\_commands táblának. A tábla többi oszlopa a COM portokat reprezentálják, ezek értéke a kiadandó parancsok.
-Miután a lekérdezés megtörtént, a kiválasztott feladathoz tartozó sort a program eltárolja egy szótárban, amelynek kulcsai a COM portok, az értékei a parancsok. Ez a szótár a User osztály adattagja.
-Ezzel egyidőben inicializál két változót, amik a jelenlegi megoldottságot, és egy százalékos inkremenst tárolnak, amit egy helyes parancs kiadásakor kell hozzáadni a teljes százalékösszeghez.
-
-
-Az osztálypéldány készen áll, hogy Thread-ként elinduljon. Ha a felhasználó a rendelkezésre álló feladatok közül választott, akkor a QueueListener és Logger osztály konstruktora is meghívásra kerül, ha önálló feladatot old meg, csak a Logger osztály kerül meghívásra.
-A parancsokat kiértékelő metódus a QueueListener osztálypéldányok belépési pontjában kerül meghívásra, tehát akár a COM portok szempontjából szimultán feladatkiértékelésre is képes lenne.
-Fontos kérdés volt, hogy a karakterenkénti üzeneteket hogyan lesz képes a kiértékelő modul kezelni. A megoldást nyujtó feltételvizsgálat két tényen alapul, a sorvége karakter két vezérlőkarakterből áll ("\textbackslash n" és "\textbackslash r") és az üres sort -- tehát enter ütést -- nem akarjuk kiértékelni.
-
-\begin{verbatim}
-listener.lines_of_code += (body.decode('UTF-8'))
-  if len(listener.lines_of_code) > 2:
-    if listener.lines_of_code[
-       len(listener.lines_of_code) - 2:] == "\n\r":
-      validate_commands(listener, user_object, com_port)
-\end{verbatim}
-
-A felhasználó által beírt parancsot a lines\_of\_code változó tárolja, és erre meghívja a parancsot kiérékeló metódust.
+\pagebreak
+Az \textit{image\_to\_data} függvény eredményének szemléltetése céljából írtam egy függvényt, amely a bemenetként adott igazolványképen a felismert szövegeket határoló téglalapokat kirajzoltattam az OpenCV nevű python könyvtárban definiált metódusok segítségével. Az OpenCV könyvárat a későbbiekben ismertetem. A függvény egy paraméterrel rendelkezik, amely az \textit{image\_to\_data} függvény eredményét várja dictionary struktúrában. A függvény kimenete egy új ablakban megnyíló kép, amelyen a bemeneti kép látható úgy, hogy a rajta található, egyben felismert szövegrészek körül vannak rajzolva a szöveget határoló téglalap élei mentén.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.45]{run.eps}
-    \caption{Néhány kiértékelés kimenete konzolon}
+    \centerline{\includegraphics[scale=.4]{boxes_pytesseract.eps}}
+    \caption{A függvényhívás eredménye, a Pytesseract által kinyert adatok}
 \end{figure}
-
-\newpage
-
-A függvény először megvizsgálja, hogy a kiadott parancs tartalmaz-e rövidítést, amit egy JSON fájlból olvas be egy globális szótárba még a program indulásakor. A szótár kulcsai a rövidített parancsok lesznek, értékei a rövidítések teljes alakos változata. Ha talál rövidítést a parancsban, azt kicseréli a kulcs-érték pár alapján, majd tovább halad az ellenőrzéssel.
 
 \begin{verbatim}
-if listener.lines_of_code == "conf t":
-  listener.lines_of_code = "configure terminal"
-else:
-  # Split the command, to get the first
-  split_command = listener.lines_of_code.split(sep=" ")
-  print("split command: {}".format(split_command))
-  # If the command given is a shorthand known to us
-  if split_command[0] in abbreviations:
-    print("its an abbreviation")
-    # Change the shorthand command to the full command
-    replace_command = abbreviations['{}'.\
-                      format(split_command)]
-    print("replace_command: {}".format(replace_command))
-    listener.lines_of_code.replace(split_command[0],
-                                   replace_command, 1)
-    print("final: {}".format(listener.lines_of_code))
+def generate_image_with_bounding_boxes_on_words(ocr_result):
+    img = cv2.imread(ID_CARD_PATH)
+
+    for i in range(len(ocr_result['text'])):
+        if float(ocr_result['conf'][i]) >= CONF_LEVEL:
+            (x, y, w, h) = (ocr_result['left'][i],
+                            ocr_result['top'][i],
+                            ocr_result['width'][i],
+                            ocr_result['height'][i])
+            img = cv2.rectangle(img, (x, y), (x + w, y + h),
+                                (0, 255, 0), 10)
+
+    output_img_to_window(img)
 \end{verbatim}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{replace.eps}
-    \caption{Egy rövidített parancs cseréje}
-\end{figure}
-
-Végigjárja az adatbázisból kiolvasott parancsokat és ellenőrzi, hogy megtalálható-e benne a megfelelő alakra hozott parancs.\\
-Ha megtalálható, ezt jelzi a felhasználó számára, és a User osztályban létrehozott százalékmérőt növeli a megfelelő inkremenssel.\\
-Ha nem található meg, üzenetet küld a felhasználó számára a frontendre. Ez azonban nem egy hibaüzenetet, hiszen lehetséges, hogy állapotlekérdező parancsot futtatott, hogy egy beállítást ellenőrizzen az eszközön.\\
-A lines\_of\_code változó értékét üríti, és egy végső feltételvizsgálatot végez. Ellenőrzi, hogy az a parancs, amivel meghívták, 100\%-osan megoldottra növelte-e a feladatot. Ha igen, üzen a felhasználónak a feladat elvégzéséről. Az is\_waiting\_for\_join változót 1-re állítja, a message queue-khoz nyitott csatornára ezáltal meghívódik a close() pika névtérbeli metódust. Az objektumpéldány belépési metódusában folyamatosan futó metódus erre a változóra írt feltételvizsgálat miatt kilép és az azt futtató programszál is.
-
-
-\section{Logoló modul}
-
-
-A rendszer fontos része a logoló modul, aminek segítségével a felhasználók által a különböző COM portokra kiadott parancsok naplózásra kerülnek. Az üzeneteket a modul külön message queue-n kapja meg, ami fontos abból a szempontból, hogy ha egy queue-t két consumer olvas, akkor az egyikőjüktől érkező acknowledge hatására a másik consumer az adott üzenetet nem kapja meg. Ebben az esetben előfordulhat, hogy a hálózati eszközök hamarabb olvassák az üzenetet, és ez nem jut el a logoló modulhoz, ergó nem kerül naplózásra a kiadott parancs, avagy vice versa, a parancs naplózásra kerül, de az eszközön nem kerül futtatásra.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{log.eps}
-    \caption{Logolás az adatbázisban}
-\end{figure}
-
-A naplózás mechanikájában egy puffer került bevezetésre, ami biztosítja, hogy abban az esetben, ha gyorsabban érkeznek az üzenetek, mint ahogy az adatbázisba való insert lefutna, azok nem vesznek el. A pufferből csak akkor kerül törlésre az üzenet, ha az sikeresen az adatbázisba lett írva:
 
 \begin{verbatim}
-[...]
-for item in command_buffer:
-    if log_to_db(item, db, user_id, com_port):
-        command_buffer.pop(command_buffer.index(item))
-[...]
-
-def log_to_db(command, db, user_id, com_port):
-    insert_cursor = db.cursor()
-
-    sql = "INSERT INTO command_history(user_id, command, com) 
-           VALUES (%s, %s, %s)"
-    val = (user_id, command, com_port)
-
-    print('DEBUG_LOOGER command: ' + command)
-    insert_cursor.execute(sql, val)
-
-    try:
-        db.commit()
-    except mysql.connector.Error as err:
-        print(err)
-        return False
-    return True
+def output_img_to_window(img):
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.imshow("output", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 \end{verbatim}
 
-\newpage
+\subsection{Az EasyOCR könyvtár bemutatása}
+
+Az EasyOCR könyvtár is egy nyílt forráskódú, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
+
+Az EasyOCR importálása után először példányosítani kell egy objektumot az easyocr.Reader konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \textit{readtext} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
+
+A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy szövegrészlet, melyet az OCR a karakterek egymáshoz viszonyított pozíciója alapján összefüggőnek ítélt. Minden egyes listaelem további elemeket tartalmaz. Első helyen egy listát, ami az adott szöveget körülvevő téglalap négy sarkának koordináta-párjait tárolja, második helyen magát a felismert szöveget, a harmadik pozíción a pedig tizedestört alakban kifejezve azt, hogy az OCR hány százalékban biztos abban, hogy a kinyert szöveg egyezik a képen látható szöveggel.
+
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c c }
+         bounding box coordinates & text & confidence \\ 
+         {[}{[}329, 78{]}, {[}3551, 78{]}, {[}3551, 350{]}, {[}329, 350{]}{]} & Nationality: & 0.97 \\
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
+
+Ahogyan azt a pytesseract könyvtár eredményén megtettem, itt is szemléltetésképpen írtam egy metódust, ami a bemenetként adott képen megjeleníti a felismert szavakat, összefüggőnek vélt karakterláncokat.
+
+\pagebreak
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.4]{boxes_easyocr.eps}}
+    \caption{A függvényhívás eredménye, az EasyOCR által kinyert adatok}
+\end{figure}
+
+\begin{verbatim}
+def generate_image_with_bounding_boxes_on_words(ocr_result):
+    img = cv2.imread(ID_CARD_PATH)
+
+    for text_row in ocr_result:
+        bottom_left = tuple(text_row[0][0])
+        top_right = tuple(text_row[0][2])
+        img = cv2.rectangle(img, bottom_left, top_right, (0, 255, 0), 10)
+
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.imshow("output", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+\end{verbatim}
+
+Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
+
+\section{A dokumentum előfeldolgozása}
+
+Ahogyan "Az OCR pontosságának javítása bemeneti oldalon" című fejezetben kifejtettem, a lehető legpontosabb OCR kimenet eléréséhez szükségünk van a bemeneti kép előfeldolgozására pár lépésben az OpenCV nevű ingyenes könyvtár különböző metódusainak használatával.
+Mivel a bemeneti dokumentum lehet színes, így először a színek eltüntetésével kezdtem, hiszen a színek a szövegkinyerés szempontjából felesleges információt hordoznak. Ezt az OpenCV cvtColor nevű metódusával értem el, melynek paraméterei egy kép, és az a színtér, melyre konvertálni szeretnénk. A mi esetünkben ez a színtér a COLOR\_RGB2GRAY, ami az RGB színeket a szürke árnyalataivá konvertálja.
+
+\begin{verbatim}
+def convert_to_grayscale_image(image):
+    return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+\end{verbatim}
+
+Következő lépésként a zajeltávolítás volt a célom. Egy zajos kép nagy mértékben ronthatja a kimenet pontosságát, mivel az OCR a zajos, szemcsés részeket is az adott karakter részének határozhatja meg. A zajeltávolítás legegyszerűbb módja a kép kis mértékben történő elmosása, mivel így a zajos részeket összemossuk és jobban beleolvad a háttérbe, cserébe, ha tényleg csak kevés elmosást alkalmaztunk, a karakterek szélei csak kis mértékben veszítenek az élességükből, ezzel továbbra is fenntartva a felismerhetőséget.
+Erre a célra a medianBlur metódust hívtam meg az OpenCV könyvtárból, melynek paraméterei a kép és egy 1-nél nagyobb páratlan szám, mely az elmosáshoz használt digitális rekesz lineáris méretét adja meg.
+
+\begin{verbatim}
+def remove_noise(image):
+    return cv2.medianBlur(image, 5)
+\end{verbatim}
+
+Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képbet kétszintű (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbművelet típusa.
+Különböző célokra különböző küszöbműveleti típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
+A THRESH\_BINARY küszöbművelet típus számítási elve:
+\begin{equation*}
+output(x,y)=
+    \begin{cases}
+        maxval, & \text{ha}\ input(x,y)>threshold \\
+        0, & \text{egyébként}
+    \end{cases}
+\end{equation*}
+
+A képletből kiolvasható, hogy amennyiben a vizsgált pixel színe a küszöbértéknél nagyobb, akkor a szín átírásra kerül, és a maxvalue értékét fogja felvenni, egyéb esetben az új értéke 0 lesz.
+Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkebb küszöbértéket kell megadnunk, így a threshold paraméter a mi esetünkben 0 lesz. A maxvalue az a szín, amit a küszöbértéknél nagyobb, azaz kiszűrni kívánt képpontok (ebben az esetben a dokumentum háttere) fog felvenni, ez a mi esetünkben 255 lesz, azaz fehér.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.25]{preprocessed_image.eps}}
+    \caption{A három előfeldolgozó metódus futása utáni állapot}
+\end{figure}
 
 \section{Összefoglalás}
 

@@ -1,4 +1,4 @@
-import helpers
+from Utils import KeyValuePairFinder as kvpFinder
 
 
 def key_find_test(items):
@@ -9,23 +9,23 @@ def key_find_test(items):
         if item.text == "Nationality:" or item.text == "HUN":
             items_copy.append(item)
 
-    helpers.find_next_key(items_copy)
+    kvpFinder.find_next_key(items_copy)
 
 
 def right_search_test(items):
     print("/-- running right_search_test on: --/\n")
     print(items[3])
-    helpers.find_value_for_key(items[3], items)
+    kvpFinder.find_value_for_key(items[3], items)
 
 
 def below_search_test(items):
     print("/-- running below_search_test on: --/\n")
     print(items[1])
-    helpers.find_value_for_key(items[1], items)
+    kvpFinder.find_value_for_key(items[1], items)
 
 
 def no_pair_test(items):
     print("/-- running no_pair_test on: --/\n")
     print(items[0])
-    helpers.find_value_for_key(items[0], items)
+    kvpFinder.find_value_for_key(items[0], items)
 
