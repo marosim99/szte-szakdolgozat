@@ -497,9 +497,9 @@ def remove_noise(image):
     return cv2.medianBlur(image, 5)
 \end{verbatim}
 
-Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képbet kétszintű (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbművelet típusa.
-Különböző célokra különböző küszöbműveleti típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
-A THRESH\_BINARY küszöbművelet típus számítási elve:
+Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képbet kétszintű (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
+Különböző célokra különböző küszöbérték típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
+A THRESH\_BINARY küszöbérték típus számítási elve:
 \begin{equation*}
 output(x,y)=
     \begin{cases}
@@ -515,6 +515,54 @@ Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkeb
     \centerline{\includegraphics[scale=.25]{preprocessed_image.eps}}
     \caption{A három előfeldolgozó metódus futása utáni állapot}
 \end{figure}
+
+A három képfeldolgozó metódus lefuttatása után elértem, hogy a szöveg jól elkülönüljön a háttértől, a karakterek könnyen felismerhetőekek legyenek, és ne maradjon a szövegfelismerés szempontjából irreleváns jelentést hordozó adat a dokumentumon.
+
+\section{Adatstruktúra felállítása és feltöltése}
+
+Ahhoz, hogy a képről kinyert szöveget hatékony módon, könnyen kereshető és osztályozható formában tudjam tárolni, az objektum orientált programozás egyik alappillérét, az osztályokat hívtam segítségül. Egy osztály többek között rendelkezhet tulajdonságokkal és definiálhat metódusokat. A dokumentumról kinyert adatoknak sok közös tulajdonságuk van. Mindegyik magával hordoz egy karakterláncot, valamint a dokumentumon való elhelyezkedést leíró koordinátákat. Pythonban az adattagok definiálására és az értékeik kezdetleges beállítására a konstruktor szolgál.
+
+\begin{verbatim}
+class CardTextItem:
+    def __init__(self, top_left, top_right, btm_left, btm_right, text, conf):
+        self.top_left = top_left
+        self.top_right = top_right
+        self.btm_left = btm_left
+        self.btm_right = btm_right
+        self.text = text
+\end{verbatim}
+
+A top\_left, top\_right, btm\_left és btm\_right adattagok rendre annak az alakzatnak a bal felső, jobb felső, bal alsó és jobb alsó pontjainak koordináta párjait jelölik, mely pontosan körbehatárolja az egybefüggően kinyert karakterláncot.
+
+Azzal, hogy elkészült az adatstruktúra, már csak fel kell tölteni az OCR által kinyert adatokkal. Ehhez vissza kell emlékezni az EasyOCR könyvtár bemutatása című alfejezet során szemléltetett adatstruktúrára, melyben rendelkezésünkre áll a dokumentumról felismert összes karakterlánc. Ez egy olyan lista, melyben minden elem egy további struktúrát tartalmaz, benne a koordinátákkal, a szöveggel és a szöveg pontosságát becslő számmal. Ezt a listát szeretném úgy szétbontani, hogy minden elemét leképezem egy olyan objektummá, ami az előbb felállított adatstruktúra egy példánya, azaz minden egyes karakterlánc egy önálló objektum lenne.
+
+\begin{verbatim}
+def get_text_items_from_ocr_data(ocr_data):
+    card_text_items = list()
+
+    for i in range(len(ocr_data)):
+        item_bl = ocr_data[i][0][0]
+        item_br = ocr_data[i][0][1]
+        item_tr = ocr_data[i][0][2]
+        item_tl = ocr_data[i][0][3]
+        item_text = ocr_data[i][1]
+
+        text_item = cti.CardTextItem(item_tl, item_tr, 
+                            item_bl, item_br, item_text)
+        card_text_items.append(text_item)
+\end{verbatim}
+
+A metódusban végig iterálunk az OCR által kinyert adatokon, és az aktuális elemet tovább bontva a megfelelő adattaghoz rendeljük. Ezután létrehozunk belőle egy példányt, majd hozzáadjuk a kész, feltöltött objektumokat tároló listához. A metódus futása után a lista minden eleme egy OCR által kinyert karakterláncot tartalmazó objektum. Példaképpen, az általam készített minta személyi igazolványról kinyert adatok listájának első eleme a metódus futása után:
+
+\begin{tcolorbox}
+    Text: IDENTIFICATION CARD
+
+    top\_left: [333, 350], top\_right: [3551, 350]
+
+    btm\_left: [333, 78], btm\_right: [3551, 78]
+\end{tcolorbox}
+
+\section{Kulcs-érték párok azonosítása}
 
 \section{Összefoglalás}
 

@@ -477,193 +477,92 @@ def generate_image_with_bounding_boxes_on_words(ocr_result):
     cv2.destroyAllWindows()
 \end{verbatim}
 
-Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract sokkal inkább karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
+Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
+
+\section{A dokumentum előfeldolgozása}
+
+Ahogyan "Az OCR pontosságának javítása bemeneti oldalon" című fejezetben kifejtettem, a lehető legpontosabb OCR kimenet eléréséhez szükségünk van a bemeneti kép előfeldolgozására pár lépésben az OpenCV nevű ingyenes könyvtár különböző metódusainak használatával.
+Mivel a bemeneti dokumentum lehet színes, így először a színek eltüntetésével kezdtem, hiszen a színek a szövegkinyerés szempontjából felesleges információt hordoznak. Ezt az OpenCV cvtColor nevű metódusával értem el, melynek paraméterei egy kép, és az a színtér, melyre konvertálni szeretnénk. A mi esetünkben ez a színtér a COLOR\_RGB2GRAY, ami az RGB színeket a szürke árnyalataivá konvertálja.
 
 \begin{verbatim}
-    def init(queue):
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-
-    channel.queue_declare(queue='test')
-
-    def callback(ch, method, properties, body):
-        print(" [x] Received %r" % body)
-
-    channel.basic_consume(queue=queue, 
-                          on_message_callback=callback, 
-                          auto_ack=True)
-
-    print(' [*] Waiting for messages.
-           To exit press CTRL+C')
-    channel.start_consuming()
-
+def convert_to_grayscale_image(image):
+    return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 \end{verbatim}
 
-Azonban komplikációk léptek fel az MQ implementálása során. Habár a csatorna figyelésére aszinkron kapcsolatot használ, a programszálat a start\_consuming() metódus aktívan fogja, így az első csatornára való kapcsolatnyitás teljesen megállítja a programot.
-Ennek kiküszöbölésére az MQ-kat több szálon kezdtem kezelni, a különböző COM portokon való kommunikációt egy-egy külön szálon figyeltem, amihez egy újabb osztály bevezetésére volt szükség a QueueListener osztályra.
-
-További problémák akadtak a szálak megszüntetésekor is.
-A jelenleg belépett felhasználó adatai jelen vannak a példányosított objektumokban, ezért a kijelentkezés után ezeket meg kell szüntetni, hogy helyükre újakat lehessen létrehozni a megfelelő felhasználói adatokkal.
-Ezek az objektumok a Thread osztály leszármazottjai, belépési pontjukban pedig a RabbitMQ csatornái felé nyitott start\_consuming() metódussal figyelnek, ami nem szakítható meg a Thread osztály join() metódusával. Ennek következtében először a stop\_consuming() metódussal le kell zárni a kapcsolatot, majd ez után lehet a szálat is zárni.
-
+Következő lépésként a zajeltávolítás volt a célom. Egy zajos kép nagy mértékben ronthatja a kimenet pontosságát, mivel az OCR a zajos, szemcsés részeket is az adott karakter részének határozhatja meg. A zajeltávolítás legegyszerűbb módja a kép kis mértékben történő elmosása, mivel így a zajos részeket összemossuk és jobban beleolvad a háttérbe, cserébe, ha tényleg csak kevés elmosást alkalmaztunk, a karakterek szélei csak kis mértékben veszítenek az élességükből, ezzel továbbra is fenntartva a felismerhetőséget.
+Erre a célra a medianBlur metódust hívtam meg az OpenCV könyvtárból, melynek paraméterei a kép és egy 1-nél nagyobb páratlan szám, mely az elmosáshoz használt digitális rekesz lineáris méretét adja meg.
 
 \begin{verbatim}
-    class QueueListener(threading.Thread):
-    #is_waiting_for_join = 0
-    def __init__(self, com_port, parentObject):
-        super().__init__()
-        self.name = "queue_listener_thread_on" +
-                     str(com_port)
-        self.com_port = com_port
-        self.parentObject = parentObject
-
-    def run(self):
-        web_device_communication_listener(
-            self.parentObject,
-            self.com_port)
+def remove_noise(image):
+    return cv2.medianBlur(image, 5)
 \end{verbatim}
 
-Ezt az osztályt a Validator osztály példányosítja annyi példányban, ahány COM port csatlakoztatva van a rendszerhez. (Ez jelenleg hardcode-oltan 6 COM portot jelent 1-6 között)
-Továbbra is akadály volt az, hogy ezek a threadek -- a BlockingConnection miatt -- nem reagáltak a Thread osztály join() metódusára. A probléma orvosolására egy, a problémát megkerülő megoldásra volt szükség. Végül egy igen egyszerű és az infrastruktúrára kis kihatással lévő megoldás született, a Validator osztály (majd később a QueueListener osztály) egy új adattagot kapott is\_waiting\_for\_join névvel, amelynek érteke kezdetben 0, a felhasználó kilepésekor érteke 1-re módosul. A szál konkrét lezárását a következő logika végzi.
+Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képbet kétszintű (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
+Különböző célokra különböző küszöbérték típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
+A THRESH\_BINARY küszöbérték típus számítási elve:
+\begin{equation*}
+output(x,y)=
+    \begin{cases}
+        maxval, & \text{ha}\ input(x,y)>threshold \\
+        0, & \text{egyébként}
+    \end{cases}
+\end{equation*}
 
-\begin{verbatim}
-    if user_object.is_waiting_for_join == 1:
-    channel.close()
-\end{verbatim}
-
-Amely a QueueListener, a Message Queue-ra figyelő metódusának, callback függvényében helyezkedik el. Ez azonban még nem teljes értékű megoldás, hiszen, ha a felhasználó kilépett a rendszerből, a következő üzenetet már a következő felhasználó fogja küldeni. Ez azt eredményezi, hogy amíg a rendszer üres járatban van, a program 6 felesleges szálat futtat folyamatosan, továbbá a régi felhasználó szálainak lezárása és az új felhasználóhoz tartozó szálak indítása JIT módon történne. Így a felhasználó kilépését feldolgozó kódrészlet kiegészült egy blokkal, amely behirdet egy szóköz karaktert a Message Queue-kra:
-
-\begin{verbatim}
-if str(body.decode('UTF-8').split(',')[0]) == "logout":
-    joining_thread = thread_list.get("Thread-" + str(
-                     body.decode('UTF-8').split(',')[1]))
-    print("DEBUG thread object: " + str(joining_thread))
-    joining_thread.is_waiting_for_join = 1
-
-    for com_port in joining_thread.com_ports_in_use:
-        closing_connection = pika.BlockingConnection(
-            pika.ConnectionParameters('localhost'))
-        closing_channel = connection.channel()
-        closing_channel.queue_declare(queue=com_port)
-        closing_channel.basic_publish(exchange='',
-                                      routing_key=com_port,
-                                      body=b" ")
-        closing_connection.close()
-\end{verbatim}
-
-\section{Az ellenőrzés és kiértékelés folyamata}
-
-
-A kiértékelési folyamat egy felhasználó bejelentkezésekor indul. A bejelentkezési eseményt a frontend úgy jelzi a modul számára, hogy a következő sémára alapuló "login" üzenetet küld:
-
-\begin{verbatim}
-login,user\_id,lesson\_id
-\end{verbatim}
-
-A user\_id a felhasználó egyedi azonosítója, a lesson\_id pedig a megfelelő Cisco tananyaghoz tartozó labor feladat. A feladat neve a Cisco modul nevéből -- azaz Introduction to Networks (ITN), Connecting Networks (CN), Scaling Networks (SCAN) és Routing and Switching Essentials (RASE) -- és a modulon belüli fejezet sorszámából áll, ezáltal a feladathoz tarozó tananyagrész és vice versa könnyen megtalálható.
-Amennyiben a felhasználó nem kíván meglévő feladatot elvégezni, az utolsó paraméter nem kerül elküldésre, ekkor a kiértékelő modul nem indul el.
-
-A feladat neve alapján még a példányosítás során, a konstruktor becsatlakozik az adatbázisba, ahonnan kiolvassa a feladathoz tartozó parancsokat, amiket a felhasználónak ki kell adnia, hogy az általa választott feladatot teljes egészében elvégezze.
-A lesson\_id elsődleges kulcsa a helyes parancssorozatot tartalmazó correct\_commands táblának. A tábla többi oszlopa a COM portokat reprezentálják, ezek értéke a kiadandó parancsok.
-Miután a lekérdezés megtörtént, a kiválasztott feladathoz tartozó sort a program eltárolja egy szótárban, amelynek kulcsai a COM portok, az értékei a parancsok. Ez a szótár a User osztály adattagja.
-Ezzel egyidőben inicializál két változót, amik a jelenlegi megoldottságot, és egy százalékos inkremenst tárolnak, amit egy helyes parancs kiadásakor kell hozzáadni a teljes százalékösszeghez.
-
-
-Az osztálypéldány készen áll, hogy Thread-ként elinduljon. Ha a felhasználó a rendelkezésre álló feladatok közül választott, akkor a QueueListener és Logger osztály konstruktora is meghívásra kerül, ha önálló feladatot old meg, csak a Logger osztály kerül meghívásra.
-A parancsokat kiértékelő metódus a QueueListener osztálypéldányok belépési pontjában kerül meghívásra, tehát akár a COM portok szempontjából szimultán feladatkiértékelésre is képes lenne.
-Fontos kérdés volt, hogy a karakterenkénti üzeneteket hogyan lesz képes a kiértékelő modul kezelni. A megoldást nyujtó feltételvizsgálat két tényen alapul, a sorvége karakter két vezérlőkarakterből áll ("\textbackslash n" és "\textbackslash r") és az üres sort -- tehát enter ütést -- nem akarjuk kiértékelni.
-
-\begin{verbatim}
-listener.lines_of_code += (body.decode('UTF-8'))
-  if len(listener.lines_of_code) > 2:
-    if listener.lines_of_code[
-       len(listener.lines_of_code) - 2:] == "\n\r":
-      validate_commands(listener, user_object, com_port)
-\end{verbatim}
-
-A felhasználó által beírt parancsot a lines\_of\_code változó tárolja, és erre meghívja a parancsot kiérékeló metódust.
+A képletből kiolvasható, hogy amennyiben a vizsgált pixel színe a küszöbértéknél nagyobb, akkor a szín átírásra kerül, és a maxvalue értékét fogja felvenni, egyéb esetben az új értéke 0 lesz.
+Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkebb küszöbértéket kell megadnunk, így a threshold paraméter a mi esetünkben 0 lesz. A maxvalue az a szín, amit a küszöbértéknél nagyobb, azaz kiszűrni kívánt képpontok (ebben az esetben a dokumentum háttere) fog felvenni, ez a mi esetünkben 255 lesz, azaz fehér.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.45]{run.eps}
-    \caption{Néhány kiértékelés kimenete konzolon}
+    \centerline{\includegraphics[scale=.25]{preprocessed_image.eps}}
+    \caption{A három előfeldolgozó metódus futása utáni állapot}
 \end{figure}
 
-\newpage
+A három képfeldolgozó metódus lefuttatása után elértem, hogy a szöveg jól elkülönüljön a háttértől, a karakterek könnyen felismerhetőekek legyenek, és ne maradjon a szövegfelismerés szempontjából irreleváns jelentést hordozó adat a dokumentumon.
 
-A függvény először megvizsgálja, hogy a kiadott parancs tartalmaz-e rövidítést, amit egy JSON fájlból olvas be egy globális szótárba még a program indulásakor. A szótár kulcsai a rövidített parancsok lesznek, értékei a rövidítések teljes alakos változata. Ha talál rövidítést a parancsban, azt kicseréli a kulcs-érték pár alapján, majd tovább halad az ellenőrzéssel.
+\section{Adatstruktúra felállítása és feltöltése}
+
+Ahhoz, hogy a képről kinyert szöveget hatékony módon, könnyen kereshető és osztályozható formában tudjam tárolni, az objektum orientált programozás egyik alappillérét, az osztályokat hívtam segítségül. Egy osztály többek között rendelkezhet tulajdonságokkal és definiálhat metódusokat. A dokumentumról kinyert adatoknak sok közös tulajdonságuk van. Mindegyik magával hordoz egy karakterláncot, valamint a dokumentumon való elhelyezkedést leíró koordinátákat. Pythonban az adattagok definiálására és az értékeik kezdetleges beállítására a konstruktor szolgál.
 
 \begin{verbatim}
-if listener.lines_of_code == "conf t":
-  listener.lines_of_code = "configure terminal"
-else:
-  # Split the command, to get the first
-  split_command = listener.lines_of_code.split(sep=" ")
-  print("split command: {}".format(split_command))
-  # If the command given is a shorthand known to us
-  if split_command[0] in abbreviations:
-    print("its an abbreviation")
-    # Change the shorthand command to the full command
-    replace_command = abbreviations['{}'.\
-                      format(split_command)]
-    print("replace_command: {}".format(replace_command))
-    listener.lines_of_code.replace(split_command[0],
-                                   replace_command, 1)
-    print("final: {}".format(listener.lines_of_code))
+class CardTextItem:
+    def __init__(self, top_left, top_right, btm_left, btm_right, text, conf):
+        self.top_left = top_left
+        self.top_right = top_right
+        self.btm_left = btm_left
+        self.btm_right = btm_right
+        self.text = text
 \end{verbatim}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{replace.eps}
-    \caption{Egy rövidített parancs cseréje}
-\end{figure}
+A top\_left, top\_right, btm\_left és btm\_right adattagok rendre annak az alakzatnak a bal felső, jobb felső, bal alsó és jobb alsó pontjainak koordináta párjait jelölik, mely pontosan körbehatárolja az egybefüggően kinyert karakterláncot.
 
-Végigjárja az adatbázisból kiolvasott parancsokat és ellenőrzi, hogy megtalálható-e benne a megfelelő alakra hozott parancs.\\
-Ha megtalálható, ezt jelzi a felhasználó számára, és a User osztályban létrehozott százalékmérőt növeli a megfelelő inkremenssel.\\
-Ha nem található meg, üzenetet küld a felhasználó számára a frontendre. Ez azonban nem egy hibaüzenetet, hiszen lehetséges, hogy állapotlekérdező parancsot futtatott, hogy egy beállítást ellenőrizzen az eszközön.\\
-A lines\_of\_code változó értékét üríti, és egy végső feltételvizsgálatot végez. Ellenőrzi, hogy az a parancs, amivel meghívták, 100\%-osan megoldottra növelte-e a feladatot. Ha igen, üzen a felhasználónak a feladat elvégzéséről. Az is\_waiting\_for\_join változót 1-re állítja, a message queue-khoz nyitott csatornára ezáltal meghívódik a close() pika névtérbeli metódust. Az objektumpéldány belépési metódusában folyamatosan futó metódus erre a változóra írt feltételvizsgálat miatt kilép és az azt futtató programszál is.
-
-
-\section{Logoló modul}
-
-
-A rendszer fontos része a logoló modul, aminek segítségével a felhasználók által a különböző COM portokra kiadott parancsok naplózásra kerülnek. Az üzeneteket a modul külön message queue-n kapja meg, ami fontos abból a szempontból, hogy ha egy queue-t két consumer olvas, akkor az egyikőjüktől érkező acknowledge hatására a másik consumer az adott üzenetet nem kapja meg. Ebben az esetben előfordulhat, hogy a hálózati eszközök hamarabb olvassák az üzenetet, és ez nem jut el a logoló modulhoz, ergó nem kerül naplózásra a kiadott parancs, avagy vice versa, a parancs naplózásra kerül, de az eszközön nem kerül futtatásra.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{log.eps}
-    \caption{Logolás az adatbázisban}
-\end{figure}
-
-A naplózás mechanikájában egy puffer került bevezetésre, ami biztosítja, hogy abban az esetben, ha gyorsabban érkeznek az üzenetek, mint ahogy az adatbázisba való insert lefutna, azok nem vesznek el. A pufferből csak akkor kerül törlésre az üzenet, ha az sikeresen az adatbázisba lett írva:
+Azzal, hogy elkészült az adatstruktúra, már csak fel kell tölteni az OCR által kinyert adatokkal. Ehhez vissza kell emlékezni az EasyOCR könyvtár bemutatása című alfejezet során szemléltetett adatstruktúrára, melyben rendelkezésünkre áll a dokumentumról felismert összes karakterlánc. Ez egy olyan lista, melyben minden elem egy további struktúrát tartalmaz, benne a koordinátákkal, a szöveggel és a szöveg pontosságát becslő számmal. Ezt a listát szeretném úgy szétbontani, hogy minden elemét leképezem egy olyan objektummá, ami az előbb felállított adatstruktúra egy példánya, azaz minden egyes karakterlánc egy önálló objektum lenne.
 
 \begin{verbatim}
-[...]
-for item in command_buffer:
-    if log_to_db(item, db, user_id, com_port):
-        command_buffer.pop(command_buffer.index(item))
-[...]
+def get_text_items_from_ocr_data(ocr_data):
+    card_text_items = list()
 
-def log_to_db(command, db, user_id, com_port):
-    insert_cursor = db.cursor()
+    for i in range(len(ocr_data)):
+        item_bl = ocr_data[i][0][0]
+        item_br = ocr_data[i][0][1]
+        item_tr = ocr_data[i][0][2]
+        item_tl = ocr_data[i][0][3]
+        item_text = ocr_data[i][1]
 
-    sql = "INSERT INTO command_history(user_id, command, com) 
-           VALUES (%s, %s, %s)"
-    val = (user_id, command, com_port)
-
-    print('DEBUG_LOOGER command: ' + command)
-    insert_cursor.execute(sql, val)
-
-    try:
-        db.commit()
-    except mysql.connector.Error as err:
-        print(err)
-        return False
-    return True
+        text_item = cti.CardTextItem(item_tl, item_tr, 
+                            item_bl, item_br, item_text)
+        card_text_items.append(text_item)
 \end{verbatim}
 
-\newpage
+A metódusban végig iterálunk az OCR által kinyert adatokon, és az aktuális elemet tovább bontva a megfelelő adattaghoz rendeljük. Ezután létrehozunk belőle egy példányt, majd hozzáadjuk a kész, feltöltött objektumokat tároló listához. A metódus futása után a lista minden eleme egy OCR által kinyert karakterláncot tartalmazó objektum. Példaképpen, az általam készített minta személyi igazolványról kinyert adatok listájának első eleme a metódus futása után:
+
+\begin{tcolorbox}
+    Text: IDENTIFICATION CARD
+
+    top\_left: [333, 350], top\_right: [3551, 350]
+
+    btm\_left: [333, 78], btm\_right: [3551, 78]
+\end{tcolorbox}
+
+\section{Kulcs-érték párok azonosítása}
 
 \section{Összefoglalás}
 

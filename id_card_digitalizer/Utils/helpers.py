@@ -1,5 +1,6 @@
 import cv2
-from Model import CardTextItem as cti
+from Models import CardTextItem as cti
+
 
 def generate_image_with_bounding_boxes_on_words(ocr_result, image_path):
     img = cv2.imread(image_path)
@@ -33,8 +34,8 @@ def get_text_items_from_ocr_data(ocr_data):
 
 
 def print_card_text_items(card_text_items):
-    for cti in card_text_items:
-        print(cti.__str__())
+    for item in card_text_items:
+        print(item)
         print("/-------/\n")
 
 
