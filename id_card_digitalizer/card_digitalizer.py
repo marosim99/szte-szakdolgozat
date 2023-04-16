@@ -19,6 +19,9 @@ if __name__ == '__main__':
     print("/-- Key-Value pair finding process finished --/")
     items_dict = helpers.items_to_dict(text_items)
     helpers.print_dict(items_dict)
+    print("/-- Formatted values: --/")
+    post_processed_values = helpers.post_process_text(items_dict)
+    helpers.print_dict(post_processed_values)
 
 
 

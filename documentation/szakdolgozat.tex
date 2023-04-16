@@ -674,7 +674,23 @@ Erről meggyőződhetünk, ha végigiterálunk rajta és kiíratjuk minden elem�
     Key: CAN:, Value: 123456
 \end{tcolorbox}
 
+A minta igazolványról az adatok hibátlanul kerültek kinyerésre és a kulcs-érték párok megtalálása és párosítása is kiválóan sikerült. Viszont megfigyelhetjük, hogy bizonyos esetekben a szövegek formázásra, utólagos korrigálásra szorulnak.
+
 \section{Kinyert adatok utófeldolgozása}
+
+Ha végignézzük a kulcs-érték párok kinyerésének eredményét, láthatjuk, hogy a kulcsok végén kettőspont szerepel. Ennek csak a dokumentumon volt szerepe, ez segített az emberi szemnek a kulcsokat összekötni az értékekkel. Viszont digitalizálva már szükségtelenek, így eltávolírásra kerülhetnek a Python függvénykönyvtárába beépített replace() metódus segítségével.
+
+A kucslokhoz kapcsolt értékeket végigfutva néhány esetben azt vehetjük észre, hogy felesleges szóközök szerepelnek a karakterek között. Ezek még az OCR folyamat során kerültek így kinyerésre. Ebből látszódik, hogy az egy gyenge pontja az EasyOCR könyvtárnak, ha egy karakterláncban az általánosnál nagyobb a betűköz. Utólagos javításra a legegyszerűbb módszer szintén a replace metódus lenne, de fontos észrevenni, hogy nem minden érték esetében tehetjük ezt meg. A név esetében például elrontanánk az adat helyességét azzal, hogy a vezetéknév és a keresztnév vagy keresztnevek közül eltűntetnénk a szóközöket. 
+Ezért valahogyan ki kell szűrni azokat az adatokat, melyekről eltávolíthatóak a felesleges szóközök.
+
+Erre a célra mintaillesztést használtam. A mintaillesztés reguláris kifejezések segítségével történik, melyben megszabjuk, hogy milyen szabályokat és mintákat kell követnie az általunk vizsgált szövegnek. A mintaillesztés kimenete lehet elfogadó, amennyiben a szöveg teljes egészében illeszkedik, és megfelel a követelményeinknek, egyébként elutasító.
+Tudjuk, hogy az olyan adatok, mint a nemzetiség kódja, a nem, a dátumok és a dokumentumszámok mind olyanok, melyek általános esetekben nem tartalmazhatnak szóközt. Így ezekre az adat kategóriákra írtam egy-egy reguláris kifejezést.
+
+A dátumformátum a legbonyolultabb, hiszen a nap, hónap és év sorrendje változó, továbbá az elválasztó jelek is lehetnek eltérőek. Ehhez az interneten kerestem már kész reguláris kifejezéseket, és azt kicsit átalakítva a programomba három konstans változóba felvettem. Az egyik az év, hónap, nap, a másik a nap, hónap év, a harmadik pedig a hónap, nap, év sorrendű megfelelőjét tárolja a reguláris kifejezésnek. Mind a három esetben az évet 4 számjegy, a hónapot és a napot pedig 2-2 számjegy jelöli. Egyéb eseteket nem vettem figyelembe, mivel ez a három nagyon nagy százalékban lefedi a különböző igazolványokon található formátumokat.
+
+Az nemzetiséget jelölő ország kódjára saját reguláris kifejezést írtam. Az országok kódjai az ISO-3166 szabvány alapján 2 vagy 3 betűből állhatnak. Az erre írt reguláris kifejezés így néz ki: \textasciicircum[a-zA-Z]\{2,3\}\$. Ez egy egyszerű kifejezés, mely a kis- és nagybetűk között különbséget nem téve korlátozza, hogy a betűk számának 2 és 3 között kell lennie, semmilyen egyéb karakter nem megengedett a szövegen belül sehol.
+
+A dokumentumszámok és egyéb azonsítóknál azt szabtam meg, hogy a karakterláncnak tartalmaznia kell legalább 4 számot. Mivel ebbe beleesnek a dátumok is, így a szűrésnél figyelni kell, hogy először a dátum reguláris kifejezésére történjen a próbaillesztés, és ha arra nem illeszkedett a szöveg, akkor lehet próbálni a dokumentumszámra is. A dokumentumszám reguláris kifejezése: \textasciicircum(.*\textbackslash d)\{4,\}\textbackslash S*\$. Bármilyen, bármennyi (akár nulla) karakter után kötelezően 4 vagy több szám kell, hogy szerepeljen, ami után bármennyi egyéb karakter állhat, akár egy sem.
 
 \section{Összefoglalás}
 

@@ -3,20 +3,11 @@ import cv2
 
 def preprocess_image(image_path):
     img = cv2.imread(image_path)
-    print("image:")
-    show_image(img)
-
     grayscale_img = convert_to_grayscale_image(img)
-    print("grayscale_img:")
-    show_image(grayscale_img)
-
     de_noised_img = remove_noise(grayscale_img)
-    print("de_noised_img:")
-    show_image(de_noised_img)
-
     threshold_img = threshold_image(de_noised_img)
-    print("threshold_img:")
-    show_image(threshold_img)
+    # print("Pre-processed image:")
+    # show_image(threshold_img)
 
     return threshold_img
 

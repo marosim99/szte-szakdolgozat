@@ -1,5 +1,12 @@
 import cv2
+import re
 from Models import CardTextItem as cti
+
+YYYY_MM_DD_REGEX = "(?:19/d{2}|20[0-9][0-9])[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])"
+DD_MM_YYYY_REGEX = "(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[012])[-/.](?:19/d{2}|20[0-9][0-9])"
+MM_DD_YYYY_REGEX = "(?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])[-/.](?:19/d{2}|20[0-9][0-9])"
+COUNTRY_CODE_REGEX = "^[a-zA-Z]{2,3}$"
+DOCUMENT_NUMBER_REGEX = "^(.*\d){4,}\S*$"
 
 
 def generate_image_with_bounding_boxes_on_words(ocr_result, image_path):
@@ -52,3 +59,31 @@ def items_to_dict(card_text_items):
 def print_dict(items_dict):
     for key, value in items_dict.items():
         print(f"Key: {key}, Value: {value}")
+
+
+def post_process_text(items_dict):
+    new_items_dict = dict()
+
+    for key, value in items_dict.items():
+        cleaned_string = value.replace(' ', '')
+        if matches_any_regex(cleaned_string):
+            new_items_dict[key.replace(':', '')] = cleaned_string
+        else:
+            new_items_dict[key.replace(':', '')] = value
+
+    return new_items_dict
+
+
+def matches_any_regex(text):
+    if re.search(YYYY_MM_DD_REGEX, text):
+        return True
+    if re.search(DD_MM_YYYY_REGEX, text):
+        return True
+    if re.search(MM_DD_YYYY_REGEX, text):
+        return True
+    if re.search(COUNTRY_CODE_REGEX, text):
+        return True
+    if re.search(DOCUMENT_NUMBER_REGEX, text):
+        return True
+    if text == "MALE" or text == "FEMALE":
+        return True
