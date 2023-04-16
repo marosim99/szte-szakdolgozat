@@ -469,7 +469,8 @@ def generate_image_with_bounding_boxes_on_words(ocr_result):
     for text_row in ocr_result:
         bottom_left = tuple(text_row[0][0])
         top_right = tuple(text_row[0][2])
-        img = cv2.rectangle(img, bottom_left, top_right, (0, 255, 0), 10)
+        img = cv2.rectangle(img, bottom_left, top_right, 
+                            (0, 255, 0), 10)
 
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)
     cv2.imshow("output", img)
@@ -524,7 +525,8 @@ Ahhoz, hogy a képről kinyert szöveget hatékony módon, könnyen kereshető �
 
 \begin{verbatim}
 class CardTextItem:
-    def __init__(self, top_left, top_right, btm_left, btm_right, text, conf):
+    def __init__(self, top_left, top_right, btm_left,
+                 btm_right, text, conf):
         self.top_left = top_left
         self.top_right = top_right
         self.btm_left = btm_left
@@ -574,6 +576,105 @@ Mindenképpen szerettem volna felhasználni az OCR által kinyert szövegekhez t
 
 Végül egy saját magam által írt algoritmus mellett döntöttem, ahol nincsenek előre meghatározva a kulcsok, és az értékek elhelyezkedése sincsen megkötve, mint egy sablonnál. Ebből kifolyólag az algoritmusnak képesnek kell lennie megállapítania minden adatról, hogy az kulcs, vagy érték. Ez természetesen nem egy egyszerűen megállapítható és eldönthető kérdés, meg kellett határoznom, hogy milyen feltételek mellett számít valami kulcsnak vagy értéknek. Sok dokumentum típust végignézve megfigyeltem, hogy a kulcsok általában vagy az értéktől balra, vagy az érték felett helyezkednek el. Ez természetesen nem fed le minden esetet, de egy elég jó kiindulási pont volt az algoritmus implementálásához. 
 
+Az algoritmus végig iterál a teljes listán, mely a kinyert szövegeket tároló objektumokat tartalmazza. Minden iteráció első lépése az, hogy keressünk az objektumok közül egyet, amire nagy biztossággal rámondható, hogy az egy kulcs. Ennek a megállapítására írtam a find\_next\_key metódust, mely az összes objektumot összehasonlítva megkeresi azt, amelyik a koordinátái alapján a többihez képest legjobban balra és legjobban felül van, máshogy fogalmazva megkeresi a bal felső sarokhoz legközelebb eső elemet. Mivel feltételeztem, hogy a kulcsok minden esetben vagy az értkékek bal oldalán, vagy az értékek felett vannak, így elméleti szinten az algoritmus nem találhat értéket, hiszen annak kulcsa mindenképpen közelebb lesz a bal felső sarokhoz.
+
+Először a CardTextItem objektumba fel kellett vennem 4 új adattagot: is\_examined, assigned\_to, is\_key, is\_value. Mind a négy adattag kezdetben 0-ra inicializálódik. Az is\_examined egy logikai változóként viselkedik, és azt jelzi, hogy a kulcs-érték pár keresés lefutott-e már rá. Erre azért volt szükség, hogy ha az adott szövegre futó keresés nem talált hozzá tartozó párt, akkor jelezve legyen, hogy ez nagy eséllyel egy olyan szöveg, mely csak tájékoztató jellegű, nem pedig egy fontos adat. Ilyen például a példa igazolványon az IDENTIFICATION CARD szöveg, mely nem lesz kulcs, hiszen érték sem tartozik hozzá.
+Az assigned\_to adattag segítségével lesznek összekapcsolva azok az objektumok, amik a kulcs-érték pár keresés során egymáshoz lettek rendelve. Maga az adattag hozzá kapcsolt másik objektumra fog mutatni. Az is\_key és az is\_value adattagok pedig szintén logikai változókként funkcionálnak, jelezvén, hogy az adott objektum kulcsként vagy értékként lett felismerve.
+
+\newpage
+
+\begin{verbatim}
+def find_next_key(items):
+    next_key = next(item 
+                    for item 
+                    in items 
+                    if item.is_examined == 0)
+
+    for item in items:
+        if item.is_examined == 0:
+            if item.top_left[1] < next_key.top_left[1]:
+                next_key = item
+\end{verbatim}
+
+A metódus paraméterben megkapja az objektumok listáját, és a next() beépített függvény és egy szűrés segítségével kiválasztja a listából az első olyan objektumot, amit még nem vizsgáltunk. Ezután végig iterálva az objektumokon összehasonlítást végez a bal felső sarok Y koordinátája alapján. Az iteráció végére megkapjuk a dokumentum tetejéhez legközelebb eső (az Y tengelyen legmagasabban lévő) objektumot.
+Ezen a ponton felmerült egy fontos kérdés. Amennyiben a legfelül elhelyezkedő objektummal egyező magasságban található még több is, akkor a leginkább balra esőt fogjuk kulcsként címkézni. De olyan szélsőséges eset is előfordulhat, hogy nem pont azonos Y koordinátán, de nagyon pici eltéréssel szintén található egy másik objektum, tőle balrább elhelyezkedve, akkor őt kell kulcsként címkézni.
+Mivel nem feltételezhetjük, hogy a dokumentumon egymás mellett elhelyezkedő szövegek 1 pixel pontosságra egy vonalban vannak, továbbá azt sem, hogy az egymás alatt lévő szövegek bal széle pontosan egy függőlegesen húzott vonalra illeszkednek, így be kellett vezetnem egy olyan tűréshatár értéket, melyet hozzáadva illetve kivonva az éppen vizsgált X vagy Y értékből megkapjuk a tűréshatár intervallumot.
+Amennyiben ezen az intervallumon belül találunk újabb kulcsokat, azokról meg kell állapítani, hogy közelebb vannak-e a dokumentum bal széléhez, mint amit eddig találtunk. A find\_next\_key metódus az alábbi sorokkal egészül ki:
+
+\begin{verbatim}
+upper_bound = next_key.top_left[1] + THRESHOLD
+lower_bound = next_key.top_left[1] - THRESHOLD
+
+for item in items:
+    if item.is_examined == 0:
+        if lower_bound <= item.top_left[1] <= upper_bound:
+            if item.top_left[0] < next_key.top_left[0]:
+                next_key = item
+\end{verbatim}
+
+\newpage
+
+A THRESHOLD konstans változó értékének meghatározása próbálgatással történt. A 40-es érték bizonyult minden esetben jónak, ez még az a tűréshatár, amibe az egymás mellett és alatt elhelyezkedő objektumok beleesnek, de azok már nem, amik a keresés eredménye szempontjából helytelenek lennének. Ezt a konstanst többször is használni fogom a kulcs-érték párok felderítése során.
+
+A find\_next\_key metódus visszatérési értéke az az objektum lesz, ami Y tengelyen a legmagasabban helyezkedik el. Amennyiben ezen objektum X koordinátájának a tűréshatár intervallumán belül találunk egy vagy több másik, tőle  balra eső objektumot, úgy azzal térünk vissza, amelyik ezek közül a legközelebb van a dokumentum bal széléhez. Tehát a metódus visszatér egy objektummal, melyről innentől feltételezzük, hogy kulcs. 
+Azért nem jelenthető ki, hogy kulcs, mert csakis onnantól címkézünk egy objektumot kulcsként, ha megbizonyosodtunk róla, hogy tartozik hozzá érték. Ezen a ponton ebben még nem lehetünk biztosak.
+
+A folyamat következő lépése a find\_value\_for\_key nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum is\_examined adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
+Innentől tudjuk, hogy az eddig kulcsnak vélt objektum valóban kulcs, hiszen találtunk egy objektumot mellette, mely feltételezhetően a hozzá tartozó érték. Amennyiben a jobbra keresésnek nem lett eredménye, úgy egy lefelé történő keresés indul. Amennyiben a kulcsnak vélt objektum alatt sem találtunk másik objektumot, akkor a metódus futása véget ér anélkül, hogy a kulcsnak vélt objektumot valóban kulcsként címkéztük volna, és értéket rendeltünk volna hozzá. Ebből megállapítható, hogy az objektumhoz valószínűleg nem tartozik érték.
+Ilyen például az IDENTIFICATION CARD szöveg, se tőle jobbra, se alatta nem helyezkedik el hozzá kapcsolható érték.
+
+Mivel a kulcs keresés mindig a bal felső objektumokból indul ki, így teljesen felesleges lenne balra illetve felfelé történő keresés, hiszen ott már nem találhatunk semmit. Ez természetesen hátrány egy olyan dokumentumnál, melyről nem mondható el, hogy a kulcsok minden esetben az értékek bal oldalán, vagy felettük találhatóak.
+
+A search\_right metódus ugyanazokkal a paraméterekkel rendelkezik, mint a \break find\_value\_for\_key. Futása során először kiszámolja a tűréshatár intervallumot, majd ezen belül keres egyéb olyan objektumokat, melyek nem voltak még vizsgálva, és nincsenek más objektumhoz rendelve. Továbbá feltétel az is, hogy a kulcshoz képest nagyobb X koordinátával rendelkezzen, azaz tőle jobbra helyezkedjen el a dokumentumon.
+A talált objektumokat egy listában gyűjtjük, és a jobbra keresés végén, amennyiben a listában nincs elem, akkor tudjuk, hogy nem volt objektum a kulcstól jobbra. Ebben az esetben egy lefelé történő keresés indul. Amennyiben csak egy objektum van a találatok listájában, úgy visszatérünk azzal az objektummal. Ha a találatok listája több elemet is tartalmaz, akkor a get\_closest\_item\_right függvény fog hívodni, mely a listát kapja paraméterül, és a koordináták alapján visszaadja azt, amelyik jobbról a legközelebb található a kulcshoz.
+
+A search\_below metódus ugyan úgy működik, mint a search\_right, csak nem jobbra irányul a keresés, hanem a kulcstól lefelé. Ha a lefelé történő keresés során több objektumot is találunk, akkor hasonlóan, mint a search\_right metódusban, megkeressük azt, ami a legközelebb van a kulcshoz, csak nem az X tengelyről, hanem az Y-ról, a get\_closest\_item\_below metódus segítségével.
+
+A kulcs-érték keresési folyamat belépési pontja a find\_key\_value\_pairs metódus. Ebben egy while ciklus és egy listaszűrés felel azért, hogy egy objektumon legfeljebb egyszer menjen végig a párkereső algoritmus.
+
+\begin{verbatim}
+def find_key_value_pairs(items):
+    while any(item.is_examined == 0 for item in items):
+        next_key = find_next_key(items)
+        find_value_for_key(next_key, items)
+\end{verbatim}
+
+Az any() beépített listaszűrő metódus igazzal tér vissza, ha a lista legalább egy olyan objektumot tartalmaz még, ami nem volt vizsgálva. Ennek a helyességét a korábban tárgyalt find\_value\_for\_key metódus biztosítja. Tehát addíg, amíg van olyan objektum, melyet nem vizsgáltunk, keresünk egy kulcsot a dokumentumon a  find\_next\_key metódussal, majd a kulcshoz megkeressük a hozzá tartozó értéket a find\_value\_for\_key függvénnyel. Mivel Pythonban alapértelmezetten referencia szerinti paraméterátadás történik, így nem tér vissza semmivel ez a metódus, mert minden módosítást az eredeti objektumokon végzünk.
+Ha már nincs több vizsgálatlan objektum, akkor visszatérünk a main függvénybe. Ezen a ponton a feladat már el volt végezve, hiszen minden objektumot megvizsgáltunk, megtaláltuk a kulcs-érték párokat. Viszont az eddig használt adatstruktúra innentől értelmét veszti, a CardTextItem osztályból egyedül a text adattag releváns számunka. Az egyszerűbb kezelés érdekében egy kulcs-érték párokat tároló adatstruktúra mellett döntöttem.
+
+\newpage
+
+\begin{verbatim}
+def items_to_dict(card_text_items):
+    result_dict = dict()
+
+    for cti in card_text_items:
+        if cti.is_key:
+            result_dict[cti] = cti.assigned_to
+
+    return result_dict
+\end{verbatim}
+
+Az items\_to\_dict metódus átrendezi az osztálypéldányokat egy dictionary adatstruktúrába, melynek minden kulcsa egy általunk kulcsnak vélt objektum text adattagja (a dokumentumról kinyert karakterlánc), értéke pedig a kulcshoz tartozó érték text adattagja. Így végeredményben a dictionary csak az egymással párba állított szövegeket fogja tartalmazni.
+Erről meggyőződhetünk, ha végigiterálunk rajta és kiíratjuk minden elemét:
+
+\begin{tcolorbox}
+    Key: Family name and Given name:, Value: MAROSI MARK DANIEL
+
+    Key: Sex:, Value: MALE
+
+    Key: Nationality:, Value: HUN
+
+    Key: Date of birth:, Value: 2 1/0 9 /1 9 9 9
+
+    Key: Date of expiry:, Value: 2 1/0 9 /2 0 2 3
+
+    Key: Document number:, Value: 1234 5 6 A B
+
+    Key: CAN:, Value: 123456
+\end{tcolorbox}
+
+\section{Kinyert adatok utófeldolgozása}
 
 \section{Összefoglalás}
 

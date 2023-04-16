@@ -12,7 +12,7 @@ if __name__ == '__main__':
     data = READER.readtext(image)
     # helpers.generate_image_with_bounding_boxes_on_words(data, ID_CARD_PATH)
     text_items = helpers.get_text_items_from_ocr_data(data)
-    helpers.print_card_text_items(text_items)
+    # helpers.print_card_text_items(text_items)
     print("/-- OCR process finished --/")
 
     kvpFinder.find_key_value_pairs(text_items)

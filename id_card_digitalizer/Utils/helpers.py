@@ -44,11 +44,11 @@ def items_to_dict(card_text_items):
 
     for cti in card_text_items:
         if cti.is_key:
-            result_dict[cti] = cti.assigned_to
+            result_dict[cti.text] = cti.assigned_to.text
 
     return result_dict
 
 
 def print_dict(items_dict):
     for key, value in items_dict.items():
-        print(f"Key: {key.text}, value: {value.text}")
+        print(f"Key: {key}, Value: {value}")

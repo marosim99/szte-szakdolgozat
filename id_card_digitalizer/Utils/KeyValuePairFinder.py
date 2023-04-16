@@ -48,7 +48,7 @@ def find_next_key(items):
 
     for item in items:
         if item.is_examined == 0:
-            if(lower_bound <= item.top_left[1] <= upper_bound) and item.top_left[0] < next_key.top_left[0]:
+            if lower_bound <= item.top_left[1] <= upper_bound and item.top_left[0] < next_key.top_left[0]:
                 # print("/-- found a new key within threshold --/\n")
                 next_key = item
 
