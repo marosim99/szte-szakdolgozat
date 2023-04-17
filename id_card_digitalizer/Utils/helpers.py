@@ -1,5 +1,6 @@
 import cv2
 import re
+import csv
 from Models import CardTextItem as cti
 
 YYYY_MM_DD_REGEX = "(?:19/d{2}|20[0-9][0-9])[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])"
@@ -7,6 +8,7 @@ DD_MM_YYYY_REGEX = "(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[012])[-/.](?:19/d
 MM_DD_YYYY_REGEX = "(?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])[-/.](?:19/d{2}|20[0-9][0-9])"
 COUNTRY_CODE_REGEX = "^[a-zA-Z]{2,3}$"
 DOCUMENT_NUMBER_REGEX = "^(.*\d){4,}\S*$"
+FILE_EXT = ".csv"
 
 
 def generate_image_with_bounding_boxes_on_words(ocr_result, image_path):
@@ -87,3 +89,11 @@ def matches_any_regex(text):
         return True
     if text == "MALE" or text == "FEMALE":
         return True
+
+
+def export_data_to_csv(path, data):
+    with open(path+"result"+FILE_EXT, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file, delimiter=';')
+
+        for key, value in data.items():
+            writer.writerow([key, value])
