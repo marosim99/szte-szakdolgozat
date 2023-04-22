@@ -52,7 +52,7 @@ def find_next_key(items):
                 # print("/-- found a new key within threshold --/\n")
                 next_key = item
 
-    print(f"/-- Found next key: {next_key.text} --/\n")
+    # print(f"/-- Found next key: {next_key.text} --/\n")
     return next_key
 
 
@@ -68,9 +68,9 @@ def find_value_for_key(key, items):
         item_right = search_right(key, items)
 
         if item_right is not None:
-            print("/-- closest item on right: --/\n")
-            print(item_right)
-            print("\n")
+            # print("/-- closest item on right: --/\n")
+            # print(item_right)
+            # print("\n")
 
             key.is_key = 1
             item_right.is_value = 1
@@ -82,9 +82,9 @@ def find_value_for_key(key, items):
             item_below = search_below(key, items)
 
             if item_below is not None:
-                print("/-- closest item below: --/\n")
-                print(item_below)
-                print("\n")
+                # print("/-- closest item below: --/\n")
+                # print(item_below)
+                # print("\n")
 
                 key.is_key = 1
                 item_below.is_value = 1
@@ -92,7 +92,7 @@ def find_value_for_key(key, items):
                 item_below.assigned_to = key
                 key.assigned_to = item_below
     else:
-        print("/-- no value pair found --/\n")
+        # print("/-- no value pair found --/\n")
         return None
 
 
@@ -115,7 +115,7 @@ def search_right(key, items):
         else:
             return get_closest_item_right(found_items, key)
     else:
-        print("/-- search_right found no items /-- \n")
+        # print("/-- search_right found no items /-- \n")
         return None
 
 
@@ -148,7 +148,7 @@ def search_below(key, items):
         else:
             return get_closest_item_below(found_items, key)
     else:
-        print("/-- search_below found no items /--\n")
+        # print("/-- search_below found no items /--\n")
         return None
 
 

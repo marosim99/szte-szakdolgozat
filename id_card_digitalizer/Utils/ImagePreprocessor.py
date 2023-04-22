@@ -1,13 +1,10 @@
 import cv2
 
 
-def preprocess_image(image_path):
-    img = cv2.imread(image_path)
+def preprocess_image(img):
     grayscale_img = convert_to_grayscale_image(img)
     de_noised_img = remove_noise(grayscale_img)
     threshold_img = threshold_image(de_noised_img)
-    # print("Pre-processed image:")
-    # show_image(threshold_img)
 
     return threshold_img
 
@@ -29,5 +26,9 @@ def show_image(img):
     cv2.imshow("output", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def read_image(path):
+    return cv2.imread(path)
 
 

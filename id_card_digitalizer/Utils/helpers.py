@@ -1,6 +1,8 @@
-import cv2
+import os
 import re
 import csv
+import cv2
+import pathlib
 from Models import CardTextItem as cti
 
 YYYY_MM_DD_REGEX = "(?:19/d{2}|20[0-9][0-9])[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])"
@@ -8,21 +10,37 @@ DD_MM_YYYY_REGEX = "(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[012])[-/.](?:19/d
 MM_DD_YYYY_REGEX = "(?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])[-/.](?:19/d{2}|20[0-9][0-9])"
 COUNTRY_CODE_REGEX = "^[a-zA-Z]{2,3}$"
 DOCUMENT_NUMBER_REGEX = "^(.*\d){4,}\S*$"
-FILE_EXT = ".csv"
+FILE_EXT = "csv"
 
 
-def generate_image_with_bounding_boxes_on_words(ocr_result, image_path):
-    img = cv2.imread(image_path)
-
+def draw_bounding_boxes_around_on_words(ocr_result, image):
     for text in ocr_result:
-        top_left = tuple(text[0][0])  # top left
-        bottom_right = tuple(text[0][2])  # bottom right
-        img = cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 10)
+        top_left = tuple(text[0][0])
+        bottom_right = tuple(text[0][2])
+        cv2.rectangle(image, top_left, bottom_right, (50, 170, 90), 10)
+
+    # cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    # cv2.imshow("output", image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+
+def draw_bounding_boxes_around_key_value_pairs(card_text_items, image):
+    for item in card_text_items:
+        if item.is_key:
+            bottom_left = tuple(item.btm_left)
+            top_right = tuple(item.assigned_to.top_right)
+            cv2.rectangle(image, bottom_left, top_right, (170, 50, 130), 14)
 
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)
-    cv2.imshow("output", img)
+    cv2.imshow("output", image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def draw_bounding_boxes(ocr_result, card_text_items, image):
+    draw_bounding_boxes_around_on_words(ocr_result, image)
+    draw_bounding_boxes_around_key_value_pairs(card_text_items, image)
 
 
 def get_text_items_from_ocr_data(ocr_data):
@@ -91,9 +109,15 @@ def matches_any_regex(text):
         return True
 
 
-def export_data_to_csv(path, data):
-    with open(path+"result"+FILE_EXT, 'w', newline='', encoding='utf-8') as file:
+def export(path, name, data):
+    with open(f"{path}/{name}_result.{FILE_EXT}", 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
 
         for key, value in data.items():
             writer.writerow([key, value])
+
+
+def export_data_to_csv(full_path, data):
+    path = os.path.dirname(full_path)
+    name = pathlib.Path(full_path).stem
+    export(path, name, data)
