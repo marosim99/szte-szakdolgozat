@@ -19,11 +19,6 @@ def draw_bounding_boxes_around_on_words(ocr_result, image):
         bottom_right = tuple(text[0][2])
         cv2.rectangle(image, top_left, bottom_right, (50, 170, 90), 10)
 
-    # cv2.namedWindow("output", cv2.WINDOW_NORMAL)
-    # cv2.imshow("output", image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
 
 def draw_bounding_boxes_around_key_value_pairs(card_text_items, image):
     for item in card_text_items:
@@ -32,7 +27,7 @@ def draw_bounding_boxes_around_key_value_pairs(card_text_items, image):
             top_right = tuple(item.assigned_to.top_right)
             cv2.rectangle(image, bottom_left, top_right, (170, 50, 130), 14)
 
-    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("output", cv2.WINDOW_KEEPRATIO)
     cv2.imshow("output", image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -91,6 +86,7 @@ def post_process_text(items_dict):
         else:
             new_items_dict[key.replace(':', '')] = value
 
+    # print_dict(new_items_dict)
     return new_items_dict
 
 

@@ -498,7 +498,7 @@ def remove_noise(image):
     return cv2.medianBlur(image, 5)
 \end{verbatim}
 
-Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képbet kétszintű (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
+Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képet két színből álló (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
 Különböző célokra különböző küszöbérték típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
 A THRESH\_BINARY küszöbérték típus számítási elve:
 \begin{equation*}
@@ -699,123 +699,52 @@ def post_process_text(items_dict):
     new_items_dict = dict()
 
     for key, value in items_dict.items():
-        cleaned_string = value.replace(' ', '')
-        if matches_any_regex(cleaned_string):
-            new_items_dict[key.replace(':', '')] = cleaned_string
+        cleaned = value.replace(' ', '')
+        if matches_any_regex(cleaned):
+            new_items_dict[key.replace(':', '')] = cleaned
         else:
             new_items_dict[key.replace(':', '')] = value
 
     return new_items_dict
 \end{verbatim}
 
-Az adatok exportálására a csv nevű függvénykönyvár volt a segítségemre. A \emph{with open() as} segítségével erőforrást allokálok egy fájl írására, majd példányosítok egy writer objektumot, mely a felhasználó által megadott mappába fog létrehozni egy csv kiterjesztésű fájlt. Az adatstruktúrán végigiterálva annak kulcsai és értékei beírásra kerülnek a fájlba pontosvesszővel elválasztva, sortöréssel lezárva. Ezzel lehetővé teszem, hogy excelbe is könnyen importálható legyen a kinyert adatok összessége, de bármilyen szerkesztővel megnyitva is könnyen olvasható legyen az emberi szemnek is a fájl tartalma.
+Az adatok exportálására a \emph{csv} nevű függvénykönyvár volt a segítségemre. A \emph{with open() as} segítségével erőforrást allokálok egy fájl írására, majd példányosítok egy writer objektumot, mely a beolvasott dokumentum mappájába fog létrehozni egy csv kiterjesztésű fájlt. A későbbi konfigurálhatóság érdelében a FILE\_EXT konstans változóban tárolom a kiterjesztést leíró stringet. Az adatstruktúrán végigiterálva annak kulcsai és értékei beírásra kerülnek a fájlba pontosvesszővel elválasztva, sortöréssel lezárva. Ezzel lehetővé teszem, hogy excelbe is könnyen importálható legyen a kinyert adatok összessége, de bármilyen szerkesztővel megnyitva is könnyen olvasható legyen az emberi szemnek is a fájl tartalma.
 
 \begin{verbatim}
 def export_data_to_csv(path, data):
-    with open(path, 'w', newline='', encoding='utf-8') as file:
+    filename = f"{path}/{name}_result.{FILE_EXT}"
+
+    with open(filename, 'w') as file:
         writer = csv.writer(file, delimiter=';')
 
         for key, value in data.items():
             writer.writerow([key, value])
 \end{verbatim}
 
+\chapter{A kész alkalmazás bemutatása}
+
+Mivel a program elkészítése során a fókusz a szövegfeldolgozáson és a kulcs-érték pár keresésen volt, így a felhasználói felület kapta a legkisebb figyelmet. Mivel ez egy olyan alkalmazás, melynek célzott, szűk körű közönsége van, és azok is inkább cégek vagy szervezetek, és nem magánszemélyek, így a lehető legegyszerűbb, minimalista felületet kapott a program.
+Ennek megvalósítására a \emph{tkinter} nevű Python könyvtár eszközkészlete tűnt a legjobbnak, mely a \emph{Tcl/Tk} (Tool Command Language) eszközkészlet Pythonra írt interfésze. A \emph{tkinter} könyvtárnak is létezik néhány egyedi megvalósítása, ezek közül dizájn és színvilág szempontjából a \emph{customtkinter} tetszett a legjobban, így ezt a könyvtárat használtam a grafikus felhasználói felület elkészítésére.
+
+\section{Az alkalmazás használata}
+A felület az egyszerűség kedvéért mindössze egy gombot tartalmaz, mely kattintásra a fájlkezelőt nyitja meg, és várja, hogy a felhasználó tallózzon egy kép típusú fájlt. A fájl kiválasztása után a szövegkinyerési folyamat azonnal elindul, mely több másodpercet is igénybe vehet, erre a felhasználót egy "Process started, please wait..." üzenet figyelmezteti. Amint a szöveg kinyerése, feldolgozása és exportálása sikeresen megtörténik, a következő üzenet olvasható: "Process finished, CSV file saved to folder of the source image.".
+Ha ezen a ponton bemenetként adott kép mappájába tekintünk, találnunk kell egy .csv kiterjesztésű fájlt, mely az alábbi módon van elnevezve: originalFileName\_result.csv (ahol originalFileName a bemenetként adott fájl neve). Ezzel biztosítottam azt, hogyha ugyan abból a mappából több fájlra is futtatásra kerülne a program, akkor minden fájlhoz megtalálható legyen a hozzá tartozó eredmény. Továbbá, ha egy fájlra többször futtatásra kerül a program, akkor ne sokszorozódjon a csv fájl, hanem íródjon felül az előző verzió.
+
+A program futása során keletkezhetnek hibák. Amennyiben az "Error while preparing and reading data." hibaüzenettel találja szembe magát a felhasználó, akkor vagy a kép előfeldolgozása, vagy az OCR folyamat során keletezett kivétel. Ha az "Error while processing data." üzenet jelenik meg, akkor az OCR eredményének leképezésénél, vagy a kulcs-érték párok keresésénél történt végzetes hiba.
+A felhasználó találkozhat még az "Error while post-processing data." üzenettel, ami egyértelműen jelzi, hogy az utófeldolgozási lépés sikertelen volt egy nem várt hiba miatt. Amennyiben egy nem ennyire elkülöníthető folyamat során keletkezik hiba, akkor a "Something went wrong" üzenet jelenik meg. Ezek közül egyik hiba sem okozza a program leállását, így újra lehet próbálni a futtatást.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.5]{gui.eps}}
+    \caption{A program grafikus felhasználói felülete}
+\end{figure}
+
 \section{Összefoglalás}
+
+A szakdolgozat elsődleges célja a szövegfeldolgozás témájának körbejárása volt egy olyan alkalmazás elkészítésével, mely segítségével betekintést nyerhettem a szövegfeldolgozás világába. Ám a kutató és fejlesztő munkák során 
 
 A szakdolgozatban leírt projekt lényege, hogy segítséget tudjunk nyújtani a hallgatóknak akár a Cisco hálózatépítő kurzusban, vagy akár a Cisco ipari vizsgára való készülésben. A fejlesztés a szakdolgozaton túl is folytatódik, célunk, hogy egy olyan rendszer álljon a hallgatók rendelkezésére, amivel produktívan lehet tanulni, kísérletezni.
 
-
 A fejlesztés során lehetőségem nyílt nem csak csapatban, de új technológiákkal is dolgoznom. Köztük a RabbitMQ, aminek használata számomra újdonság és kihívás volt és a Python objektumorientált használata, amire ezelőtt még nem volt szükségem, lehetőségem. Illetve, eddigi tudásomat is lehetőségem nyílt kamatoztatni, a git verziókezelés, a gitlab-runner és a hozzá tarozó CI/CD leírók használata, a docker és docker-compose, és a hyper-v virtualizáció terén.
-
-\chapter{Adatbázis sémák}
-%\addcontentsline{toc}{section}{Adatbázis schemák}
-\section{Adatbázis sémák}
-
-
-A program a következő adatbázisokkal dolgozik:
-
-\singlespacing
-\begin{itemize}
-    \item lab\_tasks
-    \item correct\_commands
-    \item running\_configs
-    \item startup\_configs
-\end{itemize}
-
-\onehalfspacing
-
-A lab\_tasks tábla tartalmazza az elérhető feladatok címét, a Cisco tananyag fejezet azonosítóját, amivel a hozzá tartozó tananyag könnyen megtalálható, és COM[1-6] oszlopokat, amelyeknek az értéke a feladat szerinti eszköz hostneve.
-
-A correct\_commands tábla azokat a parancsokat tartalmazza, amelyeket a különböző COM portokon ki kell adni, a feladat helyes elvégzéséhez.
-
-A running\_configs tábla azokat a "show running config" parancs kimeneteket tartalmazza, amelyeket a helyesen konfigurált eszközöknek produkálnia kell.
-
-%\newpage
-
-A startup\_configs tábla pedig a hibaelhárítási feladatokhoz tartozó helytelen beallításokat előállító parancsokat tartalmazza, amelyeket a feladatmegoldás előtt a program futtat az eszközön.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1, angle=90]{table_schema.eps}
-    \caption{Séma relációs ábrázolása}
-\end{figure}
-
-\chapter{Az alkalmazás működése}
-\section{Az alkalmazás működése}
-
-
-A program belépési pontja a main.py, ami indulásakor példányosítja a MetaCommunication osztályt.
-Ez a példány becsatlakozik a RabbitMQ-ba, ahol egy message queue-n figyel, és vár egy felhasználó csatlakozására. A csatlakozást követően készen áll a használatra.
-
-Egy felhasználó csatlakozásakor a MetaCommunication osztály user\_connection() metódusa meghívódik, ezzel példányosítva a User osztályt. A User osztály konstruktora a szükséges adattagokat beállítja (felhaszáló azonosítója, kiválasztott feladat (ha van), helyes parancsok listája, százalékos inkremens).
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.3]{queues.eps}
-    \caption{A program indulása előtti és utáni message queue-k}
-\end{figure}
-
-
-
-A példányosítás után a vezérlés visszatér a MetaCommunication osztály user\_connection() metódusához, ami a Thread típusú User példányt elindítja. Ezzel a User objektum run metódusa meghívásra kerül, ami a programszálat elindítja. Annyi felhasználóhoz tartozó Logger osztálypéldányt készít, ahány COM porton keresztül kommunikál az eszközökkel, továbbá ugyanennyi  QueueListener osztálypéldány is létrejön, ha a felhasználó választott feladatot. Azaz, a jelenlegi felállás szerint egy felhsználóhoz -- a hat COM porthoz -- kétszer hat programszál tartozik, így a MetaCommunication és fő szállal együtt tizennégy vagy nyolc szálon fut a program.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.3]{threads.eps}
-    \caption{A programszálak vizualizálva\\(Készült a PyCharm Concurrent Activities Diagram segítségével)}
-\end{figure}
-
-A QueueListener példányok a hozzájuk tartozó message queue-kat figyelik, és az azon keresztül érkező parancsokat fogadják. Feldolgozásra meghívják rájuk a validate\_commands() metódust, ami kiértékeli azt.
-
-%\newpage
-
-Amikor a felhasználó elvégezte a feladatot, a szintjelző 100\%-ra vált, és üzenetet küld a felhasználónak erről.
-Ekkor a message queue-kat figyelő szálak feleslegessé válnak, ezért ezeket egyesítjük az őt példányosító szálakkal. 
-Ez úgy érhető el, hogy a QueueListener példány is\_waiting\_for\_join tulajdonságát 1-re állítjuk, ami megállítja a futtatását.
-
-
-A szemétgyűjtést a Python beépített automatikus szemétgyűjtője végzi, ami referenciaszám alapján azokat az objektumokat, amikre már nem hivatkozik semmi, törli a memóriából.
-A dokumentációban leírtak alapján a szemétgyűjtés explicit meghívásra kerül, ha az újonnan létrehozott objektumok száma meghaladja a már jelenleg memóriában lévők 25\%-át.
-Képletesen felírva:
-\begin{equation}
-    current\_objects \times 0.25 < new\_objects \Rightarrow garbage\_collection
-\end{equation}
-Ez a százalékos határ a program esetében ideális. A program indulásakor létrejön a MetaCommunication egy példánya.
-Egy felhasználó bejelentkezésekor kétszer hat objektum jön létre (hat QueueListener és hat Logger a hat COM porthoz).
-Amikor a felhasználó kijelentkezik, a következő felhasználó bejelentkezéséig két eset állhat fenn.
-
-1. Az automatikus szemétgyűjtés nem fut le, tehát a következő felhasználó bejelentkezésekor az előző felhasználóhoz létrehozott objektumok még a memóriában vanank.
-
-2. Az automatikus szemétgyűjtés lefutott és az előző felhasználó objektumai a következő bejelentkezésekor már nincsenek a memóriában.
-
-Az első eset az, ami vizsgálatot igényel:
-Egy felhasználó aktív kapcsolata során 1 + 2 x 6 = 13 objektum van a memóriában, ezek pedig nem törlődtek.
-A következő felhasználó bejelentkezésekor 2 x 6 objektum keletkezik. A képletet alkalmazva:
-\begin{align*}
-    13 \times 0.25 < 12 \\
-    3.25 < 12
-\end{align*}
-Az egyenlőtlenség igaz, tehát a szemétgyűjtés legkésőbb a következő felhasználó bejelentkezésekor meghívódik.
 
 
 \chapter{Továbbfejlesztési lehetőségek}
