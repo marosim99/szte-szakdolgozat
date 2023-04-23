@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     root = customtkinter.CTk()
     root.geometry("1040x500")
-    root.title("ID Card Digitalizer")
+    root.title("ID Card Digitizer")
 
     frame = customtkinter.CTkFrame(master=root)
     frame.pack(pady=20, padx=40, fill="both", expand=True)

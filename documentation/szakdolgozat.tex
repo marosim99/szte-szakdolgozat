@@ -173,8 +173,8 @@ Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelá
 Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és kettő másodperc alatt minden adatom, ami a személyi igazolványomon volt, az a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgráság, és így tovább.
 
 Szakdolgozatom célja, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat és egy ilyen folyamatot be tudjak mutatni egy tetszőlegesen kiválasztott domainnel.
-\newline
-Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első részében a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg használnak. A második részben rávilágítok a jelenleg bárki számára elérhető szövegfelismerő rendszerek hiányosságaira, továbbá bemutatom és összehasonlítom azokat a technológiákat, keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben. Harmadik lépésben a projektem megvalósításának részleteit, komponenseit, felépítését fogom bemutatni, valamint megindoklom a domain választásom. Végül lépésről lépésre bemutatom a program működését egy konkrét esetre, valamint a program futásának elvárt eredményét.
+
+Ennek megfelelően szakdolgozatom tartalmát négy fő részre tagoltam. A dolgozat első részében a jelenleg bárki számára elérhető szövegfelismerő rendszerek közül bemutatok néhányat, majd rávilágítok azok hiányosságaira. A második részben a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg az iparban használnak. A harmadik részben ismertetem és összehasonlítom azokat a keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben, továbbá a teljes implementáció és fejlesztési folyamat bemutatásra kerül lépésről lépésre. A negyedik részben az elkészült program használatát, komponenseit és felépítését fogom ismertetni.
 
 
 % \begin{figure}[h]
@@ -186,7 +186,7 @@ Ennek megfelelően szakdolgozatomat öt fő részre tagoltam. A dolgozat első r
 \chapter{Jelenlegi rendszerek}
 \section{Jelenlegi rendszerek bemutatása}
 
-Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg telefonos vagy web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt.
+Egy átlagos felhasználónak kép alapú szövegbeolvasásra jelenleg telefonos vagy web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt \cite{onlineocr}.
 
 \newline
 
@@ -218,16 +218,16 @@ A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A p
 \chapter{Az OCR technológia}
 \section{Az OCR működése}
 
-Az OCR, azaz Optical Character Recognition (magyarul Optikai Karakterfelismerés) egy olyan technológia, amely képes bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
+Az OCR, azaz Optical Character Recognition \cite{ocr} (magyarul Optikai Karakterfelismerés) egy olyan technológia, amely képes bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
 
 \newline
 Képzeljünk el egy könyvet, amit egy hagyományos szkennelővel beszkennelünk. A folyamat eredménye digitális képek sorozata lesz, melyeket könnyedén tudunk digitális eszközeink között mozgatni, vagy akár nyomtatóval sokszorosítani tudjuk, de szerkesztni, szöveget keresni vagy kimásolni belőle nem tudnánk. Ha egy olyan szkennerünk lenne, amelyben OCR alapú szövegfelismerés is lenne, akkor a könyvet könnyedén digitalizálhatnánk és nem képeket kapnánk eredményül, hanem egy olyan szöveges dokumentumot, amely teljesen szerkeszthető és kereshető.
 
 \newline
-Az Optikai Karakterfelismerés folyamata több lépésből tevődik össze.
+Az Optikai Karakterfelismerés folyamata több lépésből tevődik össze. \cite{ocr_aws}
 Az első lépésben egy osztályozási folyamat történik, ahol a kiválasztott képet vizsgálva a világos területeket háttérnek, a sötét területeket pedig szövegnek minősíti. Ebből kifolyólag az OCR pontosságát tovább javíthatjuk azzal, ha már a karakterfelismerés előtt az inputként választott képet fekete-fehérré alakítjuk.
 
-Második lépésben a szövegként minősített területeken egy olyan keresés indul, amelynek célja az alfabetikus karakterek (betűk) és numerikus karakterek (számok) azonosítása, ez történet karakterről karakterre, vagy szavanként (karakter láncokként) is. Az azonosítás egyik leggyakoribb módszere a mintaillesztésre alapul. Ennél a módszernél egy olyan adathalmazból dolgozik az algoritmus, amely sok különböző betűtípus- és szövegképmintát tárol egy adatbázisban úgy, mint egy sablont. Mikor a képen alakzatot próbál felismerni, összehasonlítást végez a tárolt sablonok alakzatával, és a legnagyobb egyezést mutató karakternek fogja minősíteni a képen látható alakzatot. Ez a módszer akkor igazán pontos, ha az input egy olyan kép, melyen ismert betűtípusokkal jelenik meg gépelt, nyomtatott szöveg, mivel a betűtípusok és kézírási stílusok száma végtelen, és lehetetlen minden típust az adatbázisban rögzíteni. Amennyiben kézzel írt szöveget adunk bemenetként, akkor a pontos eredmény eléréséhez egy olyan algoritmusra van szükség, amely figyelembe veszi a karakterek jellemzőit is. Ilyen jellemzők például a betű írására használt vonalak, azok irányai, elhelyezkedései, metszéspontjai, görbületei és hurkai. Ezen tulajdonságokat az algoritmus minden felismerhető karakterről tárolja, majd a keresett alakzatot is felbontja ugyan ezekre, és megkeresi a tárolt karakterek közül azt, amellyel a legtöbb jellemző megegyezik. Ezt a folyamatot Intelligent Character Recognition (ICR), magyarul Intelligens Karakterfelismerés névvel illetik.
+Második lépésben a szövegként minősített területeken egy olyan keresés indul, amelynek célja az alfabetikus karakterek (betűk) és numerikus karakterek (számok) azonosítása, ez történet karakterről karakterre, vagy szavanként (karakter láncokként) is. Az azonosítás egyik leggyakoribb módszere a mintaillesztésre alapul. Ennél a módszernél egy olyan adathalmazból dolgozik az algoritmus, amely sok különböző betűtípus- és szövegképmintát tárol egy adatbázisban úgy, mint egy sablont. Mikor a képen alakzatot próbál felismerni, összehasonlítást végez a tárolt sablonok alakzatával, és a legnagyobb egyezést mutató karakternek fogja minősíteni a képen látható alakzatot. Ez a módszer akkor igazán pontos, ha az input egy olyan kép, melyen ismert betűtípusokkal jelenik meg gépelt, nyomtatott szöveg, mivel a betűtípusok és kézírási stílusok száma végtelen, és lehetetlen minden típust az adatbázisban rögzíteni. Amennyiben kézzel írt szöveget adunk bemenetként, akkor a pontos eredmény eléréséhez egy olyan algoritmusra van szükség, amely figyelembe veszi a karakterek jellemzőit is. Ilyen jellemzők például a betű írására használt vonalak, azok irányai, elhelyezkedései, metszéspontjai, görbületei és hurkai. Ezen tulajdonságokat az algoritmus minden felismerhető karakterről tárolja, majd a keresett alakzatot is felbontja ugyan ezekre, és megkeresi a tárolt karakterek közül azt, amellyel a legtöbb jellemző megegyezik. Ezt a folyamatot Intelligent Character Recognition (ICR), magyarul Intelligens Karakterfelismerés névvel illetik. \cite{handwritten_ocr}
 
 Utolsó lépésben a dokumentum teljes szerekezeti képének függvényében a felismert karakterek önmagukban, szavakba, mondatokba vagy szövegblokkokba rendezve kerülnek tárolásra.
 
@@ -239,7 +239,7 @@ Az előzőekben bemutattam, hogyan képes az OCR egy szöveget tartalmazó képe
 Legegyszerűbben úgy határozható meg a pontosság, hogy az OCR kimeneti eredményét összehasonlítjuk a képen szereplő szöveggel. Tegyük fel, hogy a képen szereplő szöveg 100 karakterből áll. Amennyiben az OCR által adott eredményben mind a 100 karakter egyezik az eredeti szövegben szereplővel, akkor azt mondhatjuk, hogy az OCR pontossága 100\%. Amennyiben 99 karaktert sikerült eltalálnia az szövegfelismerőnek, úgy a pontosság 99\%. Tehát egyszerű arányosítással is kiszámolható egyfajta pontosság.
 
 \newline
-Most bemutatom a két leggyakrabban használt metrikát, melyek erre a logikára épülnek.
+Most bemutatom a két leggyakrabban használt metrikát, melyek erre a logikára épülnek. \cite{ocr_accuracy}
 
 \pagebreak
 \subsection{CER - Character Error Rate (Karakter hibaarány)}
@@ -282,7 +282,7 @@ A WER mérésére ugyan azt a képletet használjuk, mint a CER érték mérés�
     \end{itemize}
     \item Text-Based F1 Score (Szövegalapú F1-pontszám):
     \begin{itemize}
-	   \item Ez a mérőszám a felismert szöveg helyes részarányának, illetve a helyesen felismert bemeneti szöveg részarányának a harmonikus átlagát számolja.
+	   \item Ez a mérőszám a felismert szöveg helyes részarányának, illetve a helyesen felismert bemeneti szöveg részarányának a harmonikus átlagát számolja. \cite{f1_score}
     \end{itemize}
     \item Keystroke Saving (Billentyűleütés megtakarítás):
     \begin{itemize}
@@ -294,7 +294,7 @@ Fontos megjegyezni, hogy az előbbiekben bemutatott metrikák nem adnak minden e
 
 \section{Az OCR pontosságának javítása bemeneti oldalon}
 
-Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR egy képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, így a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Nézzük, mik azok a leggyakrabban előforduló körülmények, amik rontják az OCR pontosságát.
+Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR egy képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, így a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Nézzük, mik azok a leggyakrabban előforduló körülmények, amik rontják az OCR pontosságát. \cite{imporve_accuracy}
 
 \begin{itemize}
     \item Az eredeti, szkennelésre váró dokumentum minőségére vonatkozóan:
@@ -316,7 +316,7 @@ Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a 
     \end{itemize}
 \end{itemize}
 
-Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók.
+Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók. \cite{ocr_accuracy}
 
 \begin{itemize}
     \item A kép méretének és felbontásának helyes megválasztása:
@@ -344,18 +344,18 @@ Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az al
 \chapter{A program megvalósítása}
 \section{OCR könyvtárak összehasonlítása Pythonban}
 
-A megvalósítás megkezdése előtt mindenképpen szükséges feltérképezni a rendelkezésre álló OCR könyvtárakat. Ehhez szükséges azt is meghatározni, hogy milyen programozási nyelvben fog a program elkészülni. Hosszas mérlegelés után a Python mellett döntöttem. A Python egy olyan programozási nyelv, amely a népszerűségét többek között a rugalmasságának köszönheti, hiszen a legszélesebb körökben is használható, legyen az webfejlesztés, adatbányászat, gépi tanulás, automatizálás vagy számítógépes grafika. A nyelv továbbá könnyen olvasható egyszerű szintaxisa miatt és támogatja az objektum orientált programozás alapelveit. Népszerűségének alappillére továbbá a folyamatosan fejlődő és bővülő eszközkészlet és a számos ingyenes, nyílt forráskódú könyvtár, melyek a szakdolgozatban is fontos szerepet töltenek be.
+A megvalósítás megkezdése előtt mindenképpen szükséges feltérképezni a rendelkezésre álló OCR könyvtárakat. Ehhez szükséges azt is meghatározni, hogy milyen programozási nyelvben fog a program elkészülni. Hosszas mérlegelés után a Python mellett döntöttem. A Python egy olyan programozási nyelv, amely a népszerűségét többek között a rugalmasságának köszönheti, hiszen a legszélesebb körökben is használható, legyen az webfejlesztés, adatbányászat, gépi tanulás, automatizálás vagy számítógépes grafika. A nyelv továbbá könnyen olvasható egyszerű szintaxisa miatt és támogatja az objektum orientált programozás alapelveit. Népszerűségének alappillére továbbá a folyamatosan fejlődő és bővülő eszközkészlet és a számos ingyenes, nyílt forráskódú könyvtár \cite{python}, melyek a szakdolgozatban is fontos szerepet töltenek be.
 
 A következő alfejezetekben két általam választott ingyenes, nyílt forráskódú OCR könyvtár működését fogom bemutatni, rávilágítva a legfőbb különbségekre.
 
 \subsection{A Pytesseract könyvtár bemutatása}
 
 A Tesseract egy nyílt forráskódú OCR motor, mely számos programozási nyelvvel és keretrendszerrel kompatibilis.
-Ahhoz, hogy Pythonból használni tudjuk a Tesseract funkcióit, szükségünk van egy wrapperre, azaz egy olyan könyvtárra, amely python nyelvből teszi lehetővé a Tesseract használatát. A pytesseract nevű könyvtár ezt a célt szolgálja.
+Ahhoz, hogy Pythonból használni tudjuk a Tesseract funkcióit, szükségünk van egy wrapperre, azaz egy olyan könyvtárra, amely python nyelvből teszi lehetővé a Tesseract használatát. A pytesseract nevű könyvtár ezt a célt szolgálja. \cite{pytesseract2}
 
 \pagebreak
 
-Néhány példa a pytesseract importálása után rendelkezésünkre álló metódusok közül:
+Néhány példa a pytesseract függvénykönyvtár importálása után rendelkezésünkre álló metódusokból: \cite{pytesseract}
 
 Az \textit{image\_to\_string} metódus, ahogy a neve is körülírja, a képről kinyert szöveget egy összefüggő szövegként adja vissza. Ennek a metódushívásnak az eredménye hasonlít leginkább a jelenlegi rendszerek bemutatása fejezetben egy internetes alkalmazás használatával kapott eredményre.
 
@@ -405,7 +405,7 @@ Az, hogy a függvény milyen adatstruktúrában adja vissza a kinyert szavakat, 
 \end{tcolorbox}
 
 \pagebreak
-Az \textit{image\_to\_data} függvény eredményének szemléltetése céljából írtam egy függvényt, amely a bemenetként adott igazolványképen a felismert szövegeket határoló téglalapokat kirajzoltattam az OpenCV nevű python könyvtárban definiált metódusok segítségével. Az OpenCV könyvárat a későbbiekben ismertetem. A függvény egy paraméterrel rendelkezik, amely az \textit{image\_to\_data} függvény eredményét várja dictionary struktúrában. A függvény kimenete egy új ablakban megnyíló kép, amelyen a bemeneti kép látható úgy, hogy a rajta található, egyben felismert szövegrészek körül vannak rajzolva a szöveget határoló téglalap élei mentén.
+Az \textit{image\_to\_data} függvény eredményének szemléltetése céljából írtam egy függvényt, amely a bemenetként adott igazolványképen a felismert szövegeket határoló téglalapokat kirajzoltattam az OpenCV nevű python könyvtárban definiált metódusok segítségével \cite{opencv}. Az OpenCV könyvárat a későbbiekben ismertetem. A függvény egy paraméterrel rendelkezik, amely az \textit{image\_to\_data} függvény eredményét várja dictionary struktúrában. A függvény kimenete egy új ablakban megnyíló kép, amelyen a bemeneti kép látható úgy, hogy a rajta található, egyben felismert szövegrészek körül vannak rajzolva a szöveget határoló téglalap élei mentén.
 
 \begin{figure}[h]
     \centerline{\includegraphics[scale=.4]{boxes_pytesseract.eps}}
@@ -413,7 +413,7 @@ Az \textit{image\_to\_data} függvény eredményének szemléltetése céljábó
 \end{figure}
 
 \begin{verbatim}
-def generate_image_with_bounding_boxes_on_words(ocr_result):
+def generate_img_with_bounding_boxes_on_words(ocr_result):
     img = cv2.imread(ID_CARD_PATH)
 
     for i in range(len(ocr_result['text'])):
@@ -422,8 +422,8 @@ def generate_image_with_bounding_boxes_on_words(ocr_result):
                             ocr_result['top'][i],
                             ocr_result['width'][i],
                             ocr_result['height'][i])
-            img = cv2.rectangle(img, (x, y), (x + w, y + h),
-                                (0, 255, 0), 10)
+            img = cv2.rectangle(img, (x, y),
+                (x + w, y + h), (0, 255, 0), 10)
 
     output_img_to_window(img)
 \end{verbatim}
@@ -438,9 +438,9 @@ def output_img_to_window(img):
 
 \subsection{Az EasyOCR könyvtár bemutatása}
 
-Az EasyOCR könyvtár is egy nyílt forráskódú, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
+Az EasyOCR könyvtár is egy nyílt forráskódú \cite{easyocr}, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
 
-Az EasyOCR importálása után először példányosítani kell egy objektumot az easyocr.Reader konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \textit{readtext} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
+Az EasyOCR importálása után először példányosítani kell egy objektumot az \newline easyocr.Reader() konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \textit{readtext} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
 
 A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy szövegrészlet, melyet az OCR a karakterek egymáshoz viszonyított pozíciója alapján összefüggőnek ítélt. Minden egyes listaelem további elemeket tartalmaz. Első helyen egy listát, ami az adott szöveget körülvevő téglalap négy sarkának koordináta-párjait tárolja, második helyen magát a felismert szöveget, a harmadik pozíción a pedig tizedestört alakban kifejezve azt, hogy az OCR hány százalékban biztos abban, hogy a kinyert szöveg egyezik a képen látható szöveggel.
 
@@ -463,7 +463,7 @@ Ahogyan azt a pytesseract könyvtár eredményén megtettem, itt is szemléltet�
 \end{figure}
 
 \begin{verbatim}
-def generate_image_with_bounding_boxes_on_words(ocr_result):
+def generate_img_with_bounding_boxes_on_words(ocr_result):
     img = cv2.imread(ID_CARD_PATH)
 
     for text_row in ocr_result:
@@ -482,7 +482,7 @@ Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket é
 
 \section{A dokumentum előfeldolgozása}
 
-Ahogyan "Az OCR pontosságának javítása bemeneti oldalon" című fejezetben kifejtettem, a lehető legpontosabb OCR kimenet eléréséhez szükségünk van a bemeneti kép előfeldolgozására pár lépésben az OpenCV nevű ingyenes könyvtár különböző metódusainak használatával.
+Ahogyan "Az OCR pontosságának javítása bemeneti oldalon" című fejezetben kifejtettem, a lehető legpontosabb OCR kimenet eléréséhez szükségünk van a bemeneti kép előfeldolgozására pár lépésben az OpenCV nevű ingyenes könyvtár különböző metódusainak használatával. \cite{opencv_functions}
 Mivel a bemeneti dokumentum lehet színes, így először a színek eltüntetésével kezdtem, hiszen a színek a szövegkinyerés szempontjából felesleges információt hordoznak. Ezt az OpenCV cvtColor nevű metódusával értem el, melynek paraméterei egy kép, és az a színtér, melyre konvertálni szeretnénk. A mi esetünkben ez a színtér a COLOR\_RGB2GRAY, ami az RGB színeket a szürke árnyalataivá konvertálja.
 
 \begin{verbatim}
@@ -499,7 +499,7 @@ def remove_noise(image):
 \end{verbatim}
 
 Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képet két színből álló (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
-Különböző célokra különböző küszöbérték típusok léteznek, számomra a THRESH\_BINARY a legmegfelelőbb.
+Különböző célokra különböző küszöbérték típusok léteznek \cite{opencv_threshold}, számomra a THRESH\_BINARY a legmegfelelőbb.
 A THRESH\_BINARY küszöbérték típus számítási elve:
 \begin{equation*}
 output(x,y)=
@@ -689,9 +689,9 @@ Ezért valahogyan ki kell szűrni azokat az adatokat, melyekről eltávolíthat�
 Erre a célra mintaillesztést használtam. A mintaillesztés reguláris kifejezések segítségével történik, melyben megszabjuk, hogy milyen szabályokat és mintákat kell követnie az általunk vizsgált szövegnek. A mintaillesztés kimenete lehet elfogadó, amennyiben a szöveg teljes egészébena mintára illeszkedik, és megfelel a követelményeinknek, egyébként elutasító.
 Tudjuk, hogy az olyan adatok, mint a nemzetiség kódja, a nem, a dátumok és a dokumentumszámok mind olyanok, melyek általános esetekben nem tartalmazhatnak szóközt. Így ezekre az adat kategóriákra írtam egy-egy reguláris kifejezést.
 
-A dátumformátum a legbonyolultabb, hiszen a nap, hónap és év sorrendje változó, továbbá az elválasztó jelek is lehetnek eltérőek. Ehhez az interneten kerestem már kész reguláris kifejezéseket, és azt kicsit átalakítva a programomba három konstans változóba felvettem. Az egyik az év, hónap, nap, a másik a nap, hónap, év, a harmadik pedig a hónap, nap, év sorrendű megfelelőjét tárolja a reguláris kifejezésnek. Mind a három esetben az évet 4 számjegy, a hónapot és a napot pedig 2-2 számjegy jelöli. Egyéb eseteket nem vettem figyelembe, mivel ez a három nagyon nagy százalékban lefedi a különböző igazolványokon található formátumokat.
+A dátumformátum a legbonyolultabb, hiszen a nap, hónap és év sorrendje változó, továbbá az elválasztó jelek is lehetnek eltérőek. Ehhez az interneten kerestem már kész reguláris kifejezéseket, \cite{date_regex} és azt kicsit átalakítva a programomba három konstans változóba felvettem. Az egyik az év, hónap, nap, a másik a nap, hónap, év, a harmadik pedig a hónap, nap, év sorrendű megfelelőjét tárolja a reguláris kifejezésnek. Mind a három esetben az évet 4 számjegy, a hónapot és a napot pedig 2-2 számjegy jelöli. Egyéb eseteket nem vettem figyelembe, mivel ez a három nagyon nagy százalékban lefedi a különböző igazolványokon található formátumokat.
 
-Az nemzetiséget jelölő ország kódjára saját reguláris kifejezést írtam. Az országok kódjai az ISO-3166 szabvány alapján 2 vagy 3 betűből állhatnak. Az erre írt reguláris kifejezés így néz ki: \textasciicircum[a-zA-Z]\{2,3\}\$. Ez egy egyszerű kifejezés, mely a kis- és nagybetűk között különbséget nem téve korlátozza, hogy a betűk számának 2 és 3 között kell lennie, semmilyen egyéb karakter nem megengedett a szövegen belül, de előtte és mögött sem.
+Az nemzetiséget jelölő ország kódjára saját reguláris kifejezést írtam. Az országok kódjai az ISO-3166 szabvány alapján 2 vagy 3 betűből állhatnak. \cite{country_codes} Az erre írt reguláris kifejezés így néz ki: \textasciicircum[a-zA-Z]\{2,3\}\$. Ez egy egyszerű kifejezés, mely a kis- és nagybetűk között különbséget nem téve korlátozza, hogy a betűk számának 2 és 3 között kell lennie, semmilyen egyéb karakter nem megengedett a szövegen belül, de előtte és mögött sem.
 
 A dokumentumszámoknál és egyéb azonsítóknál azt a feltételt szabtam meg, hogy a karakterláncnak tartalmaznia kell legalább 4 számot. Mivel ebbe beleesnek a dátumok is, így a szűrésnél figyelni kell, hogy először a dátum reguláris kifejezésére történjen a próbaillesztés, és ha arra nem illeszkedett a szöveg, akkor lehet próbálni a dokumentumszámra is. A dokumentumszám reguláris kifejezése: \textasciicircum(.*\textbackslash d)\{4,\}\textbackslash S*\$. Bármilyen, bármennyi (akár nulla) karakter után kötelezően 4 vagy több szám kell, hogy szerepeljen, ami után bármennyi egyéb karakter állhat, akár egy sem.
 
@@ -727,7 +727,7 @@ def export_data_to_csv(path, data):
 \chapter{A kész alkalmazás bemutatása}
 
 Mivel a program elkészítése során a fókusz a szövegfeldolgozáson és a kulcs-érték pár keresésen volt, így a felhasználói felület kapta a legkisebb figyelmet. Mivel ez egy olyan alkalmazás, melynek célzott, szűk körű közönsége van, és azok is inkább cégek vagy szervezetek, és nem magánszemélyek, így a lehető legegyszerűbb, minimalista felületet kapott a program.
-Ennek megvalósítására a \emph{tkinter} nevű Python könyvtár eszközkészlete tűnt a legjobbnak, mely a \emph{Tcl/Tk} (Tool Command Language) eszközkészlet Pythonra írt interfésze. A \emph{tkinter} könyvtárnak is létezik néhány egyedi megvalósítása, ezek közül dizájn és színvilág szempontjából a \emph{customtkinter} tetszett a legjobban, így ezt a könyvtárat használtam a grafikus felhasználói felület elkészítésére.
+Ennek megvalósítására a \emph{tkinter} nevű Python könyvtár eszközkészlete tűnt a legjobbnak, mely a \emph{Tcl/Tk} (Tool Command Language) \cite{tcl} eszközkészlet Pythonra írt interfésze. A \emph{tkinter} könyvtárnak is létezik néhány egyedi megvalósítása, ezek közül dizájn és színvilág szempontjából a \emph{customtkinter} \cite{customtkinter} tetszett a legjobban, így ezt a könyvtárat használtam a grafikus felhasználói felület elkészítésére.
 
 \section{Az alkalmazás használata}
 A felület az egyszerűség kedvéért mindössze egy gombot tartalmaz, mely kattintásra a fájlkezelőt nyitja meg, és várja, hogy a felhasználó tallózzon egy kép típusú fájlt. A fájl kiválasztása után a szövegkinyerési folyamat azonnal elindul, mely több másodpercet is igénybe vehet, erre a felhasználót egy "Process started, please wait..." üzenet figyelmezteti. Amint a szöveg kinyerése, feldolgozása és exportálása sikeresen megtörténik, a következő üzenet olvasható: "Process finished, CSV file saved to folder of the source image.".
@@ -824,72 +824,144 @@ Ez egyfajta mesterséges intelligencia bevezetése lenne, hiszen a környező ob
 \chapter*{Összefoglalás}
 
 A szakdolgozat elsődleges célja a szövegfeldolgozás témájának körbejárása volt egy olyan alkalmazás elkészítésével, mely az OCR technológiára alapozva képes igazolványokról készített képről szöveget kinyerni, majd ezeket egy saját algoritmus segítségével feldolgozni. A szakdolgozat segítségével betekintést nyerhettem a szövegfeldolgozás és karakterfelimserés világába, ám a kutató és fejlesztő munkák során megismertem számos egyéb képfeldolgozással kapcsolatos technológiát is. A program írása során törekedtem az egyetemen tanult fejlesztési módszerek használatára, és a szkriptnyelvek nevű kurzuson tanult Python tudásom kamatoztatására.
-A modern fejlesztési irányelvek betartására is figyelemmel voltam, így használtam az objektum orientáltságot is, a projekt komponenseinek átláthatóságáról pedig a programfájlok megfelelő szintű struktúráltsága gondoskodik.
+A modern fejlesztési irányelvek betartására is figyelemmel voltam, ezért használtam objektum orientáltságot is, a projekt komponenseinek átláthatóságáról pedig a programfájlok megfelelő szintű struktúráltsága gondoskodik.
 
 
 \begin{thebibliography}{99}
 \addcontentsline{toc}{section}{Irodalomjegyzék}
+\fontsize{10pt}{12pt}\selectfont
 
-\bibitem{netacad}
-Cisco Networking Academy,
+\bibitem{onlineocr}
+Image to Text Converter
 
-v6 \emph{Connecting Networks, Introduction to Networks, Routing and Switching Essentials \& Scaling Networks} Instruktori forrásfájlok
-
-
-\bibitem{pystruct}
-Python projekt struktúrálás és PEP
-
-\emph{https://docs.python-guide.org/writing/structure/}
+\emph{https://www.imagetotext.info/}
+(Utolsó megtekintés: 2023.04.23)
 
 
-\bibitem{mysqldoc}
-MySQL 8.0 Reference, SQL parancs szintaxisok,
+\bibitem{ocr}
+What Is Optical Character Recognition (OCR)?
 
-\emph{https://dev.mysql.com/doc/refman/8.0/en/}
+\emph{https://www.ibm.com/cloud/blog/optical-character-recognition}
 
-
-\bibitem{mysqlcur}
-MySQL Cursor Objects,
-
-\emph{execute és fetch metódusok használata és paramétereik}
-\emph{https://mysqlclient.readthedocs.io/user\_guide.html}
+(Utolsó megtekintés: 2023.04.23)
 
 
-\bibitem{docker}
-Docker Dokumentáció, parancsok szintaxisa és paramétereik,
+\bibitem{ocr_aws}
+How does OCR work?
 
-\emph{https://docs.docker.com/}
-
-
-\bibitem{pythread}
-Python 3 threading -- Thread-based parallelism,
-
-\emph{https://docs.python.org/3/library/threading.html}
+\emph{https://aws.amazon.com/what-is/ocr/}
+(Utolsó megtekintés: 2023.04.23)
 
 
-\bibitem{pyobject}
-Python 3 Classes,
+\bibitem{handwritten_ocr}
+Field typing for improved recognition on heterogeneous handwritten forms
 
-\emph{https://docs.python.org/3.9/tutorial/classes.html}
-
-
-\bibitem{mqtt}
-MQTT protokoll
-
-\emph{https://mqtt.org/}
+\emph{https://arxiv.org/pdf/1909.10120.pdf}
+(Utolsó megtekintés: 2023.04.23)
 
 
-\bibitem{rabbitmq}
-RabbitMQ Tutorials,
+\bibitem{ocr_accuracy}
+What affects OCR accuracy and how to improve it?
 
-\emph{Work Queues, Publish/Subscribe}
-\emph{https://www.rabbitmq.com/getstarted.html}
+\emph{https://www.docsumo.com/blog/ocr-accuracy}
+(Utolsó megtekintés: 2023.04.23)
 
 
-\bibitem{pika}
-Pika AMPQ protokoll implementációs dokumentáció
+\bibitem{f1_score}
+The F1 score
 
-\emph{https://pika.readthedocs.io/en/stable/}
+\emph{https://towardsdatascience.com/the-f1-score-bec2bbc38aa6}
+
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{imporve_accuracy}
+Improve OCR Accuracy With Advanced Image Preprocessing
+
+\emph{https://docparser.com/blog/improve-ocr-accuracy/}
+
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{python}
+Applications for Python
+
+\emph{https://www.python.org/about/apps/}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{pytesseract2}
+pytesseract 0.3.10
+
+\emph{https://pypi.org/project/pytesseract/}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{pytesseract}
+How to OCR with Tesseract, OpenCV and Python
+
+\emph{https://nanonets.com/blog/ocr-with-tesseract/}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{easyocr}
+EasyOCR on GitHub
+
+\emph{https://github.com/JaidedAI/EasyOCR}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{opencv}
+opencv-python 4.7.0.72
+
+\emph{https://pypi.org/project/opencv-python/}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{opencv_functions}
+Image Processing in OpenCV
+
+\emph{https://docs.opencv.org/4.x/d2/d96/tutorial\_py\_table\_of\_contents\_imgproc.html}
+
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{opencv_threshold}
+Threshold Types in OpenCV
+
+\emph{https://docs.opencv.org/4.x/d7/d1b/group\_\_imgproc\_\_misc.html}
+
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{date_regex}
+Sample regular expressions
+
+\emph{https://docs.opswat.com/mdcore/proactive-dlp/sample-regular-expressions}
+
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{country_codes}
+Country Codes ALPHA-2 & ALPHA-3
+
+\emph{https://www.iban.com/country-codes}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{tcl}
+Tcl (Tool Command Language)
+
+\emph{https://www.tcl.tk/}
+(Utolsó megtekintés: 2023.04.23)
+
+
+\bibitem{customtkinter}
+CustomTkinter on GitHub
+
+\emph{https://github.com/TomSchimansky/CustomTkinter}
+(Utolsó megtekintés: 2023.04.23)
+
 
 \end{thebibliography}
 
@@ -899,12 +971,14 @@ Pika AMPQ protokoll implementációs dokumentáció
 \addcontentsline{toc}{section}{Nyilatkozat}
 
 \noindent
-Alulírott Kersmájer István szakos hallgató, kijelentem, hogy a dolgozatomat a Szegedi Tudományegyetem, Informatikai Intézet Szoftverfejlesztési Tanszékén készítettem, gazdaságinformatika diploma megszerzése érdekében.
+Alulírott Marosi Márk Dániel gazdaságinformatikus BSc szakos hallgató, kijelentem, hogy a dolgozatomat a Szegedi Tudományegyetem, Informatikai Intézet Szoftverfejlesztés Tanszékén készítettem, gazdaságinformatikus BSc diploma megszerzése érdekében. \hfill \break
 
-Kijelentem, hogy a dolgozatot más szakon korábban nem védtem meg, saját munkám eredménye, és csak a hivatkozott forrásokat (szakirodalom, eszközök, stb.) használtam fel.
 
-Tudomásul veszem, hogy szakdolgozatomat / diplomamunkámat a Szegedi Tudományegyetem Informatikai Intézet könyvtárában, a helyben olvasható könyvek között helyezik el.
+\noindent
+Kijelentem, hogy a dolgozatot más szakon korábban nem védtem meg, saját munkám eredménye, és csak a hivatkozott forrásokat (szakirodalom, eszközök, stb.) használtam fel. \hfill \break
 
+\noindent
+Tudomásul veszem, hogy szakdolgozatomat / diplomamunkámat a Szegedi Tudományegyetem Diplomamunka Repozitóriumában tárolja.
 
 \vspace*{2cm}
 
@@ -919,8 +993,10 @@ Szeged, \today\
 \chapter*{Köszönetnyilvánítás}
 \addcontentsline{toc}{section}{Köszönetnyilvánítás}
 
-Ezúton szeretnék köszönetet mondani Janurik Viktor témavezetőmnek, aki a fejlesztés minden lépésében hasznos tanácsokkal látott el. A segítségéért a tesztkörnyezet összeállításában, a sok konzultációért és szakmai tanácsaiért, amelyek nélkül ez a projekt nem jutott volna tovább az "initial commit"-on.
+Ezúton szeretnék köszönetet mondani Janurik Viktor Bálint témavezetőmnek, aki lehetővé tette a dolgozat elkészülését. Nagyra értékelem a türelmét és megértését, ami hozzájárult az eredmények eléréséhez.
 
-Köszönöm továbbá két fejlesztőtársamnak, Orbán Veronikának és Csóti Zoltánnak, akikkel a fejlesztés produktívan tudott haladni, és kódváltozásaimhoz igazították saját munkájukat. A hallgatóknak, akik használni fogják az új rendszert, visszajelzéseikért az esetleges problémákról, és további fejlesztési ötleteikért.
+Köszönet illeti azokat az oktatókat, tanárokat és szakembereket is, akik tanítottak és inspiráltak az egyetemi éveim során. Az általuk átadott tudás és tapasztalat nemcsak a szakdolgozatban, hanem az életemben is hasznos lesz.
+
+Nem utolsó sorban köszönetet szeretnék mondani Gyikó Richárd külső témavezetőmnek is, aki szakmai hozzáértésével, támogatásával és iránymutatásával járult hozzá a szakdolgozat elkészüléséhez.
 
 \end{document}
