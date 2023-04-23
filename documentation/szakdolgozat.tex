@@ -622,7 +622,6 @@ Azért nem jelenthető ki, hogy kulcs, mert csakis onnantól címkézünk egy ob
 A folyamat következő lépése a find\_value\_for\_key nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum is\_examined adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
 Innentől tudjuk, hogy az eddig kulcsnak vélt objektum valóban kulcs, hiszen találtunk egy objektumot mellette, mely feltételezhetően a hozzá tartozó érték. Amennyiben a jobbra keresésnek nem lett eredménye, úgy egy lefelé történő keresés indul. Amennyiben a kulcsnak vélt objektum alatt sem találtunk másik objektumot, akkor a metódus futása véget ér anélkül, hogy a kulcsnak vélt objektumot valóban kulcsként címkéztük volna, és értéket rendeltünk volna hozzá. Ebből megállapítható, hogy az objektumhoz valószínűleg nem tartozik érték.
 Ilyen például az IDENTIFICATION CARD szöveg, se tőle jobbra, se alatta nem helyezkedik el hozzá kapcsolható érték.
-
 Mivel a kulcs keresés mindig a bal felső objektumokból indul ki, így teljesen felesleges lenne balra illetve felfelé történő keresés, hiszen ott már nem találhatunk semmit. Ez természetesen hátrány egy olyan dokumentumnál, melyről nem mondható el, hogy a kulcsok minden esetben az értékek bal oldalán, vagy felettük találhatóak.
 
 A search\_right metódus ugyanazokkal a paraméterekkel rendelkezik, mint a \break find\_value\_for\_key. Futása során először kiszámolja a tűréshatár intervallumot, majd ezen belül keres egyéb olyan objektumokat, melyek nem voltak még vizsgálva, és nincsenek más objektumhoz rendelve. Továbbá feltétel az is, hogy a kulcshoz képest nagyobb X koordinátával rendelkezzen, azaz tőle jobbra helyezkedjen el a dokumentumon.
@@ -651,14 +650,18 @@ def items_to_dict(card_text_items):
     for cti in card_text_items:
         if cti.is_key:
             result_dict[cti] = cti.assigned_to
+        elif not cti.is_key and not cti.is_value:
+            result_dict[cti.text] = "N/A"
 
     return result_dict
 \end{verbatim}
 
-Az items\_to\_dict metódus átrendezi az osztálypéldányokat egy dictionary adatstruktúrába, melynek minden kulcsa egy általunk kulcsnak vélt objektum text adattagja (a dokumentumról kinyert karakterlánc), értéke pedig a kulcshoz tartozó érték text adattagja. Így végeredményben a dictionary csak az egymással párba állított szövegeket fogja tartalmazni.
-Erről meggyőződhetünk, ha végigiterálunk rajta és kiíratjuk minden elemét:
+Az items\_to\_dict metódus átrendezi az osztálypéldányokat egy dictionary adatstruktúrába, melynek minden kulcsa egy általunk kulcsnak vélt objektum text adattagja (a dokumentumról kinyert karakterlánc), értéke pedig a kulcshoz tartozó érték text adattagja. Abban az esetben, ha egy adott példány se nem kulcs, se nem érték, azaz egy olyan elem, melyhez nem találtunk párt, akkor az átmásolás során őt felvesszük a dictionary egy kulcsaként, és az "N/A" szöveg kerül hozzá értékként, ezzel jelezve, hogy a szöveghez nem találtunk hozzá köthető másik objektumot. A példa igazolványon ilyen az IDENTIFICATION CARD szöveg.
+Ezekről meggyőződhetünk, ha végigiterálunk rajta és kiíratjuk minden elemét:
 
 \begin{tcolorbox}
+    Key: IDENTIFICATION CARD, Value: N/A
+
     Key: Family name and Given name:, Value: MAROSI MARK DANIEL
 
     Key: Sex:, Value: MALE
@@ -730,13 +733,72 @@ Ennek megvalósítására a \emph{tkinter} nevű Python könyvtár eszközkészl
 A felület az egyszerűség kedvéért mindössze egy gombot tartalmaz, mely kattintásra a fájlkezelőt nyitja meg, és várja, hogy a felhasználó tallózzon egy kép típusú fájlt. A fájl kiválasztása után a szövegkinyerési folyamat azonnal elindul, mely több másodpercet is igénybe vehet, erre a felhasználót egy "Process started, please wait..." üzenet figyelmezteti. Amint a szöveg kinyerése, feldolgozása és exportálása sikeresen megtörténik, a következő üzenet olvasható: "Process finished, CSV file saved to folder of the source image.".
 Ha ezen a ponton bemenetként adott kép mappájába tekintünk, találnunk kell egy .csv kiterjesztésű fájlt, mely az alábbi módon van elnevezve: originalFileName\_result.csv (ahol originalFileName a bemenetként adott fájl neve). Ezzel biztosítottam azt, hogyha ugyan abból a mappából több fájlra is futtatásra kerülne a program, akkor minden fájlhoz megtalálható legyen a hozzá tartozó eredmény. Továbbá, ha egy fájlra többször futtatásra kerül a program, akkor ne sokszorozódjon a csv fájl, hanem íródjon felül az előző verzió.
 
-A program futása során keletkezhetnek hibák. Amennyiben az "Error while preparing and reading data." hibaüzenettel találja szembe magát a felhasználó, akkor vagy a kép előfeldolgozása, vagy az OCR folyamat során keletezett kivétel. Ha az "Error while processing data." üzenet jelenik meg, akkor az OCR eredményének leképezésénél, vagy a kulcs-érték párok keresésénél történt végzetes hiba.
-A felhasználó találkozhat még az "Error while post-processing data." üzenettel, ami egyértelműen jelzi, hogy az utófeldolgozási lépés sikertelen volt egy nem várt hiba miatt. Amennyiben egy nem ennyire elkülöníthető folyamat során keletkezik hiba, akkor a "Something went wrong" üzenet jelenik meg. Ezek közül egyik hiba sem okozza a program leállását, így újra lehet próbálni a futtatást.
+A képen látható, hogy a felhasználónak lehetősége van bepipálni a "Show image with recognized text" jelölőnégyzetet. Amennyiben bejelölésre kerül a beállítás, a kulcs-érték párok megtalálása után felugró ablakban megjelenik az inputként adott kép, rajta zölddel bekeretezve minden felismert, egybefüggő karakterlánc, lilával pedig a kulcs-érték párok kerülnek összekötésre.
+Így a felhasználónak lehetősége van vizuálisan is ellenőriznie, hogy melyik szóhoz mely érték tartozik, és melyek azok a szavak, melyekhez nem talált a program hozzá köthető párt.
 
 \begin{figure}[h]
     \centerline{\includegraphics[scale=.5]{gui.eps}}
     \caption{A program grafikus felhasználói felülete}
 \end{figure}
+
+A program futása során keletkezhetnek hibák. Amennyiben az "Error while preparing and reading data." hibaüzenettel találja szembe magát a felhasználó, akkor vagy a kép előfeldolgozása, vagy az OCR folyamat során keletezett kivétel. Ha az "Error while processing data." üzenet jelenik meg, akkor az OCR eredményének leképezésénél, vagy a kulcs-érték párok keresésénél történt végzetes hiba.
+A felhasználó találkozhat még az "Error while post-processing data." üzenettel, ami egyértelműen jelzi, hogy az utófeldolgozási lépés sikertelen volt egy nem várt hiba miatt. Amennyiben egy nem ennyire elkülöníthető folyamat során keletkezik hiba, akkor a "Something went wrong" üzenet jelenik meg. Ezek közül egyik hiba sem okozza a program leállását, így újra lehet próbálni a futtatást.
+
+\section{Eredmény bemutatása több bemenetre}
+
+Az eddig használt példa igazolványról kinyert adatokat már bemutattam, de a program működésének validálásához több féle inputra is szükség van. Ezért készítettem két másik minta igazolványt, melyeken a szöveg eltérő módon van elrendezve.
+
+\newpage
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.2]{example_id_card_2.eps}}
+    \caption{A második példa igazolvány}
+\end{figure}
+
+Amíg az első igazolványkép nagyrészt horizontálisan rendezett kulcs-érték párokat tartalmazott (kivéve a névnél), ennél a példánynál arra törekedtem, hogy a kulcs-érték párok egymás alá rendeződjenek, de hagytam vízszintes elrendezésű elemeket is, hogy teszteljem az algoritmus működését.
+A CAN és a Document number értékeit kitoltam a legtöbb adatot tartalmazó oszlopba, valamint egy pár nélküli karakterláncot is elhelyeztem a dokumentum jobb alsó sarkába. Hasonló célom volt a Nationality kulccsal, melyet jobbra eltolva, de Y tengelyen két másik érték közé helyeztem el, de így sem sikerült a programot megzavarni. Ez már a csv fájl megnyitása előtt is ellenőrizhető, ha bepipáljuk a "Show image with recognized text" opciót. Ezen látszódik, hogy a kulcs-érték párosítások helyesek, és az érték nélküli objektumok is párosítatlanul maradtak. A kimeneti csv fájl tartalma:
+
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c }
+            ID CARD & N/A \\ 
+            Surname & MINTA \\
+            Nationality & HUN \\
+            Given Name & KERESZTNEV \\
+            Sex & FEMALE \\
+            Date of birth & 1970.04.30 \\
+            Date of expiry & 2024.04.30 \\
+            CAN & 246810/36 \\
+            Document number & F-98765XY \\
+            <<U88X<<<121<< & N/A \\
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
+
+A harmadik dokumentumon amit készítettem, szerettem volna más elrendezéssel is próbára tenni a programot, ezért újból a horizontális elrendezésből indultam ki, de 2 oszlopba rendeztem a kulcs-érték párokat. A teljesség igényének kielégítésére hagytam olyan objektumokat is, ahol a kulcs az érték felett helyezkedik el. Ezeken túl változtattam a dátumok formátumán és az elválasztó jeleken, valamint a betűtípusokon és stílusokon is.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.2]{example_id_card_3.eps}}
+    \caption{A harmadik példa igazolvány}
+\end{figure}
+
+A program futtatása során generált kép, és a az eredményt tartalmazó csv fájlt is igazolja a program helyes működését, ezzel az elrendezéssel is sikeres volt a szöveg kinyerés és feldolgozás.
+
+\begin{tcolorbox}
+    \begin{center}
+        \begin{tabular}{ c c }
+            CITIZEN CARD & N/A \\ 
+            Family Name & CSALADNEV \\ 
+            Given Name & KERESZTNEV \\ 
+            Sex & MALE \\ 
+            Nationality & HUN \\ 
+            Date of birth & 2000-06-30 \\ 
+            Date of expiry & 2027-06-30 \\ 
+            CAN & 89/9114-4 \\ 
+            Document number & XYX-A44789 \\ 
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
 
 \section{Összefoglalás}
 

@@ -67,6 +67,8 @@ def items_to_dict(card_text_items):
     for cti in card_text_items:
         if cti.is_key:
             result_dict[cti.text] = cti.assigned_to.text
+        elif not cti.is_key and not cti.is_value and cti.assigned_to == 0:
+            result_dict[cti.text] = "N/A"
 
     return result_dict
 
