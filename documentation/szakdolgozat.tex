@@ -800,32 +800,31 @@ A program futtatása során generált kép, és a az eredményt tartalmazó csv 
     \end{center}
 \end{tcolorbox}
 
-\section{Összefoglalás}
+\section{Az alkalmazás felépítése}
 
-A szakdolgozat elsődleges célja a szövegfeldolgozás témájának körbejárása volt egy olyan alkalmazás elkészítésével, mely segítségével betekintést nyerhettem a szövegfeldolgozás világába. Ám a kutató és fejlesztő munkák során 
+Strukturálisan az alkalmazás három fő egységre bontható. Az elsőbe sorolható minden olyan folyamat, amely a kép alapú dokumentumról való szövegkinyeréssel kapcsolatos. Ennek a folyamatnak az elején csupán egy fájl áll rendelkezésre, a végére viszont valamennyire rendezett formában, digitális formában már rendelkezünk a dokumentumról kinyert szövegről.
+A második egységben ezen az adathalmazon elindulva először az osztálypéldányok létrehozása, feltöltése, és azok listába rendezése zajlik. Ez a lista lesz az, amin már el tud indulni a kulcs-érték párok keresésére írt algoritmus, melynek kimenete az a rendezett adathalmaz, amely a már egyéb lépések nélkül is helyes eredményt tartalmazza.
+Mégis szükség van utófeldolgozásra, ez a harmadik egység. Az utófeldolgozás célja, hogy a felesleges, idő közben fontosságukat elveszített adatokat ne vigyük magunkkal tovább, többek között ilyenek például a koordináta adatok. Ez a lépés egy dictionary adatszerkezetbe rendezi az összes szöveget a párjával (ha van), így válik az adathalmazunk teljesen rendezetté. Ezután a szebb kimenet érdekében a szöveg formázása történik, ahol a felesleges karakterek és szóközök eltávolításra kerülnek.
+Ezután az adathalmaz készen áll az exportálásra, melyet a program .csv kiterjesztéssel fog elmenteni.
 
-A szakdolgozatban leírt projekt lényege, hogy segítséget tudjunk nyújtani a hallgatóknak akár a Cisco hálózatépítő kurzusban, vagy akár a Cisco ipari vizsgára való készülésben. A fejlesztés a szakdolgozaton túl is folytatódik, célunk, hogy egy olyan rendszer álljon a hallgatók rendelkezésére, amivel produktívan lehet tanulni, kísérletezni.
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=.21]{flowchart.eps}}
+    \caption{Folyamatábra a program főbb lépéseiről}
+\end{figure}
 
-A fejlesztés során lehetőségem nyílt nem csak csapatban, de új technológiákkal is dolgoznom. Köztük a RabbitMQ, aminek használata számomra újdonság és kihívás volt és a Python objektumorientált használata, amire ezelőtt még nem volt szükségem, lehetőségem. Illetve, eddigi tudásomat is lehetőségem nyílt kamatoztatni, a git verziókezelés, a gitlab-runner és a hozzá tarozó CI/CD leírók használata, a docker és docker-compose, és a hyper-v virtualizáció terén.
-
-
-\chapter{Továbbfejlesztési lehetőségek}
-%\addcontentsline{toc}{section}{Továbbfejlesztési lehetőségek}
 \section{Továbbfejlesztési lehetőségek}
 
-A szakdolgozat keretein belül implementálásra nem került funkcionalitások:
-\begin{itemize}
-    \item A jelenlegi kód a hálózati erőforrásokhoz (MySQL adatbázis szerver, RabbitMQ) hardcode-oltan csatlakozik, ezért a kód átírása nélkül más fizikiai infrastruktúrára nem lehet telepíteni.
-    \item Az adatbázisba leképezett CCNA kurzushoz kapcsolódó laborfeladatok száma igen alacsony, mivel a Word dokumentumokból és PDF fájlokból a konfigurációs lépések kiemelése nem szkriptelhető, ehhez nagy időbefektetés szükséges.
-    \item Parancsok kiadása az eszközökön a modul által:
-    \begin{itemize}
-        \item A felhasználó kijelentkezése után, az eszközök konfigurációjának törlése és az eszközök újraindítása az "indulási konfiguráció" (startup configuration) betöltésével.
-        \item A felhasználó által meghívható teljes rendszer visszaállítás arra az esetre, ha valamelyik felhasználó által kiadott parancs elérhetetlenné teszi a rendszert (pl.: jelszó beállításakor félreütött karakter miatti kizárás az eszközről).
-    \end{itemize}
-    \item A projektben megírt osztályok és metódusaik, mind egy forrásfájlban találhatóak, amely nehezíti a kód olvasását. Ennek több forráskódra bontása, osztályok mentén, ezek csomagokba rendezése és névterek használata, nagyban javítaná a projekt átláthatóságát.
-    \newpage
-    \item Az idő előrehaladtával a Cisco tananyag verziózásának követése (a jelenlegi rendszer a 6-os verzión alapul). Ez megvalósulhat akár több tábla használatával, vagy akár több adatbázis séma létrehozásával. Ennek megvalósítása biztosítaná, hogy a modul a jövőben ne váljon elavulttá.
-\end{itemize}
+A program számos ponton bővíthető új funkciókkal és beállítási lehetőségekkel. Az egyik legnagyobb értéket, de nem a legtöbb fejlesztés igénylő plusz beállítás a kimeneti fájl kiterjesztése lehetne. Előfordulhat olyan use-case, amikor nem csv kiterjesztésben szeretné a felhasználó az eredményt megkapni. Ez egy egyszerű legördülő menűből válaszható lenne, viszont mindegyik támogatott kiterjesztésnek saját export metódust kellene implementálni.
+Nagyobb fejlesztést igényelne, de rendkívül hasznos lenne, hogyha egyszerre nem csak egy, hanem több kép alapú dokumentum is kiválasztható lenne. Ebben az esetben minden dokumentum kapna egy külön fájl, melyben a kinyert és párosított adatok találhatóak, de az mégjobb lenne, ha az azonos kulcsokat tartalmazó dokumentumok adatai egy fájlba kerülnének írásra, úgy, hogy a kulcsok csak egyszer szerepelnének, mint oszlopnév, és alattuk az összes, adott kulcshoz kinyert adat a dokumentumokról.
+A felhasználó élményt javítaná, ha a tallózott dokumentum (vagy dokumentumok) előnézete látszódna a felületen, valamint ha az eredeti képen megjelenő, színes kerettel ellátott kép is az alkalmazáson belül jelenne meg, a jelenleg felugró ablak helyett. A beállítások halmaza bővíthető lenne még azzal is, hogy a program futásának eredménye a fájlba íráson túl akár azonnal kimásolható legyen egy szövegmezőből.
+
+A kulcs-érték párokat kereső algoritmusban még rejtőzik potenciál. Jelenleg erősen korlátozott, hiszen a kulcshoz kapcsolódó érték keresése minden esetben először jobbra, majd lefelé történik a koordináta rendszerben. Például egy igazolványképen, ahol olyan táblázatos elrendezés van, melyen a kulcsok az értékek felett helyezkendnek el, és a kulcstól jobbra egy másik kulcs áll, mely alatt a hozzá tartozó érték, az algoritmus jelen állapotában ezt helytelenül értékelné ki. Ezt a limitációt lehetne csökkenteni, ha egyszerre vizsgálna mindkét irányba, és a környező elemeket is vizsgálva el tudná dönteni, hogy pontosan melyik érték tartozik hozzá. A vizsgálatba bele lehetne vonni az objektumok közötti távolságot is, mint heurisztika.
+Ez egyfajta mesterséges intelligencia bevezetése lenne, hiszen a környező objektumok helyzetét elemezve és értékelve hozna döntést, és ez a döntés hatással lenne a következő kulcs érték keresésére is.
+
+\chapter*{Összefoglalás}
+
+A szakdolgozat elsődleges célja a szövegfeldolgozás témájának körbejárása volt egy olyan alkalmazás elkészítésével, mely az OCR technológiára alapozva képes igazolványokról készített képről szöveget kinyerni, majd ezeket egy saját algoritmus segítségével feldolgozni. A szakdolgozat segítségével betekintést nyerhettem a szövegfeldolgozás és karakterfelimserés világába, ám a kutató és fejlesztő munkák során megismertem számos egyéb képfeldolgozással kapcsolatos technológiát is. A program írása során törekedtem az egyetemen tanult fejlesztési módszerek használatára, és a szkriptnyelvek nevű kurzuson tanult Python tudásom kamatoztatására.
+A modern fejlesztési irányelvek betartására is figyelemmel voltam, így használtam az objektum orientáltságot is, a projekt komponenseinek átláthatóságáról pedig a programfájlok megfelelő szintű struktúráltsága gondoskodik.
 
 
 \begin{thebibliography}{99}
