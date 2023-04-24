@@ -131,11 +131,20 @@ Szeged
 \addcontentsline{toc}{section}{Feladatkiírás}
 
 A digitalizáció és az automatizáció terjedésével egyre nagyobb az igény olyan programokra, melyek kép alapú dokumentumokról beolvasott szöveget képesek domain függően feldolgozni és osztályozni predikciók, szövegkörnyezet és a dokumentumon elfoglalt pozíció alapján.\\
+
 A szakdolgozat célja egy ilyen program elkészítése egy tetszőlegesen választott domainnel.
 
 
 \chapter*{Tartalmi összefoglaló}
 \addcontentsline{toc}{section}{Tartalmi összefoglaló}
+
+A szakdolgozat a kép alapú dokumentumok domain specifikus szövegfeldolgozásáról szól, ahol a kiválasztott domain a személyi igazolvány lett. Az adatvédelmi problémák elkerülése okán magam által szerkesztett, egyéni kinézettel készült személyi igazolványokat mutatok be és használok fel a szakdolgozatban. Ezek segítségével kerül bemutatásra a fejlesztett program működése is.
+
+A szakdolgozat célja bemutatni azokat az alkalmazásokat, melyek már bárki számára elérhetőek, rávilágítani ezek hiányosságaira, majd végigkísérni az olvasót egy olyan alkalmazás fejlesztésében, mely ezeket a hiányosságokat próbálja pótolni.
+
+A projekt megvalósítása a legújabb, ingyenesen elérhető programcsomagok és függvénykönyvtárak (EasyOCR, OpenCV) segítségével, valamint egy saját kulcs-érték párokat felismerő algoritmussal, Pyhton programozási nyelvben történt.
+
+A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként adott kép alapú személyi igazolványról képes a szöveget kinyerni, és az összetartozó adatokat párokba rendezve kezelni, majd ezt egy csv kitejesztésű fájlba exportálni.
 
 % \begin{itemize}
 
@@ -828,6 +837,7 @@ A modern fejlesztési irányelvek betartására is figyelemmel voltam, ezért ha
 
 
 \begin{thebibliography}{99}
+\addtocontents{toc}{\ }
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 \fontsize{10pt}{12pt}\selectfont
 
@@ -967,7 +977,7 @@ CustomTkinter on GitHub
 
 
 \chapter*{Nyilatkozat}
-\addtocontents{toc}{\ }
+% \addtocontents{toc}{\ }
 \addcontentsline{toc}{section}{Nyilatkozat}
 
 \noindent
