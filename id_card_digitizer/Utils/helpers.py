@@ -17,7 +17,7 @@ def draw_bounding_boxes_around_on_words(ocr_result, image):
     for text in ocr_result:
         top_left = tuple(text[0][0])
         bottom_right = tuple(text[0][2])
-        cv2.rectangle(image, top_left, bottom_right, (50, 170, 90), 10)
+        cv2.rectangle(image, top_left, bottom_right, (50, 170, 90), 9)
 
 
 def draw_bounding_boxes_around_key_value_pairs(card_text_items, image):
@@ -25,7 +25,7 @@ def draw_bounding_boxes_around_key_value_pairs(card_text_items, image):
         if item.is_key:
             bottom_left = tuple(item.btm_left)
             top_right = tuple(item.assigned_to.top_right)
-            cv2.rectangle(image, bottom_left, top_right, (170, 50, 130), 14)
+            cv2.rectangle(image, bottom_left, top_right, (170, 50, 130), 11)
 
     cv2.namedWindow("output", cv2.WINDOW_KEEPRATIO)
     cv2.imshow("output", image)

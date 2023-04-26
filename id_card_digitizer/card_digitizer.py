@@ -53,13 +53,13 @@ def begin():
             data = get_data_from_image(image)
             text_items = process_data(data)
 
-            if show_image.get() == 1:
-                helpers.draw_bounding_boxes(data, text_items, image)
-
             post_processed_values = post_process_data(text_items)
             helpers.export_data_to_csv(id_card_path, post_processed_values)
 
             write_message("Process finished, CSV file saved to folder of the source image.")
+
+            if show_image.get() == 1:
+                helpers.draw_bounding_boxes(data, text_items, image)
     except Exception as ex:
         write_message(f"Something went wrong: {ex}")
 
