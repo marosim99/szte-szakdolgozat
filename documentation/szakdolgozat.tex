@@ -172,13 +172,11 @@ A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként 
 A témaválaszatásomat az informatikai rendszerek elképesztő gyorsaságú fejlődésének gondolata alapozta meg. Egy olyan világban élünk, ahol az okos eszközök elkezdték kiváltani a manuális munkavégzési folyamatokat, vagy azokat egyszerűbbé tették. Minden nap a zsebünkben hordunk egy olyan kompakt eszközt, amely rendelkezik kamerával. Az okostelefonok kamerája, és egy erre fejlesztett applikáció együtt képes kiváltani egy hagyományos szkenner hardvert.
 
 Ezen túlmenve, egyes felsőbb kategóriás telefonok már képesek fényképről felismerni szöveget, és opciót biztosítanak a szöveg kinyerésére is. Amennyiben előttünk van egy névjegykártya, és szeretnénk róla egy nevet vagy telefonszámot gyorsan kimásolni anélkül, hogy nekünk kelljen manuálisan begépelni, egyszerűen készítenünk kell róla egy fényképet, és amennyiben a telefon szöveget talál a képen, azt kimásolhatóvá és vágólapra illeszthetővé teszi a felhasználó számára, ezzel értékes időt spórova, továbbá a hibázás lehetőségét is csökkentve.
-
 Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelátni ebbe a témába, és egy nemrég történt tapasztalat csak felerősítette szakmai érdeklődésem a szövegfelismerés és feldolgozás kapcsán. 
 
 Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és kettő másodperc alatt minden adatom, ami a személyi igazolványomon volt, az a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgráság, és így tovább.
 
 A szakdolgozatom készítése során a célom, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat és egy ilyen folyamatot be tudjak mutatni egy tetszőlegesen kiválasztott domainnel.
-
 Ennek megfelelően szakdolgozatom tartalmát négy fő részre tagoltam. A dolgozat első részében a jelenleg bárki számára elérhető szövegfelismerő rendszerek közül bemutatok néhányat, majd rávilágítok azok hiányosságaira. A második részben a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg az iparban használnak. A harmadik részben ismertetem és összehasonlítom azokat a keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben, továbbá a teljes implementáció és fejlesztési folyamat bemutatásra kerül lépésről lépésre. A negyedik részben az elkészült program használatát, komponenseit és felépítését fogom ismertetni.
 
 
@@ -447,8 +445,7 @@ def output_img_to_window(img):
 
 Az EasyOCR könyvtár is egy nyílt forráskódú \cite{easyocr}, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
 
-Az EasyOCR importálása után először példányosítani kell egy objektumot az \newline easyocr.Reader() konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \textit{readtext} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
-
+Az EasyOCR importálása után először példányosítani kell egy objektumot az \newline \emph{easyocr.Reader()} konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \emph{readtext()} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
 A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy szövegrészlet, melyet az OCR a karakterek egymáshoz viszonyított pozíciója alapján összefüggőnek ítélt. Minden egyes listaelem további elemeket tartalmaz. Első helyen egy listát, ami az adott szöveget körülvevő téglalap négy sarkának koordináta-párjait tárolja, második helyen magát a felismert szöveget, a harmadik pozíción a pedig tizedestört alakban kifejezve azt, hogy az OCR hány százalékban biztos abban, hogy a kinyert szöveg egyezik a képen látható szöveggel.
 
 \begin{tcolorbox}
@@ -460,6 +457,7 @@ A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy sz�
     \end{center}
 \end{tcolorbox}
 
+\noindent
 Ahogyan azt a pytesseract könyvtár eredményén megtettem, itt is szemléltetésképpen írtam egy metódust, ami a bemenetként adott képen megjeleníti a felismert szavakat, összefüggőnek vélt karakterláncokat.
 
 \pagebreak
@@ -485,29 +483,32 @@ def generate_img_with_bounding_boxes_on_words(ocr_result):
     cv2.destroyAllWindows()
 \end{verbatim}
 
+\noindent
 Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
 
 \section{A dokumentum előfeldolgozása}
 
 Ahogyan "Az OCR pontosságának javítása bemeneti oldalon" című fejezetben kifejtettem, a lehető legpontosabb OCR kimenet eléréséhez szükségünk van a bemeneti kép előfeldolgozására pár lépésben az OpenCV nevű ingyenes könyvtár különböző metódusainak használatával. \cite{opencv_functions}
-Mivel a bemeneti dokumentum lehet színes, így először a színek eltüntetésével kezdtem, hiszen a színek a szövegkinyerés szempontjából felesleges információt hordoznak. Ezt az OpenCV cvtColor nevű metódusával értem el, melynek paraméterei egy kép, és az a színtér, melyre konvertálni szeretnénk. A mi esetünkben ez a színtér a COLOR\_RGB2GRAY, ami az RGB színeket a szürke árnyalataivá konvertálja.
+Mivel a bemeneti dokumentum lehet színes, így először a színek eltüntetésével kezdtem, hiszen a színek a szövegkinyerés szempontjából felesleges információt hordoznak. Ezt az OpenCV \emph{cvtColor()} nevű metódusával értem el, melynek paraméterei egy kép, és az a színtér, melyre konvertálni szeretnénk. A mi esetünkben ez a színtér a \emph{COLOR\_RGB2GRAY}, ami az RGB színeket a szürke árnyalataivá konvertálja.
 
 \begin{verbatim}
 def convert_to_grayscale_image(image):
     return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 \end{verbatim}
 
+\noindent
 Következő lépésként a zajeltávolítás volt a célom. Egy zajos kép nagy mértékben ronthatja a kimenet pontosságát, mivel az OCR a zajos, szemcsés részeket is az adott karakter részének határozhatja meg. A zajeltávolítás legegyszerűbb módja a kép kis mértékben történő elmosása, mivel így a zajos részeket összemossuk és jobban beleolvad a háttérbe, cserébe, ha tényleg csak kevés elmosást alkalmaztunk, a karakterek szélei csak kis mértékben veszítenek az élességükből, ezzel továbbra is fenntartva a felismerhetőséget.
-Erre a célra a medianBlur metódust hívtam meg az OpenCV könyvtárból, melynek paraméterei a kép és egy 1-nél nagyobb páratlan szám, mely az elmosáshoz használt digitális rekesz lineáris méretét adja meg.
+Erre a célra a \emph{medianBlur()} metódust hívtam meg az OpenCV könyvtárból, melynek paraméterei a kép és egy 1-nél nagyobb páratlan szám, mely az elmosáshoz használt digitális rekesz lineáris méretét adja meg.
 
 \begin{verbatim}
 def remove_noise(image):
     return cv2.medianBlur(image, 5)
 \end{verbatim}
 
-Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV threshold nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képet két színből álló (bináris) képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (threshold), egy maximum érték (maxval), és a küszöbérték típusa.
-Különböző célokra különböző küszöbérték típusok léteznek \cite{opencv_threshold}, számomra a THRESH\_BINARY a legmegfelelőbb.
-A THRESH\_BINARY küszöbérték típus számítási elve:
+\noindent
+Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV \emph{threshold()} nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képet két színből álló képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (\emph{threshold}), egy maximum érték (\emph{maxval}), és a küszöbérték típusa.
+Különböző célokra különböző küszöbérték típusok léteznek \cite{opencv_threshold}, számomra a \emph{THRESH\_BINARY} a legmegfelelőbb.
+A \emph{THRESH\_BINARY} küszöbérték típus számítási elve:
 \begin{equation}
 output(x,y)=
     \begin{cases}
@@ -516,14 +517,16 @@ output(x,y)=
     \end{cases}
 \end{equation}
 
+\noindent
 A képletből kiolvasható, hogy amennyiben a vizsgált pixel színe a küszöbértéknél nagyobb, akkor a szín átírásra kerül, és a maxvalue értékét fogja felvenni, egyéb esetben az új értéke 0 lesz.
-Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkebb küszöbértéket kell megadnunk, így a threshold paraméter a mi esetünkben 0 lesz. A maxvalue az a szín, amit a küszöbértéknél nagyobb, azaz kiszűrni kívánt képpontok (ebben az esetben a dokumentum háttere) fog felvenni, ez a mi esetünkben 255 lesz, azaz fehér.
+Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkebb küszöbértéket kell megadnunk, így a \emph{threshold} paraméter a mi esetünkben 0 lesz. A \emph{maxvalue} az a szín, amit a küszöbértéknél nagyobb, azaz kiszűrni kívánt képpontok (ebben az esetben a dokumentum háttere) fog felvenni, ez a mi esetünkben 255 lesz, azaz fehér.
 
 \begin{figure}[h]
     \centerline{\includegraphics[scale=.25]{preprocessed_image.eps}}
     \caption{A három előfeldolgozó metódus futása utáni állapot}
 \end{figure}
 
+\noindent
 A három képfeldolgozó metódus lefuttatása után elértem, hogy a szöveg jól elkülönüljön a háttértől, a karakterek könnyen felismerhetőekek legyenek, és ne maradjon a szövegfelismerés szempontjából irreleváns jelentést hordozó adat a dokumentumon.
 
 \section{Adatstruktúra felállítása és feltöltése}
@@ -541,7 +544,7 @@ class CardTextItem:
         self.text = text
 \end{verbatim}
 
-A top\_left, top\_right, btm\_left és btm\_right adattagok rendre annak az alakzatnak a bal felső, jobb felső, bal alsó és jobb alsó pontjainak koordináta párjait jelölik, mely pontosan körbehatárolja az egybefüggően kinyert karakterláncot.
+A \emph{top\_left}, \emph{top\_right}, \emph{btm\_left} és \emph{btm\_right} adattagok rendre annak az alakzatnak a bal felső, jobb felső, bal alsó és jobb alsó pontjainak koordináta párjait jelölik, mely pontosan körbehatárolja az egybefüggően kinyert karakterláncot.
 
 Azzal, hogy elkészült az adatstruktúra, már csak fel kell tölteni az OCR által kinyert adatokkal. Ehhez vissza kell emlékezni az EasyOCR könyvtár bemutatása című alfejezet során szemléltetett adatstruktúrára, melyben rendelkezésünkre áll a dokumentumról felismert összes karakterlánc. Ez egy olyan lista, melyben minden elem egy további struktúrát tartalmaz, benne a koordinátákkal, a szöveggel és a szöveg pontosságát becslő számmal. Ezt a listát szeretném úgy szétbontani, hogy minden elemét leképezem egy olyan objektummá, ami az előbb felállított adatstruktúra egy példánya, azaz minden egyes karakterlánc egy önálló objektum lenne.
 
@@ -575,7 +578,7 @@ A metódusban végig iterálunk az OCR által kinyert adatokon, és az aktuális
 
 A program írása során ezen a ponton már nem volt triviális az, hogy milyen irányban folytatssam a fejlesztést. A dokumentumról az EasyOCR segítségével sikerült kinyerni minden szöveget, és bár sikerült ezeknek egy adatstruktúrát felállítani, de ezt leszámítva, a végeredményt tekintve ezen a ponton még csak azt sikerült elérni, amire az interneten található, ingyenes applikációk is képesek. A következő, és egyben a szakdolgozat szempontjából legfontosabb lépés az adatok osztályozása, az összetartozó adatpárok megkeresése.
 
-A dokumentumra tekintve megállapíthatjuk, hogy a legtöbb adat igazából egy adatpár, ahol az egyik nevezhető kulcsnak, a másik pedig értéknek. Például a Document Number szöveg az egy kulcs, mivel egyértelműen azonosítható belőle, hogy milyen jelentést hordoz. Az 123456AB karakterlánc pedig ennek a kulcsnak az értéke. Azért érték, mert önmagában nem hordoz jelentést, de ha hozzákapcsoljuk a kulcsához, onnantól tudjuk, hogy mit jelent. Tehát a kulcs az felfogható egy egyedi azonosítóként, aminek az értéke az azonosított adat. Viszont a kulcs-érték párokba történő rendezés nem egy triviális feladat, és több módszer is felmerült a probléma megoldására.
+A dokumentumra tekintve megállapíthatjuk, hogy a legtöbb adat igazából egy adatpár, ahol az egyik nevezhető kulcsnak, a másik pedig értéknek. Például a \emph{Document Number} szöveg az egy kulcs, mivel egyértelműen azonosítható belőle, hogy milyen jelentést hordoz. Az \emph{123456AB} karakterlánc pedig ennek a kulcsnak az értéke. Azért érték, mert önmagában nem hordoz jelentést, de ha hozzákapcsoljuk a kulcsához, onnantól tudjuk, hogy mit jelent. Tehát a kulcs az felfogható egy egyedi azonosítóként, aminek az értéke az azonosított adat. Viszont a kulcs-érték párokba történő rendezés nem egy triviális feladat, és több módszer is felmerült a probléma megoldására.
 
 Az egyik irány az a reguláris kifejezésekre épült volna, a felismert szövegeket bizonyos tulajdonságok alapján próbálta volna a program besorolni egy előre definiált kulcs halmazhoz. Például igazolványszámot a szabvány alapján (adott mennyiségű betűk és számok, meghatározott sorrendben), vagy dátumokat a benne szereplő számok és elválasztó jelek alapján. De ehhez előre definiálni kellett volna, hogy milyen kulcsok szerepelhetnek a dokumentumon, ami eléggé megkötötte volna a felhasználási lehetőségeket, továbbá a reguláris kifejezésekben kevés kihívást, kisebb rugalmasságot és pontosságot véltem felfedezni. Ennek ellenére a reguláris kifejezések használatának ötletét nem felejtettem el, és a későbbiekben még felhasznátam.
 
@@ -585,8 +588,8 @@ Végül egy saját magam által írt algoritmus mellett döntöttem, ahol nincse
 
 Az algoritmus végig iterál a teljes listán, mely a kinyert szövegeket tároló objektumokat tartalmazza. Minden iteráció első lépése az, hogy keressünk az objektumok közül egyet, amire nagy biztossággal rámondható, hogy az egy kulcs. Ennek a megállapítására írtam a find\_next\_key metódust, mely az összes objektumot összehasonlítva megkeresi azt, amelyik a koordinátái alapján a többihez képest legjobban balra és legjobban felül van, máshogy fogalmazva megkeresi a bal felső sarokhoz legközelebb eső elemet. Mivel feltételeztem, hogy a kulcsok minden esetben vagy az értkékek bal oldalán, vagy az értékek felett vannak, így elméleti szinten az algoritmus nem találhat értéket, hiszen annak kulcsa mindenképpen közelebb lesz a bal felső sarokhoz.
 
-Először a CardTextItem objektumba fel kellett vennem 4 új adattagot: is\_examined, assigned\_to, is\_key, is\_value. Mind a négy adattag kezdetben 0-ra inicializálódik. Az is\_examined egy logikai változóként viselkedik, és azt jelzi, hogy a kulcs-érték pár keresés lefutott-e már rá. Erre azért volt szükség, hogy ha az adott szövegre futó keresés nem talált hozzá tartozó párt, akkor jelezve legyen, hogy ez nagy eséllyel egy olyan szöveg, mely csak tájékoztató jellegű, nem pedig egy fontos adat. Ilyen például a példa igazolványon az IDENTIFICATION CARD szöveg, mely nem lesz kulcs, hiszen érték sem tartozik hozzá.
-Az assigned\_to adattag segítségével lesznek összekapcsolva azok az objektumok, amik a kulcs-érték pár keresés során egymáshoz lettek rendelve. Maga az adattag hozzá kapcsolt másik objektumra fog mutatni. Az is\_key és az is\_value adattagok pedig szintén logikai változókként funkcionálnak, jelezvén, hogy az adott objektum kulcsként vagy értékként lett felismerve.
+Először a \emph{CardTextItem} objektumba fel kellett vennem 4 új adattagot: \emph{is\_examined}, \emph{assigned\_to}, \emph{is\_key}, \emph{is\_value}. Mind a négy adattag kezdetben 0-ra inicializálódik. Az is\_examined egy logikai változóként viselkedik, és azt jelzi, hogy a kulcs-érték pár keresés lefutott-e már rá. Erre azért volt szükség, hogy ha az adott szövegre futó keresés nem talált hozzá tartozó párt, akkor jelezve legyen, hogy ez nagy eséllyel egy olyan szöveg, mely csak tájékoztató jellegű, nem pedig egy fontos adat. Ilyen például a példa igazolványon az \emph{IDENTIFICATION CARD} szöveg, mely nem lesz kulcs, hiszen érték sem tartozik hozzá.
+Az \emph{assigned\_to adattag} segítségével lesznek összekapcsolva azok az objektumok, amik a kulcs-érték pár keresés során egymáshoz lettek rendelve. Maga az adattag hozzá kapcsolt másik objektumra fog mutatni. Az \emph{is\_key} és az \emph{is\_value} adattagok pedig szintén logikai változókként funkcionálnak, jelezvén, hogy az adott objektum kulcsként vagy értékként lett felismerve.
 
 \newpage
 
@@ -603,7 +606,7 @@ def find_next_key(items):
                 next_key = item
 \end{verbatim}
 
-A metódus paraméterben megkapja az objektumok listáját, és a next() beépített függvény és egy szűrés segítségével kiválasztja a listából az első olyan objektumot, amit még nem vizsgáltunk. Ezután végig iterálva az objektumokon összehasonlítást végez a bal felső sarok Y koordinátája alapján. Az iteráció végére megkapjuk a dokumentum tetejéhez legközelebb eső (az Y tengelyen legmagasabban lévő) objektumot.
+A metódus paraméterben megkapja az objektumok listáját, és a \emph{next()} beépített függvény és egy szűrés segítségével kiválasztja a listából az első olyan objektumot, amit még nem vizsgáltunk. Ezután végig iterálva az objektumokon összehasonlítást végez a bal felső sarok Y koordinátája alapján. Az iteráció végére megkapjuk a dokumentum tetejéhez legközelebb eső (az Y tengelyen legmagasabban lévő) objektumot.
 Ezen a ponton felmerült egy fontos kérdés. Amennyiben a legfelül elhelyezkedő objektummal egyező magasságban található még több is, akkor a leginkább balra esőt fogjuk kulcsként címkézni. De olyan szélsőséges eset is előfordulhat, hogy nem pont azonos Y koordinátán, de nagyon pici eltéréssel szintén található egy másik objektum, tőle balrább elhelyezkedve, akkor őt kell kulcsként címkézni.
 Mivel nem feltételezhetjük, hogy a dokumentumon egymás mellett elhelyezkedő szövegek 1 pixel pontosságra egy vonalban vannak, továbbá azt sem, hogy az egymás alatt lévő szövegek bal széle pontosan egy függőlegesen húzott vonalra illeszkednek, így be kellett vezetnem egy olyan tűréshatár értéket, melyet hozzáadva illetve kivonva az éppen vizsgált X vagy Y értékből megkapjuk a tűréshatár intervallumot.
 Amennyiben ezen az intervallumon belül találunk újabb kulcsokat, azokról meg kell állapítani, hogy közelebb vannak-e a dokumentum bal széléhez, mint amit eddig találtunk. A find\_next\_key metódus az alábbi sorokkal egészül ki:
@@ -621,22 +624,22 @@ for item in items:
 
 \newpage
 
-A THRESHOLD konstans változó értékének meghatározása próbálgatással történt. A 40-es érték bizonyult minden esetben jónak, ez még az a tűréshatár, amibe az egymás mellett és alatt elhelyezkedő objektumok beleesnek, de azok már nem, amik a keresés eredménye szempontjából helytelenek lennének. Ezt a konstanst többször is használni fogom a kulcs-érték párok felderítése során.
+A \emph{THRESHOLD} konstans változó értékének meghatározása próbálgatással történt. A 40-es érték bizonyult minden esetben jónak, ez még az a tűréshatár, amibe az egymás mellett és alatt elhelyezkedő objektumok beleesnek, de azok már nem, amik a keresés eredménye szempontjából helytelenek lennének. Ezt a konstanst többször is használni fogom a kulcs-érték párok felderítése során.
 
-A find\_next\_key metódus visszatérési értéke az az objektum lesz, ami Y tengelyen a legmagasabban helyezkedik el. Amennyiben ezen objektum X koordinátájának a tűréshatár intervallumán belül találunk egy vagy több másik, tőle  balra eső objektumot, úgy azzal térünk vissza, amelyik ezek közül a legközelebb van a dokumentum bal széléhez. Tehát a metódus visszatér egy objektummal, melyről innentől feltételezzük, hogy kulcs. 
+A \emph{find\_next\_key()} metódus visszatérési értéke az az objektum lesz, ami Y tengelyen a legmagasabban helyezkedik el. Amennyiben ezen objektum X koordinátájának a tűréshatár intervallumán belül találunk egy vagy több másik, tőle  balra eső objektumot, úgy azzal térünk vissza, amelyik ezek közül a legközelebb van a dokumentum bal széléhez. Tehát a metódus visszatér egy objektummal, melyről innentől feltételezzük, hogy kulcs. 
 Azért nem jelenthető ki, hogy kulcs, mert csakis onnantól címkézünk egy objektumot kulcsként, ha megbizonyosodtunk róla, hogy tartozik hozzá érték. Ezen a ponton ebben még nem lehetünk biztosak.
 
-A folyamat következő lépése a find\_value\_for\_key nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum is\_examined adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
+A folyamat következő lépése a \emph{find\_value\_for\_key()} nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum \emph{is\_examined} adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
 Innentől tudjuk, hogy az eddig kulcsnak vélt objektum valóban kulcs, hiszen találtunk egy objektumot mellette, mely feltételezhetően a hozzá tartozó érték. Amennyiben a jobbra keresésnek nem lett eredménye, úgy egy lefelé történő keresés indul. Amennyiben a kulcsnak vélt objektum alatt sem találtunk másik objektumot, akkor a metódus futása véget ér anélkül, hogy a kulcsnak vélt objektumot valóban kulcsként címkéztük volna, és értéket rendeltünk volna hozzá. Ebből megállapítható, hogy az objektumhoz valószínűleg nem tartozik érték.
-Ilyen például az IDENTIFICATION CARD szöveg, se tőle jobbra, se alatta nem helyezkedik el hozzá kapcsolható érték.
+Ilyen például az \emph{IDENTIFICATION CARD} szöveg, se tőle jobbra, se alatta nem helyezkedik el hozzá kapcsolható érték.
 Mivel a kulcs keresés mindig a bal felső objektumokból indul ki, így teljesen felesleges lenne balra illetve felfelé történő keresés, hiszen ott már nem találhatunk semmit. Ez természetesen hátrány egy olyan dokumentumnál, melyről nem mondható el, hogy a kulcsok minden esetben az értékek bal oldalán, vagy felettük találhatóak.
 
-A search\_right metódus ugyanazokkal a paraméterekkel rendelkezik, mint a \break find\_value\_for\_key. Futása során először kiszámolja a tűréshatár intervallumot, majd ezen belül keres egyéb olyan objektumokat, melyek nem voltak még vizsgálva, és nincsenek más objektumhoz rendelve. Továbbá feltétel az is, hogy a kulcshoz képest nagyobb X koordinátával rendelkezzen, azaz tőle jobbra helyezkedjen el a dokumentumon.
-A talált objektumokat egy listában gyűjtjük, és a jobbra keresés végén, amennyiben a listában nincs elem, akkor tudjuk, hogy nem volt objektum a kulcstól jobbra. Ebben az esetben egy lefelé történő keresés indul. Amennyiben csak egy objektum van a találatok listájában, úgy visszatérünk azzal az objektummal. Ha a találatok listája több elemet is tartalmaz, akkor a get\_closest\_item\_right függvény fog hívodni, mely a listát kapja paraméterül, és a koordináták alapján visszaadja azt, amelyik jobbról a legközelebb található a kulcshoz.
+A \emph{search\_right()} metódus ugyanazokkal a paraméterekkel rendelkezik, mint a \break \emph{find\_value\_for\_key()}. Futása során először kiszámolja a tűréshatár intervallumot, majd ezen belül keres egyéb olyan objektumokat, melyek nem voltak még vizsgálva, és nincsenek más objektumhoz rendelve. Továbbá feltétel az is, hogy a kulcshoz képest nagyobb X koordinátával rendelkezzen, azaz tőle jobbra helyezkedjen el a dokumentumon.
+A talált objektumokat egy listában gyűjtjük, és a jobbra keresés végén, amennyiben a listában nincs elem, akkor tudjuk, hogy nem volt objektum a kulcstól jobbra. Ebben az esetben egy lefelé történő keresés indul. Amennyiben csak egy objektum van a találatok listájában, úgy visszatérünk azzal az objektummal. Ha a találatok listája több elemet is tartalmaz, akkor a \emph{get\_closest\_item\_right()} függvény fog hívodni, mely a listát kapja paraméterül, és a koordináták alapján visszaadja azt, amelyik jobbról a legközelebb található a kulcshoz.
 
-A search\_below metódus ugyan úgy működik, mint a search\_right, csak nem jobbra irányul a keresés, hanem a kulcstól lefelé. Ha a lefelé történő keresés során több objektumot is találunk, akkor hasonlóan, mint a search\_right metódusban, megkeressük azt, ami a legközelebb van a kulcshoz, csak nem az X tengelyről, hanem az Y-ról, a get\_closest\_item\_below metódus segítségével.
+A \emph{search\_below()} metódus ugyan úgy működik, mint a search\_right, csak nem jobbra irányul a keresés, hanem a kulcstól lefelé. Ha a lefelé történő keresés során több objektumot is találunk, akkor hasonlóan, mint a search\_right metódusban, megkeressük azt, ami a legközelebb van a kulcshoz, csak nem az X tengelyről, hanem az Y-ról, a \emph{get\_closest\_item\_below()} metódus segítségével.
 
-A kulcs-érték keresési folyamat belépési pontja a find\_key\_value\_pairs metódus. Ebben egy while ciklus és egy listaszűrés felel azért, hogy egy objektumon legfeljebb egyszer menjen végig a párkereső algoritmus.
+A kulcs-érték keresési folyamat belépési pontja a \emph{find\_key\_value\_pairs()} metódus. Ebben egy while ciklus és egy listaszűrés felel azért, hogy egy objektumon legfeljebb egyszer menjen végig a párkereső algoritmus.
 
 \begin{verbatim}
 def find_key_value_pairs(items):
@@ -645,8 +648,9 @@ def find_key_value_pairs(items):
         find_value_for_key(next_key, items)
 \end{verbatim}
 
-Az any() beépített listaszűrő metódus igazzal tér vissza, ha a lista legalább egy olyan objektumot tartalmaz még, ami nem volt vizsgálva. Ennek a helyességét a korábban tárgyalt find\_value\_for\_key metódus biztosítja. Tehát addíg, amíg van olyan objektum, melyet nem vizsgáltunk, keresünk egy kulcsot a dokumentumon a  find\_next\_key metódussal, majd a kulcshoz megkeressük a hozzá tartozó értéket a find\_value\_for\_key függvénnyel. Mivel Pythonban alapértelmezetten referencia szerinti paraméterátadás történik, így nem tér vissza semmivel ez a metódus, mert minden módosítást az eredeti objektumokon végzünk.
-Ha már nincs több vizsgálatlan objektum, akkor visszatérünk a main függvénybe. Ezen a ponton a feladat már el volt végezve, hiszen minden objektumot megvizsgáltunk, megtaláltuk a kulcs-érték párokat. Viszont az eddig használt adatstruktúra innentől értelmét veszti, a CardTextItem osztályból egyedül a text adattag releváns számunka. Az egyszerűbb kezelés érdekében egy kulcs-érték párokat tároló adatstruktúra mellett döntöttem.
+\noindent
+Az \emph{any()} beépített listaszűrő metódus igazzal tér vissza, ha a lista legalább egy olyan objektumot tartalmaz még, ami nem volt vizsgálva. Ennek a helyességét a korábban tárgyalt \emph{find\_value\_for\_key()} metódus biztosítja. Tehát addíg, amíg van olyan objektum, melyet nem vizsgáltunk, keresünk egy kulcsot a dokumentumon a  \emph{find\_next\_key()} metódussal, majd a kulcshoz megkeressük a hozzá tartozó értéket a \emph{find\_value\_for\_key()} függvénnyel. Mivel Pythonban alapértelmezetten referencia szerinti paraméterátadás történik, így nem tér vissza semmivel ez a metódus, mert minden módosítást az eredeti objektumokon végzünk.
+Ha már nincs több vizsgálatlan objektum, akkor visszatérünk a main függvénybe. Ezen a ponton a feladat már el volt végezve, hiszen minden objektumot megvizsgáltunk, megtaláltuk a kulcs-érték párokat. Viszont az eddig használt adatstruktúra innentől értelmét veszti, a \emph{CardTextItem} osztályból egyedül a \emph{text} adattag releváns számunka. Az egyszerűbb kezelés érdekében egy kulcs-érték párokat tároló adatstruktúra mellett döntöttem.
 
 \newpage
 
@@ -663,7 +667,7 @@ def items_to_dict(card_text_items):
     return result_dict
 \end{verbatim}
 
-Az items\_to\_dict metódus átrendezi az osztálypéldányokat egy dictionary adatstruktúrába, melynek minden kulcsa egy általunk kulcsnak vélt objektum text adattagja (a dokumentumról kinyert karakterlánc), értéke pedig a kulcshoz tartozó érték text adattagja. Abban az esetben, ha egy adott példány se nem kulcs, se nem érték, azaz egy olyan elem, melyhez nem találtunk párt, akkor az átmásolás során őt felvesszük a dictionary egy kulcsaként, és az "N/A" szöveg kerül hozzá értékként, ezzel jelezve, hogy a szöveghez nem találtunk hozzá köthető másik objektumot. A példa igazolványon ilyen az IDENTIFICATION CARD szöveg.
+Az \emph{items\_to\_dict()} metódus átrendezi az osztálypéldányokat egy dictionary adatstruktúrába, melynek minden kulcsa egy általunk kulcsnak vélt objektum \emph{text} adattagja (a dokumentumról kinyert karakterlánc), értéke pedig a kulcshoz tartozó érték text adattagja. Abban az esetben, ha egy adott példány se nem kulcs, se nem érték, azaz egy olyan elem, melyhez nem találtunk párt, akkor az átmásolás során őt felvesszük a dictionary egy kulcsaként, és az "N/A" szöveg kerül hozzá értékként, ezzel jelezve, hogy a szöveghez nem találtunk hozzá köthető másik objektumot. A példa igazolványon ilyen az \emph{IDENTIFICATION CARD} szöveg.
 Ezekről meggyőződhetünk, ha végigiterálunk rajta és kiíratjuk minden elemét:
 
 \begin{tcolorbox}
@@ -696,11 +700,11 @@ Ezért valahogyan ki kell szűrni azokat az adatokat, melyekről eltávolíthat�
 Erre a célra mintaillesztést használtam. A mintaillesztés reguláris kifejezések segítségével történik, melyben megszabjuk, hogy milyen szabályokat és mintákat kell követnie az általunk vizsgált szövegnek. A mintaillesztés kimenete lehet elfogadó, amennyiben a szöveg teljes egészébena mintára illeszkedik, és megfelel a követelményeinknek, egyébként elutasító.
 Tudjuk, hogy az olyan adatok, mint a nemzetiség kódja, a nem, a dátumok és a dokumentumszámok mind olyanok, melyek általános esetekben nem tartalmazhatnak szóközt. Így ezekre az adat kategóriákra írtam egy-egy reguláris kifejezést.
 
-A dátumformátum a legbonyolultabb, hiszen a nap, hónap és év sorrendje változó, továbbá az elválasztó jelek is lehetnek eltérőek. Ehhez az interneten kerestem már kész reguláris kifejezéseket, \cite{date_regex} és azt kicsit átalakítva a programomba három konstans változóba felvettem. Az egyik az év, hónap, nap, a másik a nap, hónap, év, a harmadik pedig a hónap, nap, év sorrendű megfelelőjét tárolja a reguláris kifejezésnek. Mind a három esetben az évet 4 számjegy, a hónapot és a napot pedig 2-2 számjegy jelöli. Egyéb eseteket nem vettem figyelembe, mivel ez a három nagyon nagy százalékban lefedi a különböző igazolványokon található formátumokat.
+A dátumformátum a legbonyolultabb, hiszen a nap, hónap és év sorrendje változó, továbbá az elválasztó jelek is lehetnek eltérőek. Ehhez az interneten kerestem már kész reguláris kifejezéseket, \cite{date_regex} és azt kicsit átalakítva a programomba három konstans változóba felvettem. \emph{év}, \emph{hónap}, \emph{nap}, a másik a \emph{nap}, \emph{hónap}, \emph{év}, a harmadik pedig a \emph{hónap}, \emph{nap}, \emph{év} sorrendű megfelelőjét tárolja a reguláris kifejezésnek. Mind a három esetben az évet 4 számjegy, a hónapot és a napot pedig 2-2 számjegy jelöli. Egyéb eseteket nem vettem figyelembe, mivel ez a három nagyon nagy százalékban lefedi a különböző igazolványokon található formátumokat.
 
-Az nemzetiséget jelölő ország kódjára saját reguláris kifejezést írtam. Az országok kódjai az ISO-3166 szabvány alapján 2 vagy 3 betűből állhatnak. \cite{country_codes} Az erre írt reguláris kifejezés így néz ki: \textasciicircum[a-zA-Z]\{2,3\}\$. Ez egy egyszerű kifejezés, mely a kis- és nagybetűk között különbséget nem téve korlátozza, hogy a betűk számának 2 és 3 között kell lennie, semmilyen egyéb karakter nem megengedett a szövegen belül, de előtte és mögött sem.
+Az nemzetiséget jelölő ország kódjára saját reguláris kifejezést írtam. Az országok kódjai az ISO-3166 szabvány alapján 2 vagy 3 betűből állhatnak. \cite{country_codes} Az erre írt reguláris kifejezés így néz ki: \emph{\textasciicircum[a-zA-Z]\{2,3\}\$}. Ez egy egyszerű kifejezés, mely a kis- és nagybetűk között különbséget nem téve korlátozza, hogy a betűk számának 2 és 3 között kell lennie, semmilyen egyéb karakter nem megengedett a szövegen belül, de előtte és mögött sem.
 
-A dokumentumszámoknál és egyéb azonsítóknál azt a feltételt szabtam meg, hogy a karakterláncnak tartalmaznia kell legalább 4 számot. Mivel ebbe beleesnek a dátumok is, így a szűrésnél figyelni kell, hogy először a dátum reguláris kifejezésére történjen a próbaillesztés, és ha arra nem illeszkedett a szöveg, akkor lehet próbálni a dokumentumszámra is. A dokumentumszám reguláris kifejezése: \textasciicircum(.*\textbackslash d)\{4,\}\textbackslash S*\$. Bármilyen, bármennyi (akár nulla) karakter után kötelezően 4 vagy több szám kell, hogy szerepeljen, ami után bármennyi egyéb karakter állhat, akár egy sem.
+A dokumentumszámoknál és egyéb azonsítóknál azt a feltételt szabtam meg, hogy a karakterláncnak tartalmaznia kell legalább 4 számot. Mivel ebbe beleesnek a dátumok is, így a szűrésnél figyelni kell, hogy először a dátum reguláris kifejezésére történjen a próbaillesztés, és ha arra nem illeszkedett a szöveg, akkor lehet próbálni a dokumentumszámra is. A dokumentumszám reguláris kifejezése: \emph{\textasciicircum(.*\textbackslash d)\{4,\}\textbackslash S*\$}. Bármilyen, bármennyi (akár nulla) karakter után kötelezően 4 vagy több szám kell, hogy szerepeljen, ami után bármennyi egyéb karakter állhat, akár egy sem.
 
 Az utófeldolgozási folyamat lépéseit a \emph{post\_process\_text()} metódusban gyűjtöttem össze. A metódus végigmegy az összes szövegen, a kulcsokról leszedi a kettőspontot, az értékeket pedig megtisztítja a nem kívánatos szóközöktől, amennyiben a mintaillesztés eredménye alapján ez nem változtatja a szöveg helyességét.
 
@@ -718,7 +722,7 @@ def post_process_text(items_dict):
     return new_items_dict
 \end{verbatim}
 
-Az adatok exportálására a \emph{csv} nevű függvénykönyvár volt a segítségemre. A \emph{with open() as} segítségével erőforrást allokálok egy fájl írására, majd példányosítok egy writer objektumot, mely a beolvasott dokumentum mappájába fog létrehozni egy csv kiterjesztésű fájlt. A későbbi konfigurálhatóság érdelében a FILE\_EXT konstans változóban tárolom a kiterjesztést leíró stringet. Az adatstruktúrán végigiterálva annak kulcsai és értékei beírásra kerülnek a fájlba pontosvesszővel elválasztva, sortöréssel lezárva. Ezzel lehetővé teszem, hogy excelbe is könnyen importálható legyen a kinyert adatok összessége, de bármilyen szerkesztővel megnyitva is könnyen olvasható legyen az emberi szemnek is a fájl tartalma.
+Az adatok exportálására a \emph{csv} nevű függvénykönyvár volt a segítségemre. A \emph{with open() as} segítségével erőforrást allokálok egy fájl írására, majd példányosítok egy writer objektumot, mely a beolvasott dokumentum mappájába fog létrehozni egy csv kiterjesztésű fájlt. A későbbi konfigurálhatóság érdelében a \emph{FILE\_EXT} konstans változóban tárolom a kiterjesztést leíró stringet. Az adatstruktúrán végigiterálva annak kulcsai és értékei beírásra kerülnek a fájlba pontosvesszővel elválasztva, sortöréssel lezárva. Ezzel lehetővé teszem, hogy excelbe is könnyen importálható legyen a kinyert adatok összessége, de bármilyen szerkesztővel megnyitva is könnyen olvasható legyen az emberi szemnek is a fájl tartalma.
 
 \begin{verbatim}
 def export_data_to_csv(path, data):
@@ -749,7 +753,7 @@ A képen látható, hogy a felhasználónak lehetősége van bepipálni a "Show 
 \end{figure}
 
 A program futása során keletkezhetnek hibák. Amennyiben az "Error while preparing and reading data." hibaüzenettel találja szembe magát a felhasználó, akkor vagy a kép előfeldolgozása, vagy az OCR folyamat során keletezett kivétel. Ha az "Error while processing data." üzenet jelenik meg, akkor az OCR eredményének leképezésénél, vagy a kulcs-érték párok keresésénél történt végzetes hiba.
-A felhasználó találkozhat még az "Error while post-processing data." üzenettel, ami egyértelműen jelzi, hogy az utófeldolgozási lépés sikertelen volt egy nem várt hiba miatt. Amennyiben egy nem ennyire elkülöníthető folyamat során keletkezik hiba, akkor a "Something went wrong" üzenet jelenik meg. Ezek közül egyik hiba sem okozza a program leállását, így újra lehet próbálni a futtatást.
+A felhasználó találkozhat még az "Error while post-processing data." üzenettel, ami egyértelműen jelzi, hogy az utófeldolgozási lépés sikertelen volt egy nem várt hiba miatt. Amennyiben egy nem ennyire elkülöníthető folyamat során keletkezik hiba, akkor a "Something went wrong" üzenet jelenik meg. Ezek közül egyik hiba sem okozza a program leállását, így újra lehet próbálni a szövegkinyerési folyamatot.
 
 \section{Eredmény bemutatása több bemenetre}
 
@@ -763,7 +767,7 @@ Az eddig használt példa igazolványról kinyert adatokat már bemutattam, de a
 \end{figure}
 
 Amíg az első igazolványkép nagyrészt horizontálisan rendezett kulcs-érték párokat tartalmazott (kivéve a névnél), ennél a példánynál arra törekedtem, hogy a kulcs-érték párok egymás alá rendeződjenek, de hagytam vízszintes elrendezésű elemeket is, hogy teszteljem az algoritmus működését.
-A CAN és a Document number értékeit kitoltam a legtöbb adatot tartalmazó oszlopba, valamint egy pár nélküli karakterláncot is elhelyeztem a dokumentum jobb alsó sarkába. Hasonló célom volt a Nationality kulccsal, melyet jobbra eltolva, de Y tengelyen két másik érték közé helyeztem el, de így sem sikerült a programot megzavarni. Ez már a csv fájl megnyitása előtt is ellenőrizhető, ha bepipáljuk a "Show image with recognized text" opciót. Ezen látszódik, hogy a kulcs-érték párosítások helyesek, és az érték nélküli objektumok is párosítatlanul maradtak. A kimeneti csv fájl tartalma:
+A \emph{CAN} és a \emph{Document number} értékeit kitoltam a legtöbb adatot tartalmazó oszlopba, valamint egy pár nélküli karakterláncot is elhelyeztem a dokumentum jobb alsó sarkába. Hasonló célom volt a \emph{Nationality} kulccsal, melyet jobbra eltolva, de Y tengelyen két másik érték közé helyeztem el, de így sem sikerült a programot megzavarni. Ez már a csv fájl megnyitása előtt is ellenőrizhető, ha bepipáljuk a "Show image with recognized text" opciót. Ezen látszódik, hogy a kulcs-érték párosítások helyesek, és az érték nélküli objektumok is párosítatlanul maradtak. A kimeneti csv fájl tartalma:
 
 \begin{tcolorbox}
     \begin{center}
@@ -782,7 +786,7 @@ A CAN és a Document number értékeit kitoltam a legtöbb adatot tartalmazó os
     \end{center}
 \end{tcolorbox}
 
-A harmadik dokumentumon amit készítettem, szerettem volna más elrendezéssel is próbára tenni a programot, ezért újból a horizontális elrendezésből indultam ki, de 2 oszlopba rendeztem a kulcs-érték párokat. A teljesség igényének kielégítésére hagytam olyan objektumokat is, ahol a kulcs az érték felett helyezkedik el. Ezeken túl változtattam a dátumok formátumán és az elválasztó jeleken, valamint a betűtípusokon és stílusokon is.
+A harmadik dokumentumon, amit készítettem, szerettem volna más elrendezéssel is próbára tenni a programot, ezért újból a horizontális elrendezésből indultam ki, de 2 oszlopba rendeztem a kulcs-érték párokat. A teljesség igényének kielégítésére hagytam olyan objektumokat is, ahol a kulcs az érték felett helyezkedik el. Ezeken túl változtattam a dátumok formátumán és az elválasztó jeleken, valamint a betűtípusokon és stílusokon is.
 
 \begin{figure}[h]
     \centerline{\includegraphics[scale=.2]{example_id_card_3.eps}}
@@ -986,7 +990,7 @@ Alulírott Marosi Márk Dániel gazdaságinformatikus BSc szakos hallgató, kije
 Kijelentem, hogy a dolgozatot más szakon korábban nem védtem meg, saját munkám eredménye, és csak a hivatkozott forrásokat (szakirodalom, eszközök, stb.) használtam fel. \hfill \break
 
 \noindent
-Tudomásul veszem, hogy szakdolgozatomat / diplomamunkámat a Szegedi Tudományegyetem Diplomamunka Repozitóriumában tárolja.
+Tudomásul veszem, hogy szakdolgozatomat a Szegedi Tudományegyetem Diplomamunka Repozitóriumában tárolja.
 
 \vspace*{2cm}
 
@@ -1001,10 +1005,12 @@ Szeged, \today\
 \chapter*{Köszönetnyilvánítás}
 \addcontentsline{toc}{section}{Köszönetnyilvánítás}
 
-Ezúton szeretnék köszönetet mondani Janurik Viktor Bálint témavezetőmnek, aki lehetővé tette a dolgozat elkészülését. Nagyra értékelem a türelmét és megértését, ami hozzájárult az eredmények eléréséhez.
+Ezúton szeretnék köszönetet mondani Janurik Viktor Bálint témavezetőmnek, aki lehetővé tette a dolgozat elkészülését. Nagyra értékelem a türelmét és megértését, ami hozzájárult az eredmények eléréséhez. \\
 
-Köszönet illeti azokat az oktatókat, tanárokat és szakembereket is, akik tanítottak és inspiráltak az egyetemi éveim során. Az általuk átadott tudás és tapasztalat nemcsak a szakdolgozatban, hanem az életemben is hasznos lesz.
+\noindent
+Köszönet illeti azokat az oktatókat, tanárokat és szakembereket is, akik tanítottak és inspiráltak az egyetemi éveim során. Az általuk átadott tudás és tapasztalat nemcsak a szakdolgozatban, hanem az életemben is hasznos lesz. \\
 
+\noindent
 Nem utolsó sorban köszönetet szeretnék mondani Gyikó Richárd külső témavezetőmnek is, aki szakmai hozzáértésével, támogatásával és iránymutatásával járult hozzá a szakdolgozat elkészüléséhez.
 
 \end{document}

@@ -1,37 +1,5 @@
 THRESHOLD = 40
 
-# def find_max_y(items):
-#     max_y_item = items[0]
-#
-#     for item in items:
-#         if item.top_left[1] > max_y_item.top_left[1]:
-#             max_y_item = item
-#
-#     # print(max_y_item.__str__())
-#     return max_y_item.top_left[1]
-
-
-# def find_min_x(items):
-#     min_x_item = items[0]
-#
-#     for item in items:
-#         if item.top_left[0] < min_x_item.top_left[0]:
-#             min_x_item = item
-#
-#     # print(min_x_item.__str__())
-#     return min_x_item.top_left[0]
-
-
-# def find_max_x(items):
-#     max_x_item = items[0]
-#
-#     for item in items:
-#         if item.top_left[0] > max_x_item.top_left[0]:
-#             max_x_item = item
-#
-#     # print(max_x_item.__str__())
-#     return max_x_item.top_left[0]
-
 
 def find_next_key(items):
     next_key = next(item for item in items if item.is_examined == 0)
@@ -40,19 +8,15 @@ def find_next_key(items):
         if item.is_examined == 0:
             if item.top_left[1] < next_key.top_left[1]:
                 next_key = item
-    # print("/-- key found by Y coordinate: --/\n")
-    # print(next_key)
-    # print("\n")
+
     upper_bound = next_key.top_left[1] + THRESHOLD
     lower_bound = next_key.top_left[1] - THRESHOLD
 
     for item in items:
         if item.is_examined == 0:
             if lower_bound <= item.top_left[1] <= upper_bound and item.top_left[0] < next_key.top_left[0]:
-                # print("/-- found a new key within threshold --/\n")
                 next_key = item
 
-    # print(f"/-- Found next key: {next_key.text} --/\n")
     return next_key
 
 
@@ -68,10 +32,6 @@ def find_value_for_key(key, items):
         item_right = search_right(key, items)
 
         if item_right is not None:
-            # print("/-- closest item on right: --/\n")
-            # print(item_right)
-            # print("\n")
-
             key.is_key = 1
             item_right.is_value = 1
             item_right.is_examined = 1
@@ -82,17 +42,12 @@ def find_value_for_key(key, items):
             item_below = search_below(key, items)
 
             if item_below is not None:
-                # print("/-- closest item below: --/\n")
-                # print(item_below)
-                # print("\n")
-
                 key.is_key = 1
                 item_below.is_value = 1
                 item_below.is_examined = 1
                 item_below.assigned_to = key
                 key.assigned_to = item_below
     else:
-        # print("/-- no value pair found --/\n")
         return None
 
 
@@ -105,21 +60,17 @@ def search_right(key, items):
         if item.is_examined == 0 and item.assigned_to == 0:
             if (lower_bound <= item.top_left[1] <= upper_bound) and item.top_left[0] > key.top_left[0]:
                 found_items.append(item)
-                # print("/-- found item on right: --/\n")
-                # print(item)
-                # print("\n")
 
     if found_items:
         if len(found_items) == 1:
             return found_items[0]
         else:
-            return get_closest_item_right(found_items, key)
+            return get_closest_item_right(found_items)
     else:
-        # print("/-- search_right found no items /-- \n")
         return None
 
 
-def get_closest_item_right(found_items, text_item):
+def get_closest_item_right(found_items):
     closest_item_right = found_items[0]
 
     for item in found_items:
@@ -138,21 +89,17 @@ def search_below(key, items):
         if item.is_examined == 0 and item.assigned_to == 0:
             if (lower_bound <= item.top_left[0] <= upper_bound) and item.top_left[1] > key.top_left[1]:
                 found_items.append(item)
-                # print("/-- found item below: --/\n")
-                # print(item)
-                # print("\n")
 
     if found_items:
         if len(found_items) == 1:
             return found_items[0]
         else:
-            return get_closest_item_below(found_items, key)
+            return get_closest_item_below(found_items)
     else:
-        # print("/-- search_below found no items /--\n")
         return None
 
 
-def get_closest_item_below(found_items, text_item):
+def get_closest_item_below(found_items):
     closest_item_below = found_items[0]
 
     for item in found_items:

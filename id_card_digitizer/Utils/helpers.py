@@ -88,7 +88,6 @@ def post_process_text(items_dict):
         else:
             new_items_dict[key.replace(':', '')] = value
 
-    # print_dict(new_items_dict)
     return new_items_dict
 
 
@@ -108,7 +107,9 @@ def matches_any_regex(text):
 
 
 def export(path, name, data):
-    with open(f"{path}/{name}_result.{FILE_EXT}", 'w', newline='', encoding='utf-8') as file:
+    file_name = f"{path}/{name}_result.{FILE_EXT}"
+
+    with open(file_name, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
 
         for key, value in data.items():

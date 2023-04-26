@@ -16,4 +16,3 @@ class CardTextItem:
                f"btm_left: {self.btm_left}, btm_right: {self.btm_right}\n" \
                f"examined: {self.is_examined}, assigned: {0 if self.assigned_to == 0 else 1} " \
                f"is_key: {self.is_key}, is_value: {self.is_value}"
-

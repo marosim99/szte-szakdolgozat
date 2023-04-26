@@ -60,7 +60,6 @@ def begin():
             helpers.export_data_to_csv(id_card_path, post_processed_values)
 
             write_message("Process finished, CSV file saved to folder of the source image.")
-
     except Exception as ex:
         write_message(f"Something went wrong: {ex}")
 
