@@ -137,10 +137,13 @@ A szakdolgozat célja egy ilyen program elkészítése egy tetszőlegesen válas
 \chapter*{Tartalmi összefoglaló}
 \addcontentsline{toc}{section}{Tartalmi összefoglaló}
 
-A szakdolgozat a kép alapú dokumentumok domain specifikus szövegfeldolgozásáról szól, ahol a kiválasztott domain a személyi igazolvány lett. Az adatvédelmi problémák elkerülése okán magam által szerkesztett, egyéni kinézettel készült személyi igazolványokat mutatok be és használok fel a szakdolgozatban. Ezek segítségével kerül bemutatásra a fejlesztett program működése is.
-A szakdolgozat célja bemutatni azokat az alkalmazásokat, melyek már bárki számára elérhetőek, rávilágítani ezek hiányosságaira, majd végigkísérni az olvasót egy olyan alkalmazás fejlesztésében, mely ezeket a hiányosságokat próbálja pótolni.
+A szakdolgozat a kép alapú dokumentumok domain specifikus szövegfeldolgozásáról szól, ahol a kiválasztott domain a személyi igazolvány lett. Az adatvédelmi problémák elkerülése okán magam által szerkesztett, egyéni kinézettel készült személyi igazolványokat mutatok be és használok fel a szakdolgozatban.
+A szakdolgozat bemutatja azokat az alkalmazásokat, melyek már bárki számára elérhetőek, rávilágít ezek hiányosságaira, majd végigkíséri az olvasót egy olyan alkalmazás fejlesztésében, mely ezeket a hiányosságokat próbálja pótolni.
 A projekt megvalósítása a legújabb, ingyenesen elérhető programcsomagok és függvénykönyvtárak (EasyOCR, OpenCV) segítségével, valamint egy saját kulcs-érték párokat felismerő algoritmussal, Pyhton programozási nyelvben történt.
-A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként adott kép alapú személyi igazolványról képes a szöveget kinyerni, és az összetartozó adatokat párokba rendezve kezelni, majd ezt egy csv kitejesztésű fájlba exportálni.
+A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként adott kép alapú személyi igazolványról képes a szöveget kinyerni, az összetartozó adatokat párokba rendezni, majd ezt egy csv kitejesztésű fájlba exportálni. \\
+
+\noindent
+Kulcsszavak: szövegfeldolgozás, szövegkinyerés, képfeldolgozás, dokumentum
 
 % \begin{itemize}
 
@@ -174,10 +177,10 @@ A témaválaszatásomat az informatikai rendszerek elképesztő gyorsaságú fej
 Ezen túlmenve, egyes felsőbb kategóriás telefonok már képesek fényképről felismerni szöveget, és opciót biztosítanak a szöveg kinyerésére is. Amennyiben előttünk van egy névjegykártya, és szeretnénk róla egy nevet vagy telefonszámot gyorsan kimásolni anélkül, hogy nekünk kelljen manuálisan begépelni, egyszerűen készítenünk kell róla egy fényképet, és amennyiben a telefon szöveget talál a képen, azt kimásolhatóvá és vágólapra illeszthetővé teszi a felhasználó számára, ezzel értékes időt spórova, továbbá a hibázás lehetőségét is csökkentve.
 Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelátni ebbe a témába, és egy nemrég történt tapasztalat csak felerősítette szakmai érdeklődésem a szövegfelismerés és feldolgozás kapcsán. 
 
-Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és kettő másodperc alatt minden adatom, ami a személyi igazolványomon volt, az a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgráság, és így tovább.
+Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és néhány másodperc alatt minden adatom, ami a személyi igazolványomon volt, a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgárság, és így tovább.
 
-A szakdolgozatom készítése során a célom, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat és egy ilyen folyamatot be tudjak mutatni egy tetszőlegesen kiválasztott domainnel.
-Ennek megfelelően szakdolgozatom tartalmát négy fő részre tagoltam. A dolgozat első részében a jelenleg bárki számára elérhető szövegfelismerő rendszerek közül bemutatok néhányat, majd rávilágítok azok hiányosságaira. A második részben a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg az iparban használnak. A harmadik részben ismertetem és összehasonlítom azokat a keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben, továbbá a teljes implementáció és fejlesztési folyamat bemutatásra kerül lépésről lépésre. A negyedik részben az elkészült program használatát, komponenseit és felépítését fogom ismertetni.
+A szakdolgozatom készítése során a célom, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat, és elkészítsek egy programot, mely lehetővé teszi a hatékony szövegfeldolgozást.
+% Ennek megfelelően szakdolgozatom tartalmát négy fő részre tagoltam. A dolgozat első részében a jelenleg bárki számára elérhető szövegfelismerő rendszerek közül bemutatok néhányat, majd rávilágítok azok hiányosságaira. A második részben a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg az iparban használnak. A harmadik részben ismertetem és összehasonlítom azokat a keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben, továbbá a teljes implementáció és fejlesztési folyamat bemutatásra kerül lépésről lépésre. A negyedik részben az elkészült program használatát, komponenseit és felépítését fogom ismertetni.
 
 
 % \begin{figure}[h]
@@ -200,46 +203,49 @@ Manapság egy átlagos felhasználónak képről történő szövegkinyerésre t
 
 \pagebreak
 
-A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyről szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. A webapplikáció az előbb bemutatott képről az alábbi szöveget nyerte ki:
+A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyről szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. A webapplikáció az előbb bemutatott képről az alábbi szöveghalmazt nyerte ki:
 \newline
 \begin{tcolorbox}
     IDENTIFICATION CARD Family name and Given name: MAROSI MARK DANIEL Sex: MALE Nationality: Date of birth: Date of expiry: Document number: CAN: 123456 HUN 21/09/1999 04/11/2023 123456AB
 \end{tcolorbox}
 \newline
-Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, nem minden adatról azonosítható be, hogy pontosan mit jelent.
+\noindent
+Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, kézi korrigálást igényelne, hogy az összetartozó szövegek egymás mellé kerüljenek.
 
 \section{Jelenlegi rendszerek hiányosságai}
 
-Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Az első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében fogok elkészíteni.
+Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Az első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében szeretnék elkészíteni.
 
 Amennyiben az első, klasszikus módszert választjuk, kézzel kell beírnunk minden egyes adatot, betűről betűre, számról számra. A három módszer közül ez a leghosszabb és legtöbb emberi hibalehetőséget rejtő módszer. Hibázhatunk az adatok olvasásánál, hibázhatunk az adatok begépelése során, valamint ott is hibázhatunk, hogy nem jó cellába visszük fel az értékeket, elcsúszunk valahol.
 
-A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy egyes weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére, ezzel is gyorsítva a folyamatot. A technológia rendkívül pontos, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A második, begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
+A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy egyes weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére, ezzel is gyorsítva a folyamatot. A képről történő szövegkinyerés rendkívül pontos eredményt képes szolgáltatni, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
 
-A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni, például a dátumot, amely 30 06 1979 alakot vesz fel a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná hozni, tovább csökkentve a manuális teendőket.
+A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni. Például a dátumot, amely a szövegkinyerés utáni állapotban 30 06 1979 alakot vesz fel, a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná alakítani, tovább csökkentve a manuális teendőket.
 
 \chapter{Az OCR technológia}
-\section{Az OCR működése}
+\section{Az OCR működési háttere}
 
-Az OCR, azaz Optical Character Recognition \cite{ocr} (magyarul Optikai Karakterfelismerés) egy olyan technológia, amely képes szinte bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
+Az OCR, azaz Optical Character Recognition \cite{ocr} (Optikai Karakterfelismerés) egy olyan technológia, amely képes szinte bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
 
 \newline
 Képzeljünk el egy könyvet, amit egy hagyományos szkennelővel beszkennelünk. A folyamat eredménye digitális képek sorozata lesz, melyeket könnyedén tudunk digitális eszközeink között mozgatni, vagy akár nyomtatóval sokszorosítani tudjuk, de szerkesztni, szöveget keresni vagy kimásolni belőle nem tudnánk. Ha egy olyan szkennerünk lenne, amelyben OCR alapú szövegfelismerés is lenne, akkor a könyvet könnyedén digitalizálhatnánk és nem képeket kapnánk eredményül, hanem egy olyan szöveges dokumentumot, amely teljesen szerkeszthető és kereshető.
 
 \newline
 Az Optikai Karakterfelismerés folyamata több lépésből tevődik össze. \cite{ocr_aws}
-Az első lépésben egy osztályozási folyamat történik, ahol a kiválasztott képet vizsgálva a világos területeket háttérnek, a sötét területeket pedig szövegnek minősíti a program. Ebből kifolyólag az OCR pontosságát tovább javíthatjuk azzal, ha már a karakterfelismerés előtt az inputként választott képet fekete-fehérré alakítjuk.
+Az első lépésben egy osztályozási folyamat történik, ahol a kiválasztott képet vizsgálva a világos területeket háttérnek, a sötét területeket pedig szövegnek minősíti a program. Ebből kifolyólag az OCR pontosságát tovább javíthatjuk azzal, ha már a karakterfelismerés előtt a kiválasztott képet fekete-fehérré alakítjuk.
 
-Második lépésben a szövegként minősített területeken egy olyan keresés indul, amelynek célja az alfabetikus karakterek (betűk) és numerikus karakterek (számok) azonosítása, ez történhet karakterről karakterre, vagy szavanként (karakter lánconként) is. Az azonosítás egyik leggyakoribb módszere a mintaillesztésre alapul. Ennél a módszernél egy olyan adathalmazból dolgozik az algoritmus, amely sok különböző betűtípus- és szövegképmintát tárol egy adatbázisban úgy, mint egy sablont. Mikor a képen alakzatot próbál felismerni, összehasonlítást végez a tárolt sablonok alakzatával, és a legnagyobb egyezést mutató karakternek fogja minősíteni a képen látható alakzatot. Ez a módszer akkor igazán pontos, ha az input egy olyan kép, melyen ismert betűtípusokkal jelenik meg gépelt, nyomtatott szöveg, mivel a betűtípusok és kézírási stílusok száma végtelen, és lehetetlen minden típust az adatbázisban rögzíteni. Amennyiben kézzel írt szöveget adunk bemenetként, akkor a pontos eredmény eléréséhez egy olyan algoritmusra van szükség, amely figyelembe veszi a karakterek jellemzőit is. Ilyen jellemzők például a betű írására használt vonalak, azok irányai, elhelyezkedései, metszéspontjai, görbületei és hurkai. Ezen tulajdonságokat az algoritmus minden felismerhető karakterről tárolja, majd a keresett alakzatot is felbontja ezekre a jellemzőkre, és megkeresi a tárolt karakterek közül azt, amellyel a legtöbb jellemző megegyezik. Ezt a folyamatot Intelligent Character Recognition (ICR), magyarul Intelligens Karakterfelismerés névvel illetik. \cite{handwritten_ocr}
+Második lépésben a szövegnek minősített területeken egy olyan keresés indul, amelynek célja az alfabetikus karakterek (betűk) és numerikus karakterek (számok) azonosítása, ez történhet karakterről karakterre, vagy szavanként (karakter lánconként) is. Az azonosítás egyik leggyakoribb módszere a mintaillesztésre alapul. Ennél a módszernél egy olyan adathalmazból dolgozik az algoritmus, amely sok különböző betűtípus- és szövegképmintát tárol egy adatbázisban úgy, mint egy sablont. Mikor a képen alakzatot próbál felismerni, összehasonlítást végez a tárolt sablonok alakzatával, és a legnagyobb egyezést mutató karakternek fogja minősíteni a képen látható alakzatot. Ez a módszer akkor igazán pontos, ha a bemenet egy olyan kép, melyen ismert betűtípusokkal jelenik meg gépelt/nyomtatott szöveg, mivel a lehetségesen előforduló betűtípusok száma végtelen, és lehetetlen minden típust az adatbázisban rögzíteni.
 
-Utolsó lépésben a dokumentum teljes szerekezeti képének függvényében a felismert karakterek önmagukban, szavakba, mondatokba vagy szövegblokkokba rendezve kerülnek tárolásra.
+Amennyiben kézzel írt szöveget szeretnénk digitalizálni, akkor a pontos eredmény eléréséhez egy olyan algoritmusra van szükség, amely figyelembe veszi a karakterek bizonyos jellemzőit is. Ilyen jellemzők például a betű írására használt vonalak, azok irányai, elhelyezkedései, metszéspontjai, görbületei és hurkai. Ezen tulajdonságokat az algoritmus minden felismerhető karakterről tárolja, majd a keresett alakzatot is felbontja ezekre a jellemzőkre, és megkeresi a tárolt karakterek közül azt, amellyel a legtöbb jellemző megegyezik. Ezt a folyamatot Intelligent Character Recognition (ICR), magyarul Intelligens Karakterfelismerés névvel illetik. \cite{handwritten_ocr}
+
+Utolsó lépésben a dokumentum teljes szerkezeti képének és az OCR konfigurációja függvényében a felismert karakterek önmagukban, vagy pedig szavakba, mondatokba, szövegblokkokba rendezve kerülnek az eredménybe.
 
 \section{Az OCR pontosságának mérése}
 
-Az előzőekben bemutattam hogyan képes az OCR egy szöveget tartalmazó képet gépi szöveggé alakítani, de felmerülhet bennünk a kérdés, hogy mégis mennyire pontos az eredmény, amit kapunk egy ilyen konverzió során. A karakterfelismerés csupán képpontról képpontra vizsgálja a képet, és a betűk alakjából vonja le a végső következtetést, arra viszont nem képes, hogy a dokumentum teljes kontextusát felismerve megállapítsa, hogy a szöveg, amit kinyert, az pontosan mit is jelent, és helyesnek bizonyul-e az adott környezetben. Emiatt az OCR gyakran hibázhat, és ezek a hibák pont a szövegfelismerés által adott előnyöket csökkentik.
+Az előzőekben bemutattam, hogyan képes az OCR egy szöveget tartalmazó képet gépi szöveggé alakítani, de felmerülhet bennünk a kérdés, hogy mégis mennyire pontos az eredmény, amit kapunk egy ilyen konverzió során. Az OCR csupán karakterről karakterre lépve végez műveleteket, arra viszont nem képes, hogy a dokumentum teljes kontextusát felismerve megállapítsa, hogy a szöveg, amit kinyert, helyesnek bizonyul-e az adott környezetben. Emiatt az OCR gyakran hibázhat, és ezek a hibák pont a szövegfelismerés által adott előnyöket csökkentik.
 
 \newline
-Legegyszerűbben úgy határozható meg a pontosság, hogy az OCR kimeneti eredményét összehasonlítjuk a képen szereplő szöveggel. Tegyük fel, hogy a képen szereplő szöveg 100 karakterből áll. Amennyiben az OCR által adott eredményben mind a 100 karakter egyezik az eredeti szövegben szereplővel, akkor azt mondhatjuk, hogy az OCR pontossága 100\%. Amennyiben 99 karaktert sikerült eltalálnia az szövegfelismerőnek, úgy a pontosság 99\%. Tehát egyszerű arányosítással is kiszámolható egyfajta pontosság.
+Legegyszerűbben úgy határozható meg a pontosság, hogy az OCR kimeneti eredményét összehasonlítjuk a képen szereplő szöveggel. Tegyük fel, hogy a képen szereplő szöveg 100 karakterből áll. Amennyiben az OCR által adott eredményben mind a 100 karakter egyezik az eredeti szövegben szereplővel, akkor azt mondhatjuk, hogy az OCR pontossága 100\%. Amennyiben 99 karaktert sikerült helyesen felismerni, úgy ez az érték 99\%. Tehát egyszerű arányosítással is kiszámolható egyfajta pontosság.
 
 \newline
 Most bemutatom a két leggyakrabban használt metrikát, melyek erre a logikára épülnek. \cite{ocr_accuracy}
@@ -247,34 +253,35 @@ Most bemutatom a két leggyakrabban használt metrikát, melyek erre a logikára
 \pagebreak
 \subsection{CER - Character Error Rate (Karakter hibaarány)}
 
-A \emph{CER} mutató azon karakterszintű műveletek minimális számát mutatja meg, amelyek szükségesek a bemeneti szöveg hibátlan kimenetté való konvertálásához.
+A \emph{CER} mutató azon karakterszintű műveletek minimális számát mutatja meg, amelyek szükségesek a bemeneti szöveg hibátlan kimenetté való korrigálásához.
 A \emph{CER} számításához használt képlet:
 
 \begin{equation}
     \[CER = \frac{T}{T+C} * 100\]
 \end{equation}
 
-Ahol \emph{T} az OCR eredményéből érkező karakterek a bemenettel azonos karakterekre való transzformációk számát jelöli (tehát ezek olyan karakterek, melyek helytelenül lettek felismerve), \emph{C} pedig a helyesen felismert karakterek száma.
-
-\newline
+\noindent
+A képletben található \emph{T} az OCR eredményéből érkező karakterek a bemenettel azonos karakterekre való transzformációk számát jelöli (tehát ezek olyan karakterek, melyek helytelenül lettek felismerve), \emph{C} pedig a helyesen felismert karakterek száma.
 Példa:
+
 \begin{tcolorbox}
     Felismerendő szöveg: abcdefg-123
     \newline
     OCR kimenet: abcdef9-1Z3
     \newline
-    Mivel a g betűt 9-es számkarakternek állapította meg, továbbá a 2-es számot Z betűnek, így 2 transzformációra lesz szükségünk, tehát T=2.
+    Mivel a g betűt 9-es számnak állapította meg, továbbá a 2-es számot Z betűnek, így 2 transzformációra lesz szükségünk a korrigáláshoz, tehát T = 2.
     \newline
-    A helyesen felismert karakterek száma 9 (a,b,c,d,e,f,-,1,3), ezért C=9.
+    A helyesen felismert karakterek száma 9 (a,b,c,d,e,f,-,1,3), ezért C = 9.
     \[CER = \frac{2}{2+9} * 100 = 18.18\]
 \end{tcolorbox}
+
 Ebben a példában 18\%-os értéket vesz fel a \emph{CER} mutató, természetesen ez a szám minél kisebb, annál jobb.
 
 \subsection{WER – Word Error Rate (Szóhibaarány)}
 
-Hasonlóan a \emph{CER}-hez, ennél a metrikánál azt vesszük figyelembe, hogy hány szó szintű műveletre van szükség ahhoz, hogy az OCR folyamat eredménye teljesen megegyezzen a bemeneti szöveggel. Bár a \emph{WER} érték a szavak metrikáját méri, nem a betűkét, de ha belátjuk, hogy ugyan azon betűk sorozatából kapjuk a szavakat, akkor jogosan feltételezhetjük, hogy a \emph{WER} és a \emph{CER} metrikák jól korrelálnak egymással.
+A \emph{CER}-rel ellentétben ennél a metrikánál azt vesszük figyelembe, hogy hány szó szintű műveletre van szükség ahhoz, hogy az OCR folyamat eredménye teljesen megegyezzen a bemeneti szöveggel. Bár a \emph{WER} érték a szavak helyességét méri, nem a betűkét, de ha belátjuk, hogy ugyan azon betűk sorozatából kapjuk a szavakat, mint amiket a CER metrikával is vizsgáltunk, akkor jogosan feltételezhetjük, hogy a \emph{WER} és a \emph{CER} metrikák mutatószámai jól korrelálnak egymással.
 
-A \emph{WER} mérésére ugyan azt a képletet használjuk, mint a \emph{CER} érték méréséhez, de a \emph{T} paraméter a helyes szóra történő transzformációk számát, a \emph{C} paraméter pedig nem a helyes karakereket, hanem a teljes terjedelmében helyesen felismert szavak számát jelöli.
+A \emph{WER} mérésére ugyan azt a képletet használjuk, mint a \emph{CER}-hez, de a \emph{T} paraméter a helyes szóra történő transzformációk számát, a \emph{C} paraméter pedig nem a helyes karakereket, hanem a teljes terjedelmében helyesen felismert szavak számát jelöli.
 
 \pagebreak
 \subsection{További metrikák az OCR pontosságának megállapításához:}
@@ -299,7 +306,7 @@ Fontos megjegyezni, hogy az előbbiekben bemutatott metrikák nem adnak minden e
 
 \section{Az OCR pontosságának javítása bemeneti oldalon}
 
-Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR egy képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, így a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Nézzük, mik azok a leggyakrabban előforduló körülmények, amik rontják az OCR pontosságát. \cite{imporve_accuracy}
+Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a kérdés, hogy milyen lehetőségek vannak a pontosság javítására. Mivel az OCR képről vagy kép alapú dokumentumról hivatott szöveget kinyerni, a pontos eredmény első és legfontosabb feltétele a megfelelő minőségű bemenet nyújtása. Az alábbiakban felsorolom, mik azok a leggyakrabban előforduló körülmények, amik ronthatják az OCR pontosságát. \cite{imporve_accuracy}
 
 \begin{itemize}
     \item Az eredeti, szkennelésre váró dokumentum minőségére vonatkozóan:
@@ -321,28 +328,31 @@ Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a 
     \end{itemize}
 \end{itemize}
 
+\noindent
 Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók. \cite{ocr_accuracy}
 
 \begin{itemize}
-    \item A kép méretének és felbontásának helyes megválasztása:
+    \item Megfelelő pontsűrűséggel rendelkező kép választása:
     \begin{itemize}
-	   \item A karakterfelismerés pontossága nagyban függ a bemeneti kép pontsűrűségétől (DPI). 
-       \item Általában egy 200-300 közötti DPI-vel rendelkező kép a legmegfelelőbb, ennél kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre, nagyobb értékeknél pedig szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
+       \item Általában egy 200-300 közötti pontsűrűséggel (DPI) rendelkező kép a legmegfelelőbb.
+       \item Kisebb értéknél bizonyos karaktereknél előfordulhat, hogy hibásan kerülnek felismerésre.
+       \item Nagyobb értékeknél szükségtelenül nagy méretű kép lesz a bemenet, az OCR pontossága ezen intervallum felett nem javul számottevően.
     \end{itemize}
     \item Kontraszt növelése és színek eltüntetése:
     \begin{itemize}
-	   \item Mivel az OCR egyik lépésre – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
-       \item Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és csak fekete-fehér színeket tartalmaz. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával fekete-fehérré tudjuk alakítani a színes képeket.
+	   \item Az OCR egyik lépése – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
+       \item Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és nem tartalmaz színeket. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával szürkeárnyalatossá tudjuk alakítani a színes képeket.
     \end{itemize}
     \pagebreak
     \item Ferdeségkorrekció:
     \begin{itemize}
-	   \item Amennyiben ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni, és ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
+	   \item A ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni. Ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
        \item A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
     \end{itemize}
     \item Zajeltávolítás:
     \begin{itemize}
-	   \item Törekedni kell arra, hogy a képet megfelelő fényviszonyok mellett készítsük, hogy az minél kevésbé legyen zajos. Bizonyos eljárásokkal csökkenthető az elkészített kép zajossága is simítási, zajmentesítési folyamatokkal, melyek szintén megtalálhatóak a leggyakoribb képszerkesztő programok funkciói között.
+	   \item Törekedni kell arra, hogy a képet megfelelő fényviszonyok mellett készítsük, hogy az minél kevésbé legyen zajos.
+       \item Bizonyos eljárásokkal csökkenthető az elkészített kép zajossága is, ilyenek a simítási és zajmentesítési folyamatok, melyek szintén megtalálhatóak néhány képszerkesztő program funkciói között.
     \end{itemize}
 \end{itemize}
 
