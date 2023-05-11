@@ -64,7 +64,7 @@
 
 \vspace*{0.6cm}
 
-{\Large\bf 2022}
+{\Large\bf 2023}
 
 \end{center}
 
@@ -94,79 +94,69 @@
 
 {\Large\bf Informatikai Intézet}
 
-\vspace*{3.8cm}
+\vspace*{3cm}
 
 
 {\LARGE\bf Domain specifikus szöveg feldolgozása kép alapú dokumentumokon}
 
 
-\vspace*{3.5cm}
+\vspace*{3cm}
 
-{\Large Diplomamunka}
+{\Large Szakdolgozat}
 
-\vspace*{4cm}
+\vspace*{3cm}
 
 {\large
 \begin{tabular}{c@{\hspace{4cm}}c}
-\emph{Készítette:}     &\emph{Témavezető:}\\
+\emph{Készítette:}     &\emph{Belső Témavezető:}\\
 \textbf{Marosi Márk Dániel}  &\textbf{Janurik Viktor Bálint}\\
-Gazdaságinformatika szakos     &Tanszéki mérnök\\
-hallgató&
+Gazdaságinformatikus szakos     &Tanszéki mérnök\\
+hallgató&\\
+ & \emph{Külső Témavezető:}\\
+ & \textbf{Gyikó Richárd}\\
+ & CTO\\
 \end{tabular}
 }
 
-\vspace*{2cm}
+\vspace*{1.5cm}
 
 {\Large
 Szeged
 \\
 \vspace{2mm}
-2022
+2023
 }
 \end{center}
 
 \renewcommand{\contentsname}{Tartalomjegyzék}
 
+\setcounter{chapter}{1}
 \chapter*{Feladatkiírás}
 \addcontentsline{toc}{section}{Feladatkiírás}
 
 A digitalizáció és az automatizáció terjedésével egyre nagyobb az igény olyan programokra, melyek kép alapú dokumentumokról beolvasott szöveget képesek domain függően feldolgozni és osztályozni predikciók, szövegkörnyezet és a dokumentumon elfoglalt pozíció alapján.
 A szakdolgozat célja egy ilyen program elkészítése egy tetszőlegesen választott domainnel.
 
-
 \chapter*{Tartalmi összefoglaló}
 \addcontentsline{toc}{section}{Tartalmi összefoglaló}
 
-A szakdolgozat a kép alapú dokumentumok domain specifikus szövegfeldolgozásáról szól, ahol a kiválasztott domain a személyi igazolvány lett. Az adatvédelmi problémák elkerülése okán magam által szerkesztett, egyéni kinézettel készült személyi igazolványokat mutatok be és használok fel a szakdolgozatban.
-A szakdolgozat bemutatja azokat az alkalmazásokat, melyek már bárki számára elérhetőek, rávilágít ezek hiányosságaira, majd végigkíséri az olvasót egy olyan alkalmazás fejlesztésében, mely ezeket a hiányosságokat próbálja pótolni.
-A projekt megvalósítása a legújabb, ingyenesen elérhető programcsomagok és függvénykönyvtárak (EasyOCR, OpenCV) segítségével, valamint egy saját kulcs-érték párokat felismerő algoritmussal, Pyhton programozási nyelvben történt.
-A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként adott kép alapú személyi igazolványról képes a szöveget kinyerni, az összetartozó adatokat párokba rendezni, majd ezt egy csv kitejesztésű fájlba exportálni. \\
+\textbf{A téma megnevezése:} \\
+\noindent Domain specifikus szöveg feldolgozása kép alapú dokumentumokon\\
 
-\noindent
-Kulcsszavak: szövegfeldolgozás, szövegkinyerés, képfeldolgozás, dokumentum
+\noindent\textbf{A megadott feladat megfogalmazása:} \\
+\noindent A szakdolgozat készítésének célja a kép alapú dokumentumok szövegfeldolgozásának témáját körbejárni, majd a gyűjtött információk felhasználásával elkészíteni egy alkalmazást, mely képes egy tetszőlegesen kiválasztott domain alapú dokumentumról szöveget kinyerni és azt feldolgozni.\\
 
-% \begin{itemize}
+\noindent\textbf{A megoldási mód:} \\
+\noindent A kiválaszott domain egy személyi igazolvány kinézetére épülő, szöveg és szám típusú adatokat is tartalmazó dokumentum lett. Az adatvédelmi problémák elkerülése érdekében magam által szerkesztett, egyéni kinézettel készült igazolványokat mutatok be és használok fel a szakdolgozatban.\\
 
-    % \item Téma megnevezése:
-    % Domain specifikus szöveg feldolgozása kép alapú dokumentumokon
+\noindent\textbf{Alkalmazott eszközök, módszerek:} \\
+\noindent A projekt megvalósítása a legújabb, ingyenesen elérhető programcsomagok és függvénykönyvtárak (EasyOCR, OpenCV) segítségével Pyhton programozási nyelvben történt, egy általam írt algoritmussal kiegészítve, mely a kinyert adatok párosítását szolgálja.\\
 
-    % \item Feladat megfogalmazása:
-    % A szakdolgozat témája és célja az Informatikai Intézet Cisco laborjának távoli elérés rendszerének korszerűsítési keretében történő további két modul fejlesztése.
+\noindent\textbf{Elért eredmények:} \\
+\noindent A fejlesztés végeredménye egy olyan asztali alkalmazás, mely a bemenetként adott kép alapú személyi igazolványról képes a szöveget kinyerni, az összetartozó adatokat párokba rendezni, majd ezt egy .csv kitejesztésű fájlba exportálni.\\
 
-    % \item A teljes projekt modulokra bontása, munkamegosztás:
-    % Egy ilyen projekt túl nagy feladat lett volna egyetlen hallgató számára, éppen ezért a három modult -- web-es frontend, konzolos backend, es az ellenőrző/naplózó köztes modul -- három szakdolgozó fejleszti.
-
-    % \item Alkalmazott módszerek:
-    % \begin{itemize}
-        % \item Python: A teljes projekt Python nyelven készült, kiegészítve több library-vel: MySQL connector, Pika, Netmiko stb.
-        % \item MySQL: a rendszer backend-jéül egy mysql 8.0 szerver szolgál
-        % \item RabbitMQ: a komponensek közötti kommunikáció a Rabbit Message Queue segítségével lett megvalósítva
-    % \end{itemize}
-
-    % \item Eredmények:
-    % A fejlesztés produktuma egy, már alapjaiban működő rendszer, ami további tesztelések, és az ott előjövő problémák javításai után készen áll arra, hogy átvegye a jelenlegi rendszer feladatát.
-
-% \end{itemize}
+\noindent \textbf{Kulcsszavak:} \\
+\noindent szövegfeldolgozás, szövegkinyerés, képfeldolgozás, karakterfelismerés
 
 \tableofcontents
 
@@ -177,22 +167,15 @@ A témaválaszatásomat az informatikai rendszerek elképesztő gyorsaságú fej
 Ezen túlmenve, egyes felsőbb kategóriás telefonok már képesek fényképről felismerni szöveget, és opciót biztosítanak a szöveg kinyerésére is. Amennyiben előttünk van egy névjegykártya, és szeretnénk róla egy nevet vagy telefonszámot gyorsan kimásolni anélkül, hogy nekünk kelljen manuálisan begépelni, egyszerűen készítenünk kell róla egy fényképet, és amennyiben a telefon szöveget talál a képen, azt kimásolhatóvá és vágólapra illeszthetővé teszi a felhasználó számára, ezzel értékes időt spórova, továbbá a hibázás lehetőségét is csökkentve.
 Mivel ezek a szoftverek egyre elterjedtebbek, szerettem volna mélyebben belelátni ebbe a témába, és egy nemrég történt tapasztalat csak felerősítette szakmai érdeklődésem a szövegfelismerés és feldolgozás kapcsán. 
 
-Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és néhány másodperc alatt minden adatom, ami a személyi igazolványomon volt, a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte hogy melyik adat a név, melyik adat az állampolgárság, és így tovább.
+Egy határátkelésnél történt, hogy a személyi igazolványomat egy kis méterű, kompakt szkennelőgépbe helyezték, és néhány másodperc alatt minden adatom, ami a személyi igazolványomon volt, a határrendészet szoftverébe került. Ez a folyamat egy olyan plusz lépést tartalmaz az előző, okostelefonos példához képest, hogy itt nem csak az igazolványon található szöveg került felismerésre és beolvasásra, mint egy nagy adathalmaz, hanem a szoftver képes volt ezt az adathalmazt megfelelően szétbontani és osztályozni, felismerte, hogy melyik adat a név, melyik adat az állampolgárság, és így tovább.
 
 A szakdolgozatom készítése során a célom, hogy ezt a témát körbejárjam, felkutassam a legújabb technológiákat, és elkészítsek egy programot, mely lehetővé teszi a hatékony szövegfeldolgozást.
-% Ennek megfelelően szakdolgozatom tartalmát négy fő részre tagoltam. A dolgozat első részében a jelenleg bárki számára elérhető szövegfelismerő rendszerek közül bemutatok néhányat, majd rávilágítok azok hiányosságaira. A második részben a jelenleg legismertebb és legmodernebb technológiák utáni kutatásom eredményét fogom részletezni, mélyebben kifejteni azt, hogyan működnek azok a hasonló felhasználási célú redszerek, melyeket jelenleg az iparban használnak. A harmadik részben ismertetem és összehasonlítom azokat a keretrendszereket, amelyeket érdemes lehet felhasználni a projektemben, továbbá a teljes implementáció és fejlesztési folyamat bemutatásra kerül lépésről lépésre. A negyedik részben az elkészült program használatát, komponenseit és felépítését fogom ismertetni.
-
-
-% \begin{figure}[h]
-    % \centering
-    % \includegraphics[scale=0.3]{topology.eps}
-    % \caption{A Cisco labor izolált topológiája}
-% \end{figure}
 
 \chapter{Jelenlegi rendszerek}
 \section{Jelenlegi rendszerek bemutatása}
 
-Manapság egy átlagos felhasználónak képről történő szövegkinyerésre telefonos vagy web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen igénybe vehető, gyors és megbízható. A következőkben egy általam készített, nem valós adatokat tartalmazó minta igazolványon fogom tesztelni az egyik applikációt. \cite{onlineocr}
+Manapság egy átlagfelhasználónak képről történő szövegkinyerésre telefonos vagy web alapú applikációk segítségével van lehetősége. Ez a legegyszerűbb módszer, mert könnyen kezelhető, nem igényel hozzáértést, ingyenesen használható, gyors és megbízható.
+A következőkben egy saját készítésű, nem valós adatokat tartalmazó minta igazolványon fogok tesztelni két, általam választott web alapú applikációt.
 
 \newline
 
@@ -203,24 +186,55 @@ Manapság egy átlagos felhasználónak képről történő szövegkinyerésre t
 
 \pagebreak
 
-A weboldalon található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyről szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. A webapplikáció az előbb bemutatott képről az alábbi szöveghalmazt nyerte ki:
-\newline
+Az első applikáció weboldalán \cite{onlineocr} található egy fájl feltöltésre alkalmas mező, ide kell tallózni a képet, melyről szeretnénk kinyerni a szöveget, ezután pedig el kell indítani a beolvasási folyamatot, mely körülbelül 5 másodpercet vesz igénybe. A folyamat végén egy szövegmezőből kimásolhatóvá válik a képről kinyert szöveg. A webapplikáció az előbb bemutatott képről az alábbi szöveghalmazt nyerte ki:
 \begin{tcolorbox}
     IDENTIFICATION CARD Family name and Given name: MAROSI MARK DANIEL Sex: MALE Nationality: Date of birth: Date of expiry: Document number: CAN: 123456 HUN 21/09/1999 04/11/2023 123456AB
 \end{tcolorbox}
 \newline
-\noindent
+
 Az eredményt megvizsgálva megállapítható, hogy a képből kinyert szöveg hibátlan, a betű és a szám alapú adatok is helyesen jelennek meg. Viszont azt is észrevehetjük, hogy az adatok rendezetlenek, kézi korrigálást igényelne, hogy az összetartozó szövegek egymás mellé kerüljenek.
+
+A másik weboldal  \cite{onlineocr2} felépítése nagyon hasonlít az előbb kipróbált oldal felépítésére, itt is egy fájl tallózására alkalmas beviteli mező segítségével tölthető fel a dokumentum, és egy szövegmezőből válik kimásolhatóvá a kinyert szöveghalmaz.
+
+\begin{tcolorbox}
+IDENTIFICATION CARD
+
+Family name and Given name:
+
+MAROSI MARK DANIEL
+
+Sex: MALE
+
+Date of birth:
+
+Date of expiry:
+
+Document number:
+
+CAN: 123456
+
+Nationality:
+
+HUN
+
+21/09/1999
+
+21/09/2023
+
+1 2 3 4 5 6 AB
+\end{tcolorbox}
 
 \section{Jelenlegi rendszerek hiányosságai}
 
-Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Az első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve. A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében szeretnék elkészíteni.
+Tegyük fel, hogy egy olyan szituációban találjuk magunkat, ahol több személyi igazolványt kell digitalizálnunk, például egy Excel táblázatban eltárolni a kártyán olvasható adatokat. Erre három esetet fogok felvázolni. Az első a klasszikus módszer, ahol közvetlenül a személyi igazolványról írjuk át az adatokat a táblázatba, kézzel begépelve.
+\newpage
+A második módszer az előbbiekben bemutatott webapplikáció segítségével történne, a harmadik eset pedig egy olyan program használatát feltételezi, melyet a szakdolgozatom keretében szeretnék elkészíteni.
 
 Amennyiben az első, klasszikus módszert választjuk, kézzel kell beírnunk minden egyes adatot, betűről betűre, számról számra. A három módszer közül ez a leghosszabb és legtöbb emberi hibalehetőséget rejtő módszer. Hibázhatunk az adatok olvasásánál, hibázhatunk az adatok begépelése során, valamint ott is hibázhatunk, hogy nem jó cellába visszük fel az értékeket, elcsúszunk valahol.
 
-A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy egyes weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére, ezzel is gyorsítva a folyamatot. A képről történő szövegkinyerés rendkívül pontos eredményt képes szolgáltatni, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
+A második módszer az első módszerben felvázolt három hibalehetőségből kettőt minimálisra csökkent, ezek a beolvasási és begépelési hibák. A beolvasást egy olyan technológiára alapozva végzi a szoftver, amit a szakdolgozat következő fejezeteiben fogok részletesebben bemutatni. Fontos megjegyezni, hogy az előzőleg bemutatott weboldalak lehetőséget biztosítanak egyszerre akár több kép feltöltésére is, ezzel megkönnyítve a dolgunkat. A képről történő szövegkinyerés rendkívül pontos eredményt képes szolgáltatni, emiatt eltekinthetünk attól, hogy beolvasási hiba történjen, azaz eleve rossz adat kerüljön a táblázatba. A begépelési hibalehetőséget kiküszöböli az, hogy a szoftver a beolvasott szöveget másolhatóvá teszi, így szimplán a másolás és beillesztés műveletek segítségével vihetjük fel az adatokat a kívánt cellába. Tehát amennyiben a szövegfelismerés hibátlan volt, úgy minimálisra csökken annak az esélye is, hogy a másolás során elrontsunk valamit. Az egyetlen fennálló hiba továbbra is az, hogy a másolt adatot rossz cellába illesztjük be, összekeverünk két, látszólag hasonló alakiságú adatot, például a születési időt a kártya lejárati dátumával.
 
-A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyan azon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan csv vagy excel kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni. Például a dátumot, amely a szövegkinyerés utáni állapotban 30 06 1979 alakot vesz fel, a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná alakítani, tovább csökkentve a manuális teendőket.
+A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A program futása alatt végrehajtott folyamat első része teljes mértékben ugyan úgy történne, mint a második módszer esetében: a feltöltött képről vagy képekről kinyeri a szöveget ugyanazon a technológián alapulva. A program ezután nem a nyers adathalmazt adja vissza a felhasználónak, mint a második esetben, hanem tovább dolgozik azon, és a futás eredménye egy olyan .csv vagy .xlsx kiterjesztésű fájl lenne, ahol minden adatkategória (név, állampolgárság, stb.) egy oszlop lenne, és az oszlopnév alatt helyezkedne el a hozzá tartozó adat, például az állampolgárság oszlopban a HUN szöveg. Ezzel teljesen megszűnne minden emberi hibalehetőség, hiszen a teljes folyamatot elvégezné helyettünk a szoftver. Ennek a módszernek további pozitív hozadéka, hogy az adatokat képes az elvárásainknak megfelelően formázni. Például a dátumot, amely a szövegkinyerés utáni állapotban 30 06 1979 alakot vesz fel, a kiolvasás után 1979.06.30 vagy egyéb tetszőleges formára tudná alakítani, tovább csökkentve a manuális teendőket.
 
 \chapter{Az OCR technológia}
 \section{Az OCR működési háttere}
@@ -228,7 +242,7 @@ A harmadik módszer mind a három hibalehetőségre megoldást biztosítana. A p
 Az OCR, azaz Optical Character Recognition \cite{ocr} (Optikai Karakterfelismerés) egy olyan technológia, amely képes szinte bármilyen képről vagy digitális dokumentumról az írott vagy nyomtatott szöveget felismerni és kinyerni. Az OCR egyik legnagyobb haszna, hogy képes kiváltani a kézi adatbevitelt, jelentős időt spórolva és megszüntetve az emberi hiba lehetőségét is.
 
 \newline
-Képzeljünk el egy könyvet, amit egy hagyományos szkennelővel beszkennelünk. A folyamat eredménye digitális képek sorozata lesz, melyeket könnyedén tudunk digitális eszközeink között mozgatni, vagy akár nyomtatóval sokszorosítani tudjuk, de szerkesztni, szöveget keresni vagy kimásolni belőle nem tudnánk. Ha egy olyan szkennerünk lenne, amelyben OCR alapú szövegfelismerés is lenne, akkor a könyvet könnyedén digitalizálhatnánk és nem képeket kapnánk eredményül, hanem egy olyan szöveges dokumentumot, amely teljesen szerkeszthető és kereshető.
+Képzeljünk el egy könyvet, amit egy hagyományos szkennelővel beszkennelünk. A folyamat eredménye digitális képek sorozata lesz, melyeket könnyedén tudunk digitális eszközeink között mozgatni, vagy akár nyomtatóval sokszorosítani tudjuk, de szerkeszteni, szöveget keresni vagy kimásolni belőle nem tudnánk. Ha egy olyan szkenner állna rendelkezésünkre, amelyben OCR alapú szövegfelismerés is van, akkor a könyvet könnyedén digitalizálhatnánk, és nem képeket kapnánk eredményül, hanem egy olyan szöveges dokumentumot, amely teljesen szerkeszthető és kereshető.
 
 \newline
 Az Optikai Karakterfelismerés folyamata több lépésből tevődik össze. \cite{ocr_aws}
@@ -260,7 +274,6 @@ A \emph{CER} számításához használt képlet:
     \[CER = \frac{T}{T+C} * 100\]
 \end{equation}
 
-\noindent
 A képletben található \emph{T} az OCR eredményéből érkező karakterek a bemenettel azonos karakterekre való transzformációk számát jelöli (tehát ezek olyan karakterek, melyek helytelenül lettek felismerve), \emph{C} pedig a helyesen felismert karakterek száma.
 Példa:
 
@@ -289,7 +302,7 @@ A \emph{WER} mérésére ugyan azt a képletet használjuk, mint a \emph{CER}-he
 \begin{itemize}
     \item SER - Symbol Error Rate (Szimbólum hibaarány):
     \begin{itemize}
-	   \item Ez a metrika kifejezetten azt vizsgálja, hogy a szövegben szereplő szimbólumok, különböző írásjelek milyen arányban kerültek helyesen felismerésre.
+	   \item A SER metrika segítségével vizsgálható, hogy a szövegben szereplő szimbólumok, különböző írásjelek milyen arányban kerültek helyesen felismerésre.
     \end{itemize}
     \item Text-Based F1 Score (Szövegalapú F1-pontszám):
     \begin{itemize}
@@ -301,7 +314,6 @@ A \emph{WER} mérésére ugyan azt a képletet használjuk, mint a \emph{CER}-he
     \end{itemize}
 \end{itemize}
 
-\noindent
 Fontos megjegyezni, hogy az előbbiekben bemutatott metrikák nem adnak minden esetben valós képet a különböző OCR modellek működéséről, hiszen a beolvasott dokumentumok minősége, valamint a tény, hogy kézírást vagy nyomtatott szöveget adunk bemenetként mind erősen befolyásoló tényezők az OCR kimenetének helyességében.
 
 \section{Az OCR pontosságának javítása bemeneti oldalon}
@@ -328,7 +340,6 @@ Az előbbiekben bemutattam, hogyan mérhető az OCR pontossága. Felmerülhet a 
     \end{itemize}
 \end{itemize}
 
-\noindent
 Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az alábbi lépéseket tehetjük, mint felhasználók. \cite{ocr_accuracy}
 
 \begin{itemize}
@@ -340,13 +351,13 @@ Hogy az OCR munkáját elősegítsük, és ezzel javítsuk a pontosságot, az al
     \end{itemize}
     \item Kontraszt növelése és színek eltüntetése:
     \begin{itemize}
-	   \item Az OCR egyik lépése – ahogy azt a működésénél részletesebben kifejtettem –  arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
+	   \item Az OCR egyik lépése – ahogy azt a működésénél részletesebben kifejtettem – arra alapul, hogy a képen a világos részeket elválasztja a sötét részektől, és a sötét részeket jelöli meg szövegként, a világos részeket pedig háttérként. Ebből adódik a kép kontrasztjának és színvilágának szerepe a szövegfelismerésben, hiszen a kontraszt minél nagyobb, illetve minél kevesebb szín található a képen, annál pontosabban fogja tudni az OCR leválasztani a szöveget a háttérről.
        \item Az OCR szempontjából egy jó bemeneti kép erősen kontrasztos és nem tartalmaz színeket. Kontrasztot ma már bármilyen képszerkesztő alkalmazással tudunk növelni, illetve filterek alkalmazásával szürkeárnyalatossá tudjuk alakítani a színes képeket.
     \end{itemize}
     \pagebreak
     \item Ferdeségkorrekció:
     \begin{itemize}
-	   \item A ferdén fotózott vagy szkennelt képek nagy mértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni. Ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
+	   \item A ferdén fotózott vagy szkennelt képek nagymértékben csökkentik az OCR hatékonyságát, hiszen a karaktereket meghatározott vonalakból és alakzatokból próbálja felismerni. Ha a képen ferdén vannak a karakterek, akkor nehezebben fog egyezést találni a saját adatbázisában szereplő karakterekkel.
        \item A szkenneléskor vagy fotózáskor törekedni kell arra, hogy a kép minél kevésbé legyen ferde, de lehetőség van utólagos korrekcióra is képszerkesztő program segítségével.
     \end{itemize}
     \item Zajeltávolítás:
@@ -453,7 +464,7 @@ def output_img_to_window(img):
 
 \subsection{Az EasyOCR könyvtár bemutatása}
 
-Az EasyOCR könyvtár is egy nyílt forráskódú \cite{easyocr}, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb inputokra lassabb, mint a Tesseract.
+Az EasyOCR könyvtár is egy nyílt forráskódú \cite{easyocr}, ingyenesen használható OCR könyvtár. A Tesseracttól független, eltérő az implementációja, összességében nagyobb pontosságot képes biztosítani bizonyos esetekben, hátulütője az, hogy nagyobb fájlméretű bemenetekre lassabb, mint a Tesseract.
 
 Az EasyOCR importálása után először példányosítani kell egy objektumot az \newline \emph{easyocr.Reader()} konstruktorhívással, majd rendelkezésünkre állnak az EasyOCR metódusai. Ezek közül a szakdolgozat szempontjából a \emph{readtext()} metódus a legfontosabb, ennek egyetlen paramétere az kép elérési útvonala, melyről szöveget szeretnénk kinyerni.
 A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy szövegrészlet, melyet az OCR a karakterek egymáshoz viszonyított pozíciója alapján összefüggőnek ítélt. Minden egyes listaelem további elemeket tartalmaz. Első helyen egy listát, ami az adott szöveget körülvevő téglalap négy sarkának koordináta-párjait tárolja, második helyen magát a felismert szöveget, a harmadik pozíción a pedig tizedestört alakban kifejezve azt, hogy az OCR hány százalékban biztos abban, hogy a kinyert szöveg egyezik a képen látható szöveggel.
@@ -467,7 +478,6 @@ A metódus egy listával tér vissza, melyben minden listaelem egy szó vagy sz�
     \end{center}
 \end{tcolorbox}
 
-\noindent
 Ahogyan azt a pytesseract könyvtár eredményén megtettem, itt is szemléltetésképpen írtam egy metódust, ami a bemenetként adott képen megjeleníti a felismert szavakat, összefüggőnek vélt karakterláncokat.
 
 \pagebreak
@@ -493,7 +503,6 @@ def generate_img_with_bounding_boxes_on_words(ocr_result):
     cv2.destroyAllWindows()
 \end{verbatim}
 
-\noindent
 Ha összehasonlítjuk a két bemutatott könyvtár által adott eredményeket és összevetjük az utóbbi két képet, megfigyelhető, hogy valóban van eltérés a két metódus eredménye között. A legfőbb különbség a szövegrészletek szegmentáltságából adódik: míg az EasyOCR az egymáshoz közel álló szavakat, karakterláncokat sokkal inkább egy egységként dolgozza fel, addig a Pytesseract karakter alapon vizsgálja a dokumentumot, kevésbé érzékeny a kontextusra, ebből adódóan szavakra bontva dolgozza fel a képen olvasható szöveget.
 
 \section{A dokumentum előfeldolgozása}
@@ -506,8 +515,7 @@ def convert_to_grayscale_image(image):
     return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 \end{verbatim}
 
-\noindent
-Következő lépésként a zajeltávolítás volt a célom. Egy zajos kép nagy mértékben ronthatja a kimenet pontosságát, mivel az OCR a zajos, szemcsés részeket is az adott karakter részének határozhatja meg. A zajeltávolítás legegyszerűbb módja a kép kis mértékben történő elmosása, mivel így a zajos részeket összemossuk és jobban beleolvad a háttérbe, cserébe, ha tényleg csak kevés elmosást alkalmaztunk, a karakterek szélei csak kis mértékben veszítenek az élességükből, ezzel továbbra is fenntartva a felismerhetőséget.
+Következő lépésként a zajeltávolítás volt a célom. Egy zajos kép nagymértékben ronthatja a kimenet pontosságát, mivel az OCR a zajos, szemcsés részeket is az adott karakter részének határozhatja meg. A zajeltávolítás legegyszerűbb módja a kép kis mértékben történő elmosása, mivel így a zajos részeket összemossuk, és jobban beleolvad a háttérbe. Cserébe, ha tényleg csak kevés elmosást alkalmaztunk, a karakterek szélei csak kis mértékben veszítenek az élességükből, ezzel továbbra is fenntartva a felismerhetőséget.
 Erre a célra a \emph{medianBlur()} metódust hívtam meg az OpenCV könyvtárból, melynek paraméterei a kép és egy 1-nél nagyobb páratlan szám, mely az elmosáshoz használt digitális rekesz lineáris méretét adja meg.
 
 \begin{verbatim}
@@ -515,7 +523,6 @@ def remove_noise(image):
     return cv2.medianBlur(image, 5)
 \end{verbatim}
 
-\noindent
 Utolsó lépésben a képen található szöveget elkülönítjük a háttértől, amennyire csak lehet. Ezt az OpenCV \emph{threshold()} nevű metódusával érhetjük el, melyet általában arra használnak, hogy egy szürkeárnyalatos képet két színből álló képpé konvertáljanak. A függvény paraméterei a kép, egy küszöbérték (\emph{threshold}), egy maximum érték (\emph{maxval}), és a küszöbérték típusa.
 Különböző célokra különböző küszöbérték típusok léteznek \cite{opencv_threshold}, számomra a \emph{THRESH\_BINARY} a legmegfelelőbb.
 A \emph{THRESH\_BINARY} küszöbérték típus számítási elve:
@@ -527,7 +534,6 @@ output(x,y)=
     \end{cases}
 \end{equation}
 
-\noindent
 A képletből kiolvasható, hogy amennyiben a vizsgált pixel színe a küszöbértéknél nagyobb, akkor a szín átírásra kerül, és a maxvalue értékét fogja felvenni, egyéb esetben az új értéke 0 lesz.
 Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkebb küszöbértéket kell megadnunk, így a \emph{threshold} paraméter a mi esetünkben 0 lesz. A \emph{maxvalue} az a szín, amit a küszöbértéknél nagyobb, azaz kiszűrni kívánt képpontok (ebben az esetben a dokumentum háttere) fog felvenni, ez a mi esetünkben 255 lesz, azaz fehér.
 
@@ -536,7 +542,6 @@ Ahhoz, hogy a szöveg jól elkülönüljön a háttértől, a lehető legszűkeb
     \caption{A három előfeldolgozó metódus futása utáni állapot}
 \end{figure}
 
-\noindent
 A három képfeldolgozó metódus lefuttatása után elértem, hogy a szöveg jól elkülönüljön a háttértől, a karakterek könnyen felismerhetőekek legyenek, és ne maradjon a szövegfelismerés szempontjából irreleváns jelentést hordozó adat a dokumentumon.
 
 \section{Adatstruktúra felállítása és feltöltése}
@@ -601,7 +606,6 @@ Az algoritmus végig iterál a teljes listán, mely a kinyert szövegeket tárol
 Először a \emph{CardTextItem} objektumba fel kellett vennem 4 új adattagot: \emph{is\_examined}, \emph{assigned\_to}, \emph{is\_key}, \emph{is\_value}. Mind a négy adattag kezdetben 0-ra inicializálódik. Az is\_examined egy logikai változóként viselkedik, és azt jelzi, hogy a kulcs-érték pár keresés lefutott-e már rá. Erre azért volt szükség, hogy ha az adott szövegre futó keresés nem talált hozzá tartozó párt, akkor jelezve legyen, hogy ez nagy eséllyel egy olyan szöveg, mely csak tájékoztató jellegű, nem pedig egy fontos adat. Ilyen például a példa igazolványon az \emph{IDENTIFICATION CARD} szöveg, mely nem lesz kulcs, hiszen érték sem tartozik hozzá.
 Az \emph{assigned\_to adattag} segítségével lesznek összekapcsolva azok az objektumok, amik a kulcs-érték pár keresés során egymáshoz lettek rendelve. Maga az adattag hozzá kapcsolt másik objektumra fog mutatni. Az \emph{is\_key} és az \emph{is\_value} adattagok pedig szintén logikai változókként funkcionálnak, jelezvén, hogy az adott objektum kulcsként vagy értékként lett felismerve.
 
-\newpage
 
 \begin{verbatim}
 def find_next_key(items):
@@ -609,7 +613,11 @@ def find_next_key(items):
                     for item 
                     in items 
                     if item.is_examined == 0)
+\end{verbatim}
 
+\newpage
+
+\begin{verbatim}
     for item in items:
         if item.is_examined == 0:
             if item.top_left[1] < next_key.top_left[1]:
@@ -632,14 +640,12 @@ for item in items:
                 next_key = item
 \end{verbatim}
 
-\newpage
-
 A \emph{THRESHOLD} konstans változó értékének meghatározása próbálgatással történt. A 40-es érték bizonyult minden esetben jónak, ez még az a tűréshatár, amibe az egymás mellett és alatt elhelyezkedő objektumok beleesnek, de azok már nem, amik a keresés eredménye szempontjából helytelenek lennének. Ezt a konstanst többször is használni fogom a kulcs-érték párok felderítése során.
 
-A \emph{find\_next\_key()} metódus visszatérési értéke az az objektum lesz, ami Y tengelyen a legmagasabban helyezkedik el. Amennyiben ezen objektum X koordinátájának a tűréshatár intervallumán belül találunk egy vagy több másik, tőle  balra eső objektumot, úgy azzal térünk vissza, amelyik ezek közül a legközelebb van a dokumentum bal széléhez. Tehát a metódus visszatér egy objektummal, melyről innentől feltételezzük, hogy kulcs. 
+A \emph{find\_next\_key()} metódus visszatérési értéke az az objektum lesz, ami Y tengelyen a legmagasabban helyezkedik el. Amennyiben ezen objektum X koordinátájának a tűréshatár intervallumán belül találunk egy vagy több másik, tőle balra eső objektumot, úgy azzal térünk vissza, amelyik ezek közül a legközelebb van a dokumentum bal széléhez. Tehát a metódus visszatér egy objektummal, melyről innentől feltételezzük, hogy kulcs. 
 Azért nem jelenthető ki, hogy kulcs, mert csakis onnantól címkézünk egy objektumot kulcsként, ha megbizonyosodtunk róla, hogy tartozik hozzá érték. Ezen a ponton ebben még nem lehetünk biztosak.
 
-A folyamat következő lépése a \emph{find\_value\_for\_key()} nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum \emph{is\_examined} adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
+A folyamat következő lépése a \emph{find\_value\_for\_key()} nevű metódus, melynek paraméterei az előbb talált objektum, mely feltételezhetőleg kulcs, valamint a teljes objektumok listája. A futás rögtön azzal kezdődik, hogy az objektum \emph{is\_examined} adattagját 0-ról 1-re állítja, ezzel jelölve, hogy a párkeresési algoritmus már meg volt hívva a kulcsra. Ennek célja, hogyha nem találunk hozzá tartozó értéket, akkor se vizsgáljuk többet. A metódus ezután 2 fő lépcsőből áll. Az első, hogy elindít egy jobbra történő keresést, melynek, ha van eredménye, akkor az a kulcstól jobbra talált legközelebbi objektum.
 Innentől tudjuk, hogy az eddig kulcsnak vélt objektum valóban kulcs, hiszen találtunk egy objektumot mellette, mely feltételezhetően a hozzá tartozó érték. Amennyiben a jobbra keresésnek nem lett eredménye, úgy egy lefelé történő keresés indul. Amennyiben a kulcsnak vélt objektum alatt sem találtunk másik objektumot, akkor a metódus futása véget ér anélkül, hogy a kulcsnak vélt objektumot valóban kulcsként címkéztük volna, és értéket rendeltünk volna hozzá. Ebből megállapítható, hogy az objektumhoz valószínűleg nem tartozik érték.
 Ilyen például az \emph{IDENTIFICATION CARD} szöveg, se tőle jobbra, se alatta nem helyezkedik el hozzá kapcsolható érték.
 Mivel a kulcs keresés mindig a bal felső objektumokból indul ki, így teljesen felesleges lenne balra illetve felfelé történő keresés, hiszen ott már nem találhatunk semmit. Ez természetesen hátrány egy olyan dokumentumnál, melyről nem mondható el, hogy a kulcsok minden esetben az értékek bal oldalán, vagy felettük találhatóak.
@@ -658,11 +664,8 @@ def find_key_value_pairs(items):
         find_value_for_key(next_key, items)
 \end{verbatim}
 
-\noindent
 Az \emph{any()} beépített listaszűrő metódus igazzal tér vissza, ha a lista legalább egy olyan objektumot tartalmaz még, ami nem volt vizsgálva. Ennek a helyességét a korábban tárgyalt \emph{find\_value\_for\_key()} metódus biztosítja. Tehát addíg, amíg van olyan objektum, melyet nem vizsgáltunk, keresünk egy kulcsot a dokumentumon a  \emph{find\_next\_key()} metódussal, majd a kulcshoz megkeressük a hozzá tartozó értéket a \emph{find\_value\_for\_key()} függvénnyel. Mivel Pythonban alapértelmezetten referencia szerinti paraméterátadás történik, így nem tér vissza semmivel ez a metódus, mert minden módosítást az eredeti objektumokon végzünk.
 Ha már nincs több vizsgálatlan objektum, akkor visszatérünk a main függvénybe. Ezen a ponton a feladat már el volt végezve, hiszen minden objektumot megvizsgáltunk, megtaláltuk a kulcs-érték párokat. Viszont az eddig használt adatstruktúra innentől értelmét veszti, a \emph{CardTextItem} osztályból egyedül a \emph{text} adattag releváns számunka. Az egyszerűbb kezelés érdekében egy kulcs-érték párokat tároló adatstruktúra mellett döntöttem.
-
-\newpage
 
 \begin{verbatim}
 def items_to_dict(card_text_items):
@@ -858,6 +861,12 @@ Image to Text Converter
 
 \emph{https://www.imagetotext.info/}
 (Utolsó megtekintés: 2023.04.23)
+
+\bibitem{onlineocr2}
+Text Extractor Tool
+
+\emph{https://brandfolder.com/workbench/extract-text-from-image}
+(Utolsó megtekintés: 2023.05.11)
 
 
 \bibitem{ocr}
