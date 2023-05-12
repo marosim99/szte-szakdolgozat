@@ -1,9 +1,47 @@
+Telepítéshez:
+Microsoft store-ból Ubuntu 20.04 vagy egyéb verzió, vagy wsl (windows subsystem linux)
+letöltés után indítani, a telepítés magától elindul, adni kell majd felhasználónevet és jelszót, ezt jegyezd meg
+ha kész az install, zárd be az ablakot, majd indítsd el újra, és futtasd ezeket a parancsokat:
+sudo apt-get update
+sudo apt install texlive-latex-extra (ha unable to locate package hibát dob, akkor beleírt egy t betűt a texlive szóba, azt ki kell törölni)
+sudo apt install texlive-lang-european (ha unable to locate package hibát dob, akkor beleírt egy t betűt a texlive szóba, azt ki kell törölni)
+sudo apt-get install ghostscript
+
+Elvileg ezzel meg van minden ami kell.
+
+Fontos! Ha valahol valamit félrenyomsz, és nem tudsz kilépni az adott parancsból, akkor Ctrl+C vagy Ctrl+Z segít.
+Ez általánosan igaz a teljes linux rendszerre. Érdemes megjegyezni.
+
+PDF generáláshoz:
+1. Navigálj a gyökérkönyvtárba, ha nem vagy még ott:
 cd ~
-open folder: explorer.exe .
+2. nyisd meg fájlkezelőbe ezt a mappát, ez a linux alrendszerének a mappája:
+explorer.exe .  (FONTOS az exe szó után egy szóköz és egy pont!)
+3. Megnyílik a mappa, ide csinálj egy tetszőleges nevű mappát amibe a szakodádat csinálod majd
+4. Tedd bele ebbe a mappába a példa latex fájlt és a magyar.ldf fájlt, ezeket megtalálod itt is, vagy DC-n pinek között a szakdoga infókban.
+5. Menj vissza a linux terminálba, és navigálj az újonnan létrehozz mappába:
+cd ujmappa/
+6. Futtasd le sorban ezeket a parancsokat:
+latex szakdolgozat.tex (tartsd nyomva az entert amíg véget nem ér a futása a parancsnak)
+dvips szakdolgozat.dvi
+ps2pdf szakdolgozat.ps
+7. Elvileg létrejött a PDF fájl a mappában
+
+Fontos, hogy a latex szakdolgozat.tex parancsot érdemes 2x egymás után lefuttatni, nem mindig generál le
+minden változtatást elsőre, pl a tartalomjegyzéket, vagy a számozást
+
+Ha képeket akarsz a szakdolgozatba tenni, akkor eps formátumra kell őket konvertálni.
+Online vannak jó toolok erre.
+
+Tehát amikre leggyakrabban szükséged lesz:
+cd ~
+explorer.exe .
 latex szakdolgozat.tex
 dvips szakdolgozat.dvi
 ps2pdf szakdolgozat.ps
 
+
+Szakdolgozathoz help:
 A szakdoga flow-ja pedig valami olyannak lenne jo, mint valami regeny,
 elindul valami bevezetessel, hogy mi is a tema, illetve egy kis kitekinto kutatas, hogy milyen ilyen rendszerek vannak, es azokban mi a jo / rossz.
 Innen jonne a bonyodalom, hogy pl erre es erre ezek a tool-ok nem kepesek, ezert van realitasa egy ujat kifejleszteni.
