@@ -64,6 +64,7 @@ def begin():
         write_message(f"Something went wrong: {ex}")
 
 
+# RUN THIS METHOD TO START THE APPLICATION
 if __name__ == '__main__':
     customtkinter.set_appearance_mode("Dark")
     customtkinter.set_default_color_theme("green")

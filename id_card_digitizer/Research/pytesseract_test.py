@@ -4,7 +4,7 @@ from pytesseract import Output
 import pandas
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-ID_CARD_PATH = "test_images/example_id_card.png"
+ID_CARD_PATH = "../test_images/example_id_card.png"
 CONF_LEVEL = 70
 
 def generate_image_with_bounding_boxes_on_words(ocr_result):
